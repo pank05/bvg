@@ -1,0 +1,308 @@
+/* login page */
+.login-css{
+  height: 100%;
+  background-color: black;
+  color: white;
+  display: inline-grid;
+  
+}
+/*  opal  */
+.nav-link:focus{
+  color: white;
+  background-color: black;
+}
+
+.logout{
+  color:white;
+}
+.logout:hover{
+  background-color: black;
+  color: white;
+ }
+
+.nav-alignment{
+  align-items: left;
+
+}
+
+.opal-nav{
+  width:100%;
+  display: block;
+  align-items: center;
+  justify-content: center;
+  font-size:18px;
+  color: #868e96;
+  cursor: pointer;
+  text-decoration: none;
+  padding: 5px 0px 5px 0px ;
+  margin: 10px 5px 10px 5px ;
+ 
+  }
+  .opal-nav:hover{background-color: black; color: white;  margin: 10px 5px 10px 5px ;}
+  .opal-nav:active {
+    background-color:black;
+  }
+
+  /* .nav-link {
+    color: green;
+}
+
+.nav-item>a:hover {
+    color: green;
+}
+
+code to change background color
+.navbar-nav>.active>a {
+    background-color: #C0C0C0;
+    color: green;
+} */
+
+/* .opal-style{
+  
+  width: 235px;
+  margin: 10px 0px 10px 0px ;
+} */
+
+/* .canvas-style{
+  width: 50%;
+} */
+
+/* dashboard vip card  */
+.vip{
+  font-size:-webkit-xxx-large;
+  text-align:start;
+  color: #868e96 ;
+}
+.vip-small{
+  font-size: 40%;
+}
+
+.cardicon{
+  color:aliceblue ;
+}
+
+.com-style{
+  color: aliceblue;
+  text-align:right;
+}
+/* card-layout{
+  padding:5px 10px 5px 10px ;
+  margin: 5px 10px 5px 10px;
+} */
+.dash-href{
+  text-decoration: none;
+}
+.icon-aline{
+  text-align:right;
+}
+/* card 1  */
+/* #myTable {
+  
+  width: 100%;
+  border: 1px solid  #ddd;
+  padding: 10px 10px 10px 10px ;
+  font-size: 13px;
+}
+
+#myTable th, #myTable td {
+  text-align: left;
+  padding: 12px;
+  
+}
+
+#myTable tr {
+  border-bottom: 1px solid #ddd;
+}
+#t-style{
+  width:100% ;
+  border:none;
+ border-bottom: #BEBEBE;
+
+} */
+/*  card 2 */
+.circle {
+  height: 50px;
+  width: 50px;
+  background-color:#ff4081;
+  border-radius: 70%;
+  display: inline-block;
+  color: white;
+  
+  border: none;
+}
+.circle:hover {
+  background: #e54c2a;
+  border-color: #e54c2a;
+}
+
+/* #table-emp{
+  margin:2px, 2px, 2px, 2px;
+  width: 100%;
+  max-width: 1000px;
+
+} */
+/* #Editbutton{
+  background-color: #1fc9cf;
+
+} */
+/* #Addmodal{
+ border:1px solid #D0D0D0	;
+
+ margin:10px 10px 10px 10px;
+ height: 470px;
+ overflow-y: scroll;
+ width: 600px;
+ padding: 15px 15px 15px 15px ;
+} */
+.update{
+  background-color: #999;
+  font-size: 10px;
+  color: white;
+  border: 1px solid#999;
+  
+  width: 100%;
+ 
+}
+/*  view statistics  */
+.grid-container {
+  display: grid;
+  grid: 200px / auto auto auto;
+  grid-gap: 5px;
+  padding: 5px;
+}
+/*  priority workload  */
+.Table_Priority{
+  max-width: 100%;
+  flex: 80% ;
+  padding: 20px 0;
+}
+.table_head{
+  z-index: 2;
+  color: #fff;
+  background-color: #007bff;
+  border-color: #007bff;
+  text-align: center;
+  font-size: 120%;
+}
+
+.table_body1{
+  padding: 0.75rem 1.25rem;
+  margin-bottom: -1px;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  font-size:90%;
+  background-color: lightcyan;
+ 
+}
+.tr_href1{
+  color: #155724;
+  text-decoration: none;
+}
+
+.table_body2{
+  padding: 0.75rem 1.25rem;
+  margin-bottom: -1px;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  font-size:90%;
+  background-color: #fff3cd;
+}
+.tr_href2{
+  color: #856404;
+  text-decoration: none;
+}
+
+.table_body3{
+  padding: 0.75rem 1.25rem;
+  margin-bottom: -1px;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  font-size:90%;
+  background-color: #d1ecf1;
+}
+.tr_href3{
+  color: #0c5460;
+  text-decoration: none;
+}
+.table_body4{
+  padding: 0.75rem 1.25rem;
+  margin-bottom: -1px;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  font-size:90%;
+  background-color: #f8d7da;
+}
+.tr_href4{
+  color: #721c24;
+  text-decoration: none;
+}
+
+ .div_left{
+  text-align: left;
+ }
+ .div_center{
+  text-align: center;
+ }
+ /*  card 3 */
+
+ /* .Search.example input[type=text] {
+  padding: 10px;
+  font-size: 17px;
+  border: 1px solid grey;
+  float: left;
+  width: 80%;
+  background: #f1f1f1;
+} */
+/* 
+.form.example button {
+  float: left;
+  width: 20%;
+  padding: 10px;
+  background: #2196F3;
+  color: white;
+  font-size: 17px;
+  border: 1px solid grey;
+  border-left: none;
+  cursor: pointer;
+}
+
+.form.example button:hover {
+  background: #0b7dda;
+} */
+
+.compaines_card{
+  color:white;
+}
+/* assing page  */
+.Button_assing{
+  float: right;
+  padding: 10px;
+}
+.profile_Page{
+  width: 100%;
+  background-color:#eee;
+  text-align: justify;
+  padding: 15px 15px 15px 15px ;
+}
+
+
+.Label_profile{
+  text-align: justify;
+  
+}
+
+
+.table_After{
+  border: solid black 1px;
+  width: 100px;
+  height: 30px;
+}
+.note_update{
+  background-color: #999;
+  color: white;
+  border: 1px solid#999;
+  height: 20%;
+  display: flexbox;
+  width: 100%;
+}
+
+.found_size_for_text{
+  font-weight: 500;
+  font-size: medium;
+}

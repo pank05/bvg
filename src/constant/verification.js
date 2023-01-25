@@ -1,0 +1,44 @@
+const verificationVariable= ()=> 
+{   
+    return(
+        {
+ "verification":{
+    "status":""
+    },
+    "verification1":{
+        "status":""
+    },
+    "address":{
+        "status":""
+    },  
+    "verifyed_by":{
+        "status":""
+    },
+    "relation":{
+        "status":""
+    },
+    "id_proof":{
+        "status":""
+    },
+    "location":{
+        "status":""
+    },
+    "residence":{
+        "status":""
+    },
+    "type_residence":{
+        "status":""
+    },
+    "area":{
+        "status":""
+    },
+    "reason":{
+        "status":""
+    },
+    "photo":{
+        "status":""
+    }
+}
+    )
+}
+export default verificationVariable ;
