@@ -88,7 +88,8 @@ const AssignModal = (props) => {
                           type="text"
                           placeholder="TAT Start Date"
                           // {props.assignData.map((v) => v.checkId).join(",")}
-                          value={props?.assignData?.duration_start}
+                          
+                          // value={props.defaultData.durationStart}
                          />
                       </Form.Group>
                     </Col>

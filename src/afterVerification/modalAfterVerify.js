@@ -24,10 +24,10 @@ import AddressNotFound from "./addressNotFoundAfterVerify";
 import { useSelector, useDispatch } from "react-redux";
 import { useRef } from "react";
 import { getStatusList } from "../actions/status";
-import ModalAfterUnview from "./modalAfterVerifyUnview";
+import {verificationModalVarData} from "../constant/verificationVar";
 
 const ModalAfterVerify = (props) => {
-  const [verifyData, setVerifyData] = useState(editRadioClickModal);
+  const [verifyData, setVerifyData] = useState(verificationModalVarData);
   const userDetails = useSelector((state) => state?.user?.userProfile);
   const statusOption = useSelector((state) => state?.status?.list);
 
@@ -55,12 +55,14 @@ const ModalAfterVerify = (props) => {
   ]);
   const [verificationRemark, setVerificationRemark] = useState([
     {
+      key:"1",
       value: "1",
       label: "Active",
       name: "remark",
       type: "radio",
     },
     {
+      key:"2",
       value: "0",
       label: "Completed",
       name: "remark",
@@ -148,9 +150,7 @@ const ModalAfterVerify = (props) => {
     setVerifyData({ ...verifyData, ...props.defaultData });
   }, [props.defaultData]);
 
-  const [updateAddressVerification, setUpdateAddressVerification] = useState(
-    updateRadioClickModal
-  );
+  const [updateAddressVerification, setUpdateAddressVerification] = useState(updateRadioClickModal);
 
   const handleDownlpoadPdf = () => {
     console.log("download");
@@ -178,10 +178,9 @@ const ModalAfterVerify = (props) => {
             <>
               <Modal.Header className="update">
                 <h5>
-                  {" "}
                   Call and cross verify for <br />
-                  {props.defaultData.candidateName} &nbsp;{" "}
-                  {props.defaultData.checkId}{" "}
+                  {props.defaultData.candidateName} &nbsp;
+                  {props.defaultData.checkId}
                 </h5>
               </Modal.Header>
               <Modal.Body>
@@ -195,16 +194,13 @@ const ModalAfterVerify = (props) => {
                         <Container>
                           <Row>
                             <Col>
-                              {" "}
                               <b className="found_size_for_text">
-                                {" "}
-                                Provided Candidate Contact :{" "}
-                              </b>{" "}
+                                Provided Candidate Contact :
+                              </b>
                               {props.defaultData.contactNo}
                               <br />
                             </Col>
                             <Col>
-                              {" "}
                               <b className="found_size_for_text">
                                 Responder Name :
                               </b>
@@ -213,29 +209,24 @@ const ModalAfterVerify = (props) => {
                           </Row>
                           <Row>
                             <Col>
-                              {" "}
                               <b className="found_size_for_text"> Relation :</b>
                               ------
                             </Col>
                             <Col>
-                              {" "}
                               <b className="found_size_for_text">
-                                {" "}
                                 Contact :
-                              </b>{" "}
+                              </b>
                               {props.defaultData.contactNo}
                             </Col>
                           </Row>
                           <Row>
                             <Col>
-                              {" "}
                               <b className="found_size_for_text">
-                                Tat Start Date :{" "}
-                              </b>{" "}
-                              {props.defaultData.durationStart}{" "}
+                                Tat Start Date :
+                              </b>
+                              {props.defaultData.durationStart}
                             </Col>
                             <Col>
-                              {" "}
                               <b className="found_size_for_text">
                                 Tat End Date :
                               </b>
@@ -244,17 +235,13 @@ const ModalAfterVerify = (props) => {
                           </Row>
                           <Row>
                             <Col>
-                              {" "}
                               <b className="found_size_for_text">
-                                {" "}
                                 Assign Employee :
                               </b>
                               {props.defaultData.EMP}
                             </Col>
                             <Col>
-                              {" "}
                               <b className="found_size_for_text">
-                                {" "}
                                 Assign Employee ID :
                               </b>
                               {props.defaultData.EMP}
@@ -262,17 +249,13 @@ const ModalAfterVerify = (props) => {
                           </Row>
                           <Row>
                             <Col>
-                              {" "}
                               <b className="found_size_for_text">
-                                {" "}
-                                Assign Field Executive :{" "}
+                                Assign Field Executive :
                               </b>
                               {props.defaultData.FE}
                             </Col>
                             <Col>
-                              {" "}
                               <b className="found_size_for_text">
-                                {" "}
                                 Assign Field Executive ID:
                               </b>
                               {props.defaultData.FE}
@@ -280,19 +263,16 @@ const ModalAfterVerify = (props) => {
                           </Row>
                           <Row>
                             <Col>
-                              {" "}
                               <b className="found_size_for_text">
                                 Tat Status :
-                              </b>{" "}
+                              </b>
                               ---------
                             </Col>
                             <Col>
-                              {" "}
                               <b className="found_size_for_text">
-                                {" "}
                                 Remark :
-                              </b>{" "}
-                              --------{" "}
+                              </b>
+                              --------
                             </Col>
                           </Row>
                         </Container>
@@ -300,17 +280,17 @@ const ModalAfterVerify = (props) => {
                     </Accordion.Item>
                     <Accordion.Item eventKey="1">
                       <Accordion.Header>
-                        {" "}
+                        
                         Verification Status History
                       </Accordion.Header>
                       <Accordion.Body>
                         <Container>
                           <Row>
                             <Col>
-                              {" "}
+                               
                               <b className="found_size_for_text">
                                 ApplicationCreated :
-                              </b>{" "}
+                              </b> 
                               {userDetails.username} (
                               {userDetails?.roles?.map((v) => v.label)}) <br />
                             </Col>
@@ -318,10 +298,10 @@ const ModalAfterVerify = (props) => {
                           </Row>
                           <Row>
                             <Col>
-                              {" "}
+                               
                               <b className="found_size_for_text">
                                 ASSIGNED :
-                              </b>{" "}
+                              </b> 
                               {userDetails.username} (
                               {userDetails?.roles?.map((v) => v.label)}) <br />
                             </Col>
@@ -329,41 +309,41 @@ const ModalAfterVerify = (props) => {
                           </Row>
                           <Row>
                             <Col>
-                              {" "}
+                               
                               <b className="found_size_for_text">
-                                ACCEPTED:{" "}
-                              </b>{" "}
+                                ACCEPTED: 
+                              </b> 
                               {props.defaultData.EMP} <br />
                             </Col>
                             <Col>--Date-- </Col>
                           </Row>
                           <Row>
                             <Col>
-                              {" "}
+                               
                               <b className="found_size_for_text">
-                                {" "}
+                                 
                                 SENT_TO_FE:
-                              </b>{" "}
+                              </b> 
                               {props.defaultData.EMP} <br />
                             </Col>
                             <Col>--Date-- </Col>
                           </Row>
                           <Row>
                             <Col>
-                              {" "}
+                               
                               <b className="found_size_for_text">
                                 VERIF_DONE_BY_FE:
-                              </b>{" "}
+                              </b> 
                               {props.defaultData.FE} <br />
                             </Col>
                             <Col>--Date-- </Col>
                           </Row>
                           <Row>
                             <Col>
-                              {" "}
+                               
                               <b className="found_size_for_text">
                                 EMP_COMPL_UNRE:
-                              </b>{" "}
+                              </b> 
                               {props.defaultData.EMP} <br />
                             </Col>
                             <Col>--Date-- </Col>
@@ -372,7 +352,7 @@ const ModalAfterVerify = (props) => {
                             <Col> </Col>
                             <Col>
                               Completed IN TAT by Employee pending for admin
-                              Review{" "}
+                              Review 
                             </Col>
                           </Row>
                         </Container>
@@ -415,7 +395,7 @@ const ModalAfterVerify = (props) => {
                                 />
                               </div>
                             </Col>
-                          </Row>{" "}
+                          </Row>
                           <br />
                           <Row>
                             <Col>Audit call status: </Col>
@@ -697,18 +677,17 @@ const ModalAfterVerify = (props) => {
                             );
                           })}
                         <p style={{ float: "right", color: "#20c997" }}>
-                          {" "}
                           {
                             [...addressList].find(
                               (d) => updateAddressVerification.address == d.id
                             )?.label
-                          }{" "}
+                          } 
                         </p>
                         {addressChange
                           ? " Address found" && <AddressFound />
                           : "Address Not found" && <AddressNotFound />}
                       </div>
-                    </div>{" "}
+                    </div> 
                     <br /> <br />
                     <Accordion.Item eventKey="1">
                       <Accordion.Header>
@@ -718,7 +697,7 @@ const ModalAfterVerify = (props) => {
                         <div>
                           <Row>
                             <Col>
-                              <label> Verification status Remark:</label>{" "}
+                              <label> Verification status Remark:</label> 
                             </Col>
                             <Col>
                               <div key={`inline-radio`}>
@@ -742,14 +721,14 @@ const ModalAfterVerify = (props) => {
                                   />
                                 ))}
                                 <p style={{ float: "right", color: "#20c997" }}>
-                                  {" "}
+                                   
                                   {
                                     [...additionalRemarkByFE].find(
                                       (d) =>
                                         updateAddressVerification.additionalRemark ==
                                         d.value
                                     )?.label
-                                  }{" "}
+                                  } 
                                 </p>
                               </div>
                             </Col>
@@ -811,14 +790,14 @@ const ModalAfterVerify = (props) => {
                               />
                             ))}
                             <p style={{ float: "right", color: "#20c997" }}>
-                              {" "}
+                               
                               {
                                 [...verificationRemark].find(
                                   (d) =>
                                     updateAddressVerification.verificationRemarkByFE ==
                                     d.value
                                 )?.label
-                              }{" "}
+                              } 
                             </p>
                           </div>
                           <FloatingLabel
@@ -883,7 +862,7 @@ const ModalAfterVerify = (props) => {
                               }}
                             />
                           )}
-                        </Card>{" "}
+                        </Card>
                         <label> Responder Signature</label>
                       </Col>
                     </Row>
@@ -904,9 +883,6 @@ const ModalAfterVerify = (props) => {
             </>
           ) : null}
         </Modal>
-        <div>
-          <ModalAfterUnview auditData={verifyData} />
-        </div>
         {props.children}
       </div>
     </Container>

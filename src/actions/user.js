@@ -15,6 +15,18 @@ export const authUserData = createAsyncThunk(
        return response.data;
   });
 
+
+  export const getDetails = createAsyncThunk(
+    'getDetails',
+    async () => {
+      const response  =  await axios.get(`/user/details`,{
+            headers: {
+              Authorization : `Bearer ${localStorage.getItem('_token') }`
+            }
+           });
+           return response.data;
+    } )
+
 const userAuthSlice = createSlice({
   name: 'user',
   initialState: {
@@ -22,7 +34,9 @@ const userAuthSlice = createSlice({
     userProfile:{}
   },
   reducers: {
-
+    logout(state){
+      state.isAuth = false;
+    }
   },
   extraReducers:(builder) =>{
     builder.addCase(authUserData.fulfilled, (state, action) =>{
@@ -32,9 +46,16 @@ const userAuthSlice = createSlice({
     builder.addCase(authUserData.rejected, (state, action) =>{  
         state.isAuth = false;
     });
+    builder.addCase(getDetails.fulfilled, (state, action) =>{
+      state.isAuth = true;
+      state.userProfile =action.payload;
+   });
+   builder.addCase(getDetails.rejected, (state, action) =>{
+    state.isAuth = false;
+ })
 
   },
 })
 
-export const { } = userAuthSlice.actions
+export const { logout} = userAuthSlice.actions
 export default userAuthSlice.reducer

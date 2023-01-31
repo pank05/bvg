@@ -13,17 +13,19 @@ import { updateRadioUnviewModal } from "../constant/afterVerification";
 import { useSelector, useDispatch } from "react-redux";
 import { useRef } from "react";
 import { getStatusList } from "../actions/status";
+import {verificationModalVarData} from "../constant/verificationVar";
 
 const ModalAfterUnview = (props) => {
   const [unview, setUnview] = useState();
+  const [auditDetails,setAuditDetails]=useState(verificationModalVarData)
   const userDetails = useSelector((state) => state?.user?.userProfile);
   const statusOption = useSelector((state) => state?.status?.list);
-
+  const [auditCallData, setAuditCallData]=useState({});
   const dispatch = useDispatch();
 
   useEffect(() => {
     setUnview({ ...unview, ...props.defaultData });
-  }, [props.defaultData]);
+  }, [props.defaultData]); 
 
   const [checkedDate, setCheckedDate] = useState(false);
   const [tillDate, setTillDate] = useState();
@@ -112,7 +114,6 @@ const ModalAfterUnview = (props) => {
     setStatusVerificationList((statusOption || []).filter((v) =>v.type == "status_of_verification" &&v.reference == "employee_address_verification"));
     setResidenceStatusList((statusOption || []).filter((v) =>v.type == "residence_status" &&v.reference == "employee_address_verification"));
     setResidenceTypeList((statusOption || []).filter((v) =>v.type == "residence_type" &&v.reference == "employee_address_verification"));
-
   }, [statusOption]);
 
   useEffect(() => {}, [employeeRadio]);
@@ -149,10 +150,9 @@ const ModalAfterUnview = (props) => {
           <div>
             <Modal.Header className="update">
               <h5>
-                {" "}
                 Call and cross verify for <br />
-                {props.defaultData.candidateName} &nbsp;{" "}
-                {props.defaultData.checkId}{" "}
+                {props.defaultData.candidateName} &nbsp;
+                {props.defaultData.checkId}
               </h5>
             </Modal.Header>
             <Modal.Body>
@@ -166,16 +166,13 @@ const ModalAfterUnview = (props) => {
                       <Container>
                         <Row>
                           <Col>
-                            {" "}
                             <b className="found_size_for_text">
-                              {" "}
                               Provided Candidate Contact :
                             </b>
                             {props.defaultData.contactNo}
                             <br />
                           </Col>
                           <Col>
-                            {" "}
                             <b className="found_size_for_text">
                               Responder Name :
                             </b>
@@ -209,14 +206,12 @@ const ModalAfterUnview = (props) => {
                         <Row>
                           <Col>
                             <b className="found_size_for_text">
-                              {" "}
                               Assign Employee :
                             </b>
                             {props.defaultData.EMP}
                           </Col>
                           <Col>
                             <b className="found_size_for_text">
-                              {" "}
                               Assign Employee ID :
                             </b>
                             {props.defaultData.EMP}
@@ -224,15 +219,13 @@ const ModalAfterUnview = (props) => {
                         </Row>
                         <Row>
                           <Col>
-                            {" "}
                             <b className="found_size_for_text">
                               Assign Field Executive :
-                            </b>{" "}
+                            </b>
                             {props.defaultData.FE}
                           </Col>
                           <Col>
                             <b className="found_size_for_text">
-                              {" "}
                               Assign Field Executive ID:
                             </b>
                             {props.defaultData.FE}
@@ -240,12 +233,12 @@ const ModalAfterUnview = (props) => {
                         </Row>
                         <Row>
                           <Col>
-                            <b className="found_size_for_text"> Tat Status :</b>{" "}
+                            <b className="found_size_for_text"> Tat Status :</b>
                             ---------
                           </Col>
                           <Col>
                             <b className="found_size_for_text"> Remark :</b>{" "}
-                            --------{" "}
+                            --------
                           </Col>
                         </Row>
                       </Container>
@@ -253,17 +246,15 @@ const ModalAfterUnview = (props) => {
                   </Accordion.Item>
                   <Accordion.Item eventKey="1">
                     <Accordion.Header>
-                      {" "}
                       Verification Status History
                     </Accordion.Header>
                     <Accordion.Body>
                       <Container>
                         <Row>
                           <Col>
-                            {" "}
                             <b className="found_size_for_text">
                               ApplicationCreated :
-                            </b>{" "}
+                            </b>
                             {userDetails.username} (
                             {userDetails?.roles?.map((v) => v.label)}) <br />
                           </Col>
@@ -271,10 +262,9 @@ const ModalAfterUnview = (props) => {
                         </Row>
                         <Row>
                           <Col>
-                            {" "}
                             <b className="found_size_for_text">
                               ASSIGNED :
-                            </b>{" "}
+                            </b>
                             {userDetails.username} (
                             {userDetails?.roles?.map((v) => v.label)}) <br />
                           </Col>
@@ -282,41 +272,36 @@ const ModalAfterUnview = (props) => {
                         </Row>
                         <Row>
                           <Col>
-                            {" "}
                             <b className="found_size_for_text">
-                              ACCEPTED:{" "}
-                            </b>{" "}
+                              ACCEPTED:
+                            </b>
                             {props.defaultData.EMP} <br />
                           </Col>
                           <Col>--Date-- </Col>
                         </Row>
                         <Row>
                           <Col>
-                            {" "}
                             <b className="found_size_for_text">
-                              {" "}
                               SENT_TO_FE:
-                            </b>{" "}
+                            </b>
                             {props.defaultData.EMP} <br />
                           </Col>
                           <Col>--Date-- </Col>
                         </Row>
                         <Row>
                           <Col>
-                            {" "}
                             <b className="found_size_for_text">
                               VERIF_DONE_BY_FE:
-                            </b>{" "}
+                            </b>
                             {props.defaultData.FE} <br />
                           </Col>
                           <Col>--Date-- </Col>
                         </Row>
                         <Row>
                           <Col>
-                            {" "}
                             <b className="found_size_for_text">
                               EMP_COMPL_UNRE:
-                            </b>{" "}
+                            </b>
                             {props.defaultData.EMP} <br />
                           </Col>
                           <Col>--Date-- </Col>
@@ -330,10 +315,9 @@ const ModalAfterUnview = (props) => {
                         </Row>
                         <Row>
                           <Col>
-                            {" "}
                             <b className="found_size_for_text">
                               VERIFIED_BY_ADMIN:
-                            </b>{" "}
+                            </b>
                             ------ <br />
                           </Col>
                           <Col>--Date-- </Col>
@@ -354,17 +338,17 @@ const ModalAfterUnview = (props) => {
                       <Form>
                         <Row>
                           <Col>
-                            Audit Call Done :
-                            {/* {props.auditData.audit_call_done}  */}
+                            Audit Call Done : 
+                            <Form.Control type="text"  value={props.defaultData.audit_call_done}/>
+                            {/* {props.defaultData.audit_call_done}  */}
                           </Col>
-                          <Col>Audit call status : Positive</Col>
-                          <Col>Tat Status : Verified </Col>
+                          <Col>Audit call status : {props.defaultData.audit_call_status}</Col>
+                          <Col>Tat Status : {props.defaultData.audit_case_status_id} </Col>
                         </Row>
                         <Row>
-                          {" "}
-                          <Col> done </Col>
-                          <Col> done </Col>
-                          <Col> done </Col>
+                          <Col> {props.defaultData.status} </Col>
+                          <Col> {props.defaultData.audit_call_status_remark }</Col>
+                          <Col> {props.defaultData.audit_case_status_remark} </Col>
                         </Row>
                         <br />
                       </Form>
@@ -392,7 +376,6 @@ const ModalAfterUnview = (props) => {
                   <Accordion.Body>
                     <Form>
                       <Row>
-                        {" "}
                         <Col>
                           <Form.Group className="mb-3">
                             <Form.Control
@@ -413,7 +396,6 @@ const ModalAfterUnview = (props) => {
                         </Col>
                       </Row>
                       <Row>
-                        {" "}
                         <Col>
                           <Form.Group className="mb-3">
                             <Form.Control
@@ -434,7 +416,6 @@ const ModalAfterUnview = (props) => {
                         </Col>
                       </Row>
                       <Row>
-                        {" "}
                         <Col>
                           <Form.Group className="mb-3">
                             <Form.Control
@@ -815,6 +796,7 @@ const ModalAfterUnview = (props) => {
                             type="text"
                             placeholder="Nearrest Landmark"
                             onChange={(e)=>{
+                              console.log({...updateCaseByAdmin,...{nearLandmark:e.target.value}})
                               setUpdateCaseByAdmin({...updateCaseByAdmin,...{nearLandmark:e.target.value}})
                             }} 
                           />
@@ -873,13 +855,13 @@ const ModalAfterUnview = (props) => {
                             (d) =>
                               updateCaseByAdmin.verificationRemark == d.value
                           )?.label
-                        }{" "}
+                        }
                       </p>
                     </div>
                     <br />
                   </Form>
                 </div>
-                <div style={{ border: "1px solid gray" }}>
+                {/* <div style={{ border: "1px solid gray" }}>
                   <br />
                   <Row style={{ padding: "10px 10px 10px 10px" }}>
                     <Col sm="8">
@@ -894,11 +876,11 @@ const ModalAfterUnview = (props) => {
                         }}
                       />
                     </Col>
-                    <Col></Col>{" "}
+                    <Col></Col>
                   </Row>
                   <br />
-                </div>
-                <br />{" "}
+                </div> */}
+                <br />
                 <div>
                   <Row>
                     <Col>

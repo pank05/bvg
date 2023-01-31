@@ -27,6 +27,7 @@
 
 .opal-nav{
   width:100%;
+  /* display: list-item; */
   display: block;
   align-items: center;
   justify-content: center;

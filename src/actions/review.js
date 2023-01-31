@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-export const updateAuditCaseDetails = createAsyncThunk(
+  export const updateAuditCaseDetails = createAsyncThunk(
   'updateAuditCaseDetails',
    async (data) => {
     const response  =  await axios.put(`/auditcall/${data.id}`,data,
@@ -26,6 +26,18 @@ export const updateAuditCaseDetails = createAsyncThunk(
            return response.data;
     } )
 
+    export const getByIdAuditCase = createAsyncThunk(
+      'getByIdAuditCase',
+      async (id) => {
+      const response  =  await axios.post(`/auditcall/${id}`,
+      {
+        headers:{
+        Authorization : `Bearer ${localStorage.getItem('_token') }`
+      }
+    });
+         return response.data;
+    })
+
 const reviewSlice = createSlice({
   name: 'review',
   initialState: {
@@ -49,7 +61,11 @@ const reviewSlice = createSlice({
 
       builder.addCase(updateAuditCaseDetails.fulfilled,(state,action)=>{
       });
+      
       builder.addCase(getAllAuditCase.fulfilled, (state,action) =>{
+        state.list=action.payload ;
+      });
+      builder.addCase(getByIdAuditCase.fulfilled, (state, action) =>{
         state.list=action.payload ;
       });
 

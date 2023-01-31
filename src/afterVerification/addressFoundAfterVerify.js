@@ -1,11 +1,11 @@
 import { Container, Row, Col, Form } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { addressFoundVari } from "../constant/afterVerification";
+import { updateRadioClickModal } from "../constant/afterVerification";
 import { getStatusList } from "../actions/status";
 
 const AddressFound = (props) => {
-  const [address, setAddress] = useState(addressFoundVari);
+  const [address, setAddress] = useState(updateRadioClickModal);
   const statusOption = useSelector((state) => state?.status?.list);
   const dispatch = useDispatch();
   const [verifiedByList, setVerifiedByList] = useState([]);
@@ -93,7 +93,7 @@ const AddressFound = (props) => {
           <br />
           Address found
           <br />
-          <br />{" "}
+          <br />
         </h6>
       </div>
       <br />
@@ -129,11 +129,10 @@ const AddressFound = (props) => {
                   );
                 })}
               <p style={{ float: "right", color: "#20c997" }}>
-                {" "}
                 {
                   [...verifiedByList].find((d) => address.verifyBy == d.id)
                     ?.label
-                }{" "}
+                }
               </p>
             </div>
           </Col>
