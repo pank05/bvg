@@ -53,13 +53,16 @@ const Opal =(props)=> {
             <Nav.Link  as={Link} to="/dashboard"  className='opal-nav' onClick={handleClose}> <span><AiFillDashboard/></span> &nbsp; Dashboard</Nav.Link>
             <Nav.Link as={Link} to="/AssignToFE"   className='opal-nav' onClick={handleClose}><span> <FaUpload/> </span> &nbsp;  AssignTAT</Nav.Link>
             <Nav.Link as={Link} to="/VerificationList-Page" className='opal-nav' onClick={handleClose}> <span> <MdOutlineGridOn/> </span> &nbsp; Verification </Nav.Link>
+            <Nav.Link as={Link} to="/AfterVerification" className='opal-nav' onClick={handleClose}> <span> <FaCheckCircle/> </span> &nbsp; AfterVerification</Nav.Link> 
             <Nav.Link as={Link} to="/VerificationStatus"  className='opal-nav' onClick={handleClose}> <span> <FaChartBar/> </span> &nbsp; Verification Status</Nav.Link>
         </>
     }
     if(checkUserHasRole(userProfile,['FieldExecutive'])){
       return <>
           <Nav.Link  as={Link} to="/dashboard"  className='opal-nav' onClick={handleClose}> <span><AiFillDashboard/></span> &nbsp; Dashboard</Nav.Link>
+          <Nav.Link as={Link} to="/AssignFE"   className='opal-nav' onClick={handleClose}><span> <FaUpload/> </span> &nbsp;  AssignTAT</Nav.Link>
           <Nav.Link as={Link} to="/VerificationList-Page" className='opal-nav' onClick={handleClose}> <span> <MdOutlineGridOn/> </span> &nbsp; Verification </Nav.Link>
+          <Nav.Link as={Link} to="/AfterVerification" className='opal-nav' onClick={handleClose}> <span> <FaCheckCircle/> </span> &nbsp; AfterVerification</Nav.Link> 
           <Nav.Link as={Link} to="/VerificationStatus"  className='opal-nav' onClick={handleClose}> <span> <FaChartBar/> </span> &nbsp; Verification Status</Nav.Link>
       </>
   }
@@ -88,7 +91,7 @@ const Opal =(props)=> {
               </NavDropdown.Item>
           </NavDropdown>
             </Nav.Link>
-            <Offcanvas  className="navbar navbar-dark bg-dark"   style={{width:"20%"}} show={show}  onHide={handleClose} >
+            <Offcanvas  className="navbar navbar-dark bg-dark"   style={{width:"20%",  display: "list-item"}} show={show}  onHide={handleClose} >
     {getMenus()}
               </Offcanvas>
             </Container>

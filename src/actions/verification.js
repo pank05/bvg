@@ -168,7 +168,7 @@ export const verificationSlice = createSlice({
             durationEnd:item.duration_end,
             durationStart:item.duration_start,
             email:item.email,
-            assignedTo:item.assigned_to,
+            assignedTo:item?.caseHistory?.assigned_to,
             assignedBy:item.assigned_by,
             clientName:item.client_name ,
             status:item.label,
@@ -178,7 +178,6 @@ export const verificationSlice = createSlice({
         audit_call_status_remark:item.audit_call_status_remark,
         audit_case_status_id:item.audit_case_status_id,
         audit_case_status_remark:item.audit_case_status_remark,
-        // remark:"",
           };
           return tmpData;
         })    

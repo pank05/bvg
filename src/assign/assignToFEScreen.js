@@ -27,15 +27,35 @@ const AssignToFEScreen =()=>{
     },[assigns])
 
     const handleAssign=(data)=>{
-        // console.log(data.duration_start)
+        setAssignTAT(data)
         setShow(true)
+     }
+
+     const handleAssignSave=(data)=>{
+        let updateRecords =[...assignTAT].map((record)=>{
+                     let temp = {...record};
+                     temp.status= "under_FE"
+                     temp.caseHistory = {
+                         assigned_by:userProfile.id,
+                         assigned_to:parseInt(data.assignedTo),
+                         remark:"assign to  employee to FE"
+                     };
+                 return temp;
+         });
+         updateRecords.forEach((record)=>{
+             dispatch(updateCaseById(record)).then(()=>{
+                 dispatch(getAllCaseAPI({id:'all',status:['under_employee']}));
+                 });
+         });
+         setShow(false);
      }
 
     const onClickCheck = (item) =>{
         setItem(item);
         setAssignTAT(item);
      }
-    return <Container>
+    return (
+    <Container>
     <div> 
       <h2> Assign Verification List</h2>
         <div>
@@ -55,8 +75,9 @@ const AssignToFEScreen =()=>{
               />
          </div>
 <div>
- <EmployeeToFEAssign show={show} close={handleClose} assignData={item}    /> 
+ <EmployeeToFEAssign show={show} close={handleClose} assignData={item}  onSave={handleAssignSave}   /> 
 </div>
 </Container>
+    )
 }
 export default AssignToFEScreen;

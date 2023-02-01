@@ -26,6 +26,7 @@ import { checkUserHasRole } from './utility/validation';
 import DashboardEmployeeScreen from './dashboardEmployee';
 import DashboardFEScreen from './dashboardFEScreen';
 import AssignToFEScreen from './assign/assignToFEScreen';
+import AssignFEToOtherScreen from './assign/assignFEToOthers';
 
 function App() {
   const dispatch=useDispatch();
@@ -56,6 +57,7 @@ function App() {
       return <>
         <Route path="Dashboard" element={withHeader(<DashboardEmployeeScreen />)}/>
         <Route path="VerificationList-Page" element={withHeader(<VerificationList_Page />)}/>
+        <Route path="AfterVerification" element={withHeader(<AfterVerification />)}/>
        <Route path="VerificationStatus" element={withHeader(<VerificationStatus />)}/>
        <Route path="AssignToFE" element={withHeader(<AssignToFEScreen />)}/>
       </>
@@ -63,6 +65,8 @@ function App() {
     if(checkUserHasRole(userProfile,['FieldExecutive'])){
       return<>
         <Route path="Dashboard" element={withHeader(<DashboardFEScreen/>)}/>
+        <Route path="AfterVerification" element={withHeader(<AfterVerification />)}/>
+        <Route path="AssignFE" element={withHeader(<AssignFEToOtherScreen/>)}/>
         <Route path="VerificationList-Page" element={withHeader(<VerificationList_Page />)}/>
         <Route path="VerificationStatus" element={withHeader(<VerificationStatus />)}/>
       </>
