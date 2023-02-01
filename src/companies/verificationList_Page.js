@@ -33,10 +33,10 @@ const VerificationList_Page=(para)=>{
                     dispatch(getAllCaseAPI({id:'all'}));
                 }
                 if(checkUserHasRole(userProfile,['employee'])){
-                    dispatch(getAllCaseAPI({id:'all',status: ['under_employee','rejected_by_employee','verify_by_employee' ]}));
+                    dispatch(getAllCaseAPI({id:'all',status: ['under_employee','rejected_by_FE','verify_by_FE' ]}));
                 }
                 if(checkUserHasRole(userProfile,['FieldExecutive'])){
-                    dispatch(getAllCaseAPI({id:'all',status: ['under_FE','rejected_by_FE','verify_by_FE' ]}));
+                    dispatch(getAllCaseAPI({id:'all',status: ['under_FE']}));
                 }
                
                 dispatch(clearCurrentCompany());

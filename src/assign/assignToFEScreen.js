@@ -6,6 +6,7 @@
  import { useDispatch, useSelector} from "react-redux";
  import {getAllCaseAPI,updateCaseById} from "../actions/verification";
 import EmployeeToFEAssign from "./modalEmployeeToFEAssign";
+import AssignModal from "./modalAssign";
 
 const AssignToFEScreen =()=>{
 
@@ -16,14 +17,15 @@ const AssignToFEScreen =()=>{
     const [item,setItem] = useState([]);
     const [show, setShow]=useState(false);
     const handleClose=()=> setShow(false);
+    const [modalType,setModalType]=useState('NotAssign')
     const dispatch = useDispatch();
 
     useEffect(()=>{
-        dispatch(getAllCaseAPI({id:'all',status: ['under_employee']}));
+        dispatch(getAllCaseAPI({id:'all',status: ['under_employee','rejected_by_FE','verify_by_FE']}));
     },[])
 
     useEffect(()=>{
-       setTatData(assigns.filter(t=>t.status == "under_employee" ))
+       setTatData(assigns)
     },[assigns])
 
     const handleAssign=(data)=>{
@@ -50,6 +52,30 @@ const AssignToFEScreen =()=>{
          setShow(false);
      }
 
+     const handleWithdraw=()=>{
+        setModalType('NotAssign')
+        setShow(true)
+     }
+
+     const handleRejectedByEmployee=(data)=>{
+        let withdrawRecord =[...assignTAT].map((record)=>{
+            let temp = {...record};
+            temp.status= "rejected_by_employee "
+            temp.caseHistory = {
+                assigned_by:userProfile.id,
+                remark:data.remark
+            };
+          return temp;
+        });
+        withdrawRecord.forEach((record)=>{
+            console.log(record)
+            dispatch(updateCaseById(record)).then(()=>{
+                dispatch(getAllCaseAPI({id:'all',status: ['under_employee']}));
+                });
+        });
+        setShow(false);
+    }
+
     const onClickCheck = (item) =>{
         setItem(item);
         setAssignTAT(item);
@@ -63,6 +89,9 @@ const AssignToFEScreen =()=>{
                   disabled={!(assignTAT.length >0)}  onClick={()=>{handleAssign(item)}}  >
                     <IoMdPersonAdd/>Assign 
                  </Button> 
+                 <Button variant="danger" className='Button_assing' disabled={!(assignTAT.length >0)} onClick={()=>{handleWithdraw(item)}}>
+                 Reject
+                 </Button>
                <br/> 
          </div><br/> 
    </div><br/> 
@@ -75,7 +104,8 @@ const AssignToFEScreen =()=>{
               />
          </div>
 <div>
- <EmployeeToFEAssign show={show} close={handleClose} assignData={item}  onSave={handleAssignSave}   /> 
+ <EmployeeToFEAssign show={show} close={handleClose} assignData={item}   onSave={handleAssignSave}   /> 
+ <AssignModal show={show} close={handleClose} assignData={item} type={modalType}   onDelete={handleRejectedByEmployee} /> 
 </div>
 </Container>
     )

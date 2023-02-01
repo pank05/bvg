@@ -38,8 +38,8 @@ const AssignModal = (props) => {
   const validationAssignForm = () => {
     const { durationEnd, assignedTo, isCheckOutBtn } = data;
     const newErrors = {};
-     if(!durationEnd || durationEnd === '')
-     newErrors.durationEnd="Please Enter TAT End Date";
+    //  if(!durationEnd || durationEnd === '')
+    //  newErrors.durationEnd="Please Enter TAT End Date";
      if(!assignedTo || assignedTo === '' )
      newErrors.assignedTo='Please Enter Employee Name';
     //  if(!isCheckOutBtn )
