@@ -10,10 +10,7 @@ import {
   FloatingLabel,
   Card,
 } from "react-bootstrap";
-import {
-  editRadioClickModal,
-  updateRadioClickModal,
-} from "../constant/afterVerification";
+import { updateRadioClickModal,} from "../constant/afterVerification";
 import { FaMoneyBillAlt } from "react-icons/fa";
 import { FiEdit } from "react-icons/fi";
 import { PDFViewer } from "@react-pdf/renderer";

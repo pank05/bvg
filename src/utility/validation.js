@@ -10,7 +10,7 @@ export const checkIfEmpty = (field)=>{
 
 
 export const checkUserHasRole = (userInfo={},role=[]) =>{
-    if(userInfo?.roles){
+    if(userInfo?.roles ){
        return userInfo.roles.some((v)=>role.includes(v.label))
     }
     return false;

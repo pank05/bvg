@@ -45,10 +45,7 @@ const reviewSlice = createSlice({
     count:0,
   },
   reducers: {
-    getReview: state => {
-      // state.list=(afterVerificationData || []);
-      // state.count =afterVerificationData.length || 0;
-    },
+
     saveReview:(state,data)=>{
       const record=data.payload;
       const saveRecord=state.list.find((val)=> val.id ===record);
@@ -72,6 +69,6 @@ const reviewSlice = createSlice({
   }
   
 })
-export const { getReview } = reviewSlice.actions
+export const {  } = reviewSlice.actions
 
 export default reviewSlice.reducer

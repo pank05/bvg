@@ -10,11 +10,14 @@ import { read, utils } from 'xlsx';
 import {useParams} from 'react-router-dom';
 import { getCompanyDataById,clearCurrentCompany,getAllCompaniesAPI} from "../actions/company";
 import {postAddCaseAPI,getAllCaseAPI,getCaseDataById ,updateCaseById,deleteCaseDataById} from "../actions/verification";
+import { checkUserHasRole } from "../utility/validation";
+
 const VerificationList_Page=(para)=>{
 
     const verification = useSelector(state=> state?.verification?.list || []);
     const [verificationList,setVerification] =useState([]);
     const [defaultData,setDeafultData] = useState({}) ;
+    const userProfile = useSelector((state) => state?.user?.userProfile);
 
            const dispatch = useDispatch();
            const { id  } = useParams();
@@ -26,7 +29,16 @@ const VerificationList_Page=(para)=>{
                 dispatch(getCompanyDataById(id))
             }
             else{
-                dispatch(getAllCaseAPI({id:'all'}));
+                if(checkUserHasRole(userProfile,['admin'])){
+                    dispatch(getAllCaseAPI({id:'all'}));
+                }
+                if(checkUserHasRole(userProfile,['employee'])){
+                    dispatch(getAllCaseAPI({id:'all',status: ['under_employee','rejected_by_employee','verify_by_employee' ]}));
+                }
+                if(checkUserHasRole(userProfile,['FieldExecutive'])){
+                    dispatch(getAllCaseAPI({id:'all',status: ['under_FE','rejected_by_FE','verify_by_FE' ]}));
+                }
+               
                 dispatch(clearCurrentCompany());
             }
            },[])
@@ -81,8 +93,8 @@ const VerificationList_Page=(para)=>{
                         dispatch(getAllCaseAPI({id:'all'}));
                         });
                      setShow(false)
-                     
                  }
+                 
                  const  handleDeleteData =(id)=>{
                     dispatch(deleteCaseDataById(id)).then(()=>{
                         dispatch(getAllCaseAPI({id:'all'}));

@@ -23,6 +23,9 @@ import { useDispatch, useSelector} from "react-redux";
 import { getDetails } from './actions/user';
 import { useState,useEffect } from 'react';
 import { checkUserHasRole } from './utility/validation';
+import DashboardEmployeeScreen from './dashboardEmployee';
+import DashboardFEScreen from './dashboardFEScreen';
+import AssignToFEScreen from './assign/assignToFEScreen';
 
 function App() {
   const dispatch=useDispatch();
@@ -49,34 +52,21 @@ function App() {
        <Route path="VerificationStatus" element={withHeader(<VerificationStatus />)}/>
        </>;
     }
-    if(checkUserHasRole(userProfile,['employee'])){
+    if(checkUserHasRole(userProfile,['employee']) ){
       return <>
-        <Route path="Dashboard" element={withHeader(<Dashboard />)}/>
-        <Route path="CompaniesListPage" element={withHeader(<CompaniesListPage />)}/>
-      <Route path="EmployeeListPage" element={withHeader(<EmployeeListPage />)}/>
-      <Route path="ViewStatistics" element={withHeader(<ViewStatistics />)}/>
-       <Route path="ViewCompanies" element={withHeader(<ViewCompanies />)}/>
-       <Route path="VerificationList-Page" element={withHeader(<VerificationList_Page />)}/>
-       <Route path="VerificationList-Page/:id" element={withHeader(<VerificationList_Page />)}/>
-       <Route path="FieldExecutivePage" element={withHeader(<FieldExecutivePage />)}/>
+        <Route path="Dashboard" element={withHeader(<DashboardEmployeeScreen />)}/>
+        <Route path="VerificationList-Page" element={withHeader(<VerificationList_Page />)}/>
        <Route path="VerificationStatus" element={withHeader(<VerificationStatus />)}/>
-       <Route path="AssignTAT" element={withHeader(<AssignTAT />)}/>
+       <Route path="AssignToFE" element={withHeader(<AssignToFEScreen />)}/>
       </>
     }
     if(checkUserHasRole(userProfile,['FieldExecutive'])){
       return<>
-        <Route path="Dashboard" element={withHeader(<Dashboard />)}/>
-        <Route path="CompaniesListPage" element={withHeader(<CompaniesListPage />)}/>
-      <Route path="EmployeeListPage" element={withHeader(<EmployeeListPage />)}/>
-      <Route path="ViewStatistics" element={withHeader(<ViewStatistics />)}/>
-       <Route path="ViewCompanies" element={withHeader(<ViewCompanies />)}/>
-       <Route path="VerificationList-Page" element={withHeader(<VerificationList_Page />)}/>
-       <Route path="VerificationList-Page/:id" element={withHeader(<VerificationList_Page />)}/>
-       <Route path="FieldExecutivePage" element={withHeader(<FieldExecutivePage />)}/>
+        <Route path="Dashboard" element={withHeader(<DashboardFEScreen/>)}/>
+        <Route path="VerificationList-Page" element={withHeader(<VerificationList_Page />)}/>
         <Route path="VerificationStatus" element={withHeader(<VerificationStatus />)}/>
       </>
     }
-
   }
 
   useEffect(()=>{
@@ -95,14 +85,15 @@ function App() {
   return (
     <div className="App">
       <BrowserRouter>
-      <Routes>
+       <Routes>
         <Route path="/" element={<LoginPage />}/>
         <Route path="*" element={<PageNOtFound />} /> 
-      {localStorage.getItem('_token')  && isAuth &&
-       getMenus()
-     }
-      </Routes>   
-    </BrowserRouter>
+        {
+           localStorage.getItem('_token')  && isAuth &&
+           getMenus()
+        }
+       </Routes>   
+      </BrowserRouter>
     </div>
   );
 }
