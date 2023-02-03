@@ -7,7 +7,7 @@
  import {getAllCaseAPI,updateCaseById} from "../actions/verification";
 import EmployeeToFEAssign from "./modalEmployeeToFEAssign";
 import AssignModal from "./modalAssign";
-
+import {RxCrossCircled} from "react-icons/rx";
 const AssignToFEScreen =()=>{
 
     const assigns = useSelector(state=> state?.verification?.list || []);
@@ -52,29 +52,29 @@ const AssignToFEScreen =()=>{
          setShow(false);
      }
 
-     const handleWithdraw=()=>{
-        setModalType('NotAssign')
-        setShow(true)
-     }
+    //  const handleWithdraw=()=>{
+    //     setModalType('NotAssign')
+    //     setShow(true)
+    //  }
 
-     const handleRejectedByEmployee=(data)=>{
-        let withdrawRecord =[...assignTAT].map((record)=>{
-            let temp = {...record};
-            temp.status= "rejected_by_employee "
-            temp.caseHistory = {
-                assigned_by:userProfile.id,
-                remark:data.remark
-            };
-          return temp;
-        });
-        withdrawRecord.forEach((record)=>{
-            console.log(record)
-            dispatch(updateCaseById(record)).then(()=>{
-                dispatch(getAllCaseAPI({id:'all',status: ['under_employee']}));
-                });
-        });
-        setShow(false);
-    }
+    //  const handleRejectedByEmployee=(data)=>{
+    //     let rejectRecord =[...assignTAT].map((record)=>{
+    //         let temp = {...record};
+    //         temp.status= "rejected_by_employee "
+    //         temp.caseHistory = {
+    //             assigned_by:userProfile.id,
+    //             remark:data.remark
+    //         };
+    //       return temp;
+    //     });
+    //     rejectRecord.forEach((record)=>{
+    //         console.log(record)
+    //             dispatch(updateCaseById(record)).then(()=>{
+    //             dispatch(getAllCaseAPI({id:'all',status: ['under_employee']}));
+    //             });
+    //     });
+    //     setShow(false);
+    // }
 
     const onClickCheck = (item) =>{
         setItem(item);
@@ -89,9 +89,9 @@ const AssignToFEScreen =()=>{
                   disabled={!(assignTAT.length >0)}  onClick={()=>{handleAssign(item)}}  >
                     <IoMdPersonAdd/>Assign 
                  </Button> 
-                 <Button variant="danger" className='Button_assing' disabled={!(assignTAT.length >0)} onClick={()=>{handleWithdraw(item)}}>
-                 Reject
-                 </Button>
+                 {/* <Button variant="danger" className='Button_assing' disabled={!(assignTAT.length >0)} onClick={()=>{handleWithdraw(item)}}>
+                   <RxCrossCircled/>Reject
+                 </Button> */}
                <br/> 
          </div><br/> 
    </div><br/> 
@@ -105,7 +105,7 @@ const AssignToFEScreen =()=>{
          </div>
 <div>
  <EmployeeToFEAssign show={show} close={handleClose} assignData={item}   onSave={handleAssignSave}   /> 
- <AssignModal show={show} close={handleClose} assignData={item} type={modalType}   onDelete={handleRejectedByEmployee} /> 
+ {/* <AssignModal show={show} close={handleClose} assignData={item} type={modalType}   onDelete={handleRejectedByEmployee} />  */}
 </div>
 </Container>
     )

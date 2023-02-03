@@ -6,6 +6,7 @@ import OpalTable from "../opalTable";
 import { useSelector,useDispatch } from "react-redux";
 import { getAllCaseAPI ,updateCaseById} from "../actions/verification";
 import AssignModal from "./modalAssign";
+import {RxCrossCircled} from "react-icons/rx";
 
 const AssignFEToOtherScreen =()=>{
     const assigns = useSelector(state=> state?.verification?.list || []);
@@ -54,25 +55,25 @@ const AssignFEToOtherScreen =()=>{
      });
      setShow(false)
     }
+    
     const handleWithdraw=()=>{
         setModalType('NotAssign')
         setShow(true)
      }
-    const handleWithdrawCase=(data)=>{
+
+    const handleRejectCase=(data)=>{
         let withdrawRecord =[...assignData].map((record)=>{
             let temp = {...record};
             temp.status= "rejected_by_FE"
             temp.caseHistory = {
                 assigned_by:userProfile.id,
-                // assigned_to:,
                 remark:data.remark
             };
           return temp;
         });
         withdrawRecord.forEach((record)=>{
-            console.log(record)
             dispatch(updateCaseById(record)).then(()=>{
-                dispatch(getAllCaseAPI({id:'all',status: ['under_FE']}));
+            dispatch(getAllCaseAPI({id:'all',status: ['under_FE']}));
                 });
         });
         setShow(false);
@@ -93,7 +94,7 @@ const AssignFEToOtherScreen =()=>{
                     <IoMdPersonAdd/>Assign 
                  </Button> &nbsp;
                  <Button variant="danger" className='Button_assing' disabled={!(assignData.length >0)} onClick={()=>{handleWithdraw(item)}}>
-                 Reject
+                 <RxCrossCircled/> Reject
                  </Button>
                <br/> 
          </div><br/> 
@@ -108,7 +109,7 @@ const AssignFEToOtherScreen =()=>{
          </div>
 <div>
  <AssignModal show={show} close={handleClose} assignData={item} type={modalType}   
- onSave={handleSaveAssign}  onDelete={handleWithdrawCase} /> 
+ onSave={handleSaveAssign}  onDelete={handleRejectCase} /> 
 </div>
 </Container>
 

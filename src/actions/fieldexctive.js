@@ -40,8 +40,8 @@ export const getAllFieldAPI = createAsyncThunk(
 
   export const getFieldById = createAsyncThunk(
     'getFieldById',
-    async (id,data) => {
-      const response  =  await axios.get(`/user/${id}?userType=FieldExecutive`,data,{
+    async (id) => {
+      const response  =  await axios.get(`/user/${id}?userType=FieldExecutive`,{
             headers: {
               Authorization : `Bearer ${localStorage.getItem('_token') }`
             }
@@ -112,7 +112,6 @@ export const fieldExecutiveSlice = createSlice({
 
   builder.addCase(getAllFieldAPI.fulfilled, (state, action) =>{
     state.list=action.payload.map((item)=>{
-
       let tmpData = {
         id:item.id,
         key:item.id,

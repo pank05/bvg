@@ -39,7 +39,7 @@ export const getAllEmployeeAPI = createAsyncThunk(
   export const getEmployeeById = createAsyncThunk(
     'getEmployeeById',
     async (id,data) => {
-      const response  =  await axios.get(`/user/${id}?userType=employee`,data,{
+      const response  =  await axios.get(`/user/${id}?userType=employee`,{
             headers: {
               Authorization : `Bearer ${localStorage.getItem('_token') }`
             }

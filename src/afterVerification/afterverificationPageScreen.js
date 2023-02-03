@@ -44,6 +44,7 @@ const AfterVerification = (props) => {
     setShowModal(true);
     setDeafultData(data);
   };
+  
   const handleUpdateForm = (data) => {
     setModalType("update");
     setShowModal(true);
@@ -94,6 +95,7 @@ const AfterVerification = (props) => {
     setShowUnview(true);
     setDeafultData(unview);
   };
+
   const handleUNviewUpdateSaveButton = (employeeRadio) => {
     let change = verifyAdmin.find((ele) => ele.id === employeeRadio.id);
   };

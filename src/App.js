@@ -27,6 +27,7 @@ import DashboardEmployeeScreen from './dashboardEmployee';
 import DashboardFEScreen from './dashboardFEScreen';
 import AssignToFEScreen from './assign/assignToFEScreen';
 import AssignFEToOtherScreen from './assign/assignFEToOthers';
+import VerificationByFieldExective from './afterVerification/afterVerificationByFieldExective';
 
 function App() {
   const dispatch=useDispatch();
@@ -65,8 +66,8 @@ function App() {
     if(checkUserHasRole(userProfile,['FieldExecutive'])){
       return<>
         <Route path="Dashboard" element={withHeader(<DashboardFEScreen/>)}/>
-        <Route path="AfterVerification" element={withHeader(<AfterVerification />)}/>
-        <Route path="AssignFE" element={withHeader(<AssignFEToOtherScreen/>)}/>
+        <Route path="VerificationByFE" element={withHeader(<VerificationByFieldExective />)}/>
+        {/* <Route path="AssignFE" element={withHeader(<AssignFEToOtherScreen/>)}/> */}
         <Route path="VerificationList-Page" element={withHeader(<VerificationList_Page />)}/>
         <Route path="VerificationStatus" element={withHeader(<VerificationStatus />)}/>
       </>
