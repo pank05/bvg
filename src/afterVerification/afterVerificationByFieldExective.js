@@ -6,7 +6,7 @@ import { useState,useEffect } from "react";
 import { useDispatch ,useSelector} from "react-redux";
 import { getAllCaseAPI } from "../actions/verification";
 import ModalAfterVerify from "../afterVerification/modalAfterVerify";
-
+import ModalAfterUnview from "./modalAfterVerifyUnview";
 const VerificationByFieldExective =(props)=>{
 
     const caseData = useSelector((state) => state?.verification?.list || []);
@@ -27,6 +27,8 @@ const VerificationByFieldExective =(props)=>{
     const [show,setShow]=useState(false);
     const handleClose=()=> setShow(false);
     const [defaultData, setDeafultData] = useState({});
+    const [showModal,setShowModal]=useState(false)
+    const handleCloseModal=()=>setShowModal(false)
 
     const handleViewVerifyCase = () => {
         setButtonType("View Verified By FE");
@@ -62,13 +64,15 @@ const VerificationByFieldExective =(props)=>{
       const [modalTypes,setModalTypes]=useState('editUnview')
 
       const handleReviewEditForm=(data)=>{
-        setModalTypes('editUnview')
-        console.log(data)
+        setModalTypes('editUnview');
+        setShowModal(true);
+        console.log("hello",data)
       }
 
-      const handleUpdateVerifyForm=()=>{
+      const handleUpdateVerifyForm=(data)=>{
         setModalTypes("updateUnview")
-        console.log("heell")
+        setShowModal(true);
+        console.log("heell",data)
       }
 
     return(
@@ -126,6 +130,16 @@ const VerificationByFieldExective =(props)=>{
           defaultData={defaultData}
         //   onUpdate={handleUpdateSaveButton}
         //   onSave={handleEditSave}
+        />
+      </div>
+      <div>
+      <ModalAfterUnview
+          open={showModal}
+          onClose={handleCloseModal}
+          type={modalTypes}
+        //   auditData={data}
+          defaultData={defaultData}
+          // onSubmit={handleUNviewUpdateSaveButton}
         />
       </div>
       {props.children}
