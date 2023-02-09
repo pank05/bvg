@@ -1,6 +1,18 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 
+export const updateAddrescaseDetails= createAsyncThunk(
+  'updateAddrescaseDetails',
+   async (data) => {
+    const response  =  await axios.put(`/verification/${data.id}`,data,
+    {
+      headers:{
+      Authorization : `Bearer ${localStorage.getItem('_token') }`
+    }
+  });
+    return response.data;
+  } )
+
   export const updateAuditCaseDetails = createAsyncThunk(
   'updateAuditCaseDetails',
    async (data) => {
@@ -55,6 +67,10 @@ const reviewSlice = createSlice({
   },
 
  extraReducers: (builder) => {
+
+      builder.addCase(updateAddrescaseDetails.fulfilled,(state,payload)=>{
+        
+      });
 
       builder.addCase(updateAuditCaseDetails.fulfilled,(state,action)=>{
       });

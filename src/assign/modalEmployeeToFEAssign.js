@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { Modal,Button,Row,Col,Form } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { assignModalVarData } from "../constant/assignTAT";
+import { verificationModalVarData } from "../constant/verificationVar";
 import { getAllFieldAPI } from "../actions/fieldexctive"; 
 const EmployeeToFEAssign =(props)=>{
     const fieldExecutive = useSelector((state) => state?.field?.list || []);
-    const [assignFEData, setAssignFEData] = useState(assignModalVarData);
+    const [assignFEData, setAssignFEData] = useState(verificationModalVarData);
     const dispatch=useDispatch()
 
     useEffect(()=>{
@@ -32,7 +32,9 @@ const EmployeeToFEAssign =(props)=>{
                         <Form.Control
                           type="text"
                           placeholder="TAT Start Date"
-                          value={props.assignData.durationStart}
+                          // value={props.assignData.durationStart}
+                          value={props.assignData.map((v)=>v.durationStart)}
+
                          />
                       </Form.Group>
                     </Col>
@@ -41,6 +43,7 @@ const EmployeeToFEAssign =(props)=>{
                         <Form.Control
                           type="date"
                           placeholder="TAT End Date"
+                          value={props.assignData.map((v)=>v.durationEnd)}
                         //   onChange={(e) => {
                         //     // setAssignField();
                         //     setAssignFEData({

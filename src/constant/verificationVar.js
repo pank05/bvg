@@ -1,5 +1,6 @@
 export const verificationModalVarData=[
     {
+        // checkPriority:""
         id:"",
         checkId:"",
         companyId:"", 

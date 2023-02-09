@@ -3,8 +3,8 @@ import axios from 'axios';
 import {uniqBy} from 'lodash'
 export const getStatusList = createAsyncThunk(
     'getStatusList',
-    async ({reference,type}) => { 
-      const response  =  await axios.post(`/status/list`,{reference,type},{
+    async ({reference,type,label=[]}) => { 
+      const response  =  await axios.post(`/status/list`,{reference,type,label},{
             headers: {
               Authorization : `Bearer ${localStorage.getItem('_token') }`
             }

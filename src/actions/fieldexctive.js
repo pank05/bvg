@@ -78,6 +78,23 @@ export const getAllFieldAPI = createAsyncThunk(
         return response.data;
       } )
 
+      export const updateSignatureURL = createAsyncThunk(
+        'updateSignatureURL',
+    async (data) => {
+      let formData = new FormData();
+       formData.append('image',data.image || '');
+       formData.append('typeType',data.typeType || '');
+       formData.append('user_id', data.user_id || '');
+  
+      const response  =  await axios.get(`/user/upload-file`,formData,{
+            headers: {
+              "Content-Type": "multipart/form-data",
+              Authorization : `Bearer ${localStorage.getItem('_token') }`
+            }
+           });
+           return response.data;
+    }
+      )
     export const deleteFieldById = createAsyncThunk(
       'deleteFieldById',
       async (id) => {
@@ -105,6 +122,9 @@ export const fieldExecutiveSlice = createSlice({
   })
 
   builder.addCase(getFieldById.fulfilled, (state, data) =>{
+    })
+
+    builder.addCase(updateSignatureURL.fulfilled,(state,data)=>{
     })
 
     builder.addCase(updateFieldById.fulfilled,(state,data)=>{

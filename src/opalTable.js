@@ -38,11 +38,11 @@ const OpalTable = (props)=>{
         }
         setTableHeader(data)
        }
-
+    //    row.candidateName ||
        const applyFilterfn = () =>{
         return (tableData || [])
         .filter((row) =>        
-        !searchedVal.length || (row.candidateName  || row.name)
+        !searchedVal.length || ( row.checkId || row.name)
           .toString()
           .toLowerCase()
           .includes(searchedVal.toString().toLowerCase()) 

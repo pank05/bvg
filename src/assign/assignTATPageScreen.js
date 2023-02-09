@@ -51,7 +51,6 @@ const AssignTAT=()=>{
     }
     
      const handleAssign=(data)=>{
-        // console.log(data.duration_start)
         setButtonType('assign')
         setShow(true)
      }

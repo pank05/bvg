@@ -145,7 +145,6 @@ const ModalVerification = (props) => {
     ) => {
 
    dispatch(getCityBySearch({name:inputValue,id:"all"}));
-   console.log("cities",cities)
    callback(cities);
    };
 
@@ -167,7 +166,7 @@ const ModalVerification = (props) => {
           <div>
             <Modal.Header>
               <h3>Update Verification Entry </h3>
-              <h6> AuthBridge</h6>
+              <h6>{verifyData.companyId}</h6>
             </Modal.Header>
             <Modal.Body>
               <Form>
@@ -306,7 +305,7 @@ const ModalVerification = (props) => {
                           });
                         }}
                         isInvalid={!!errors.state}
-                      ></Form.Control>
+                      />
                       <Form.Control.Feedback type="invalid">
                         {errors.state}
                       </Form.Control.Feedback>
@@ -326,7 +325,7 @@ const ModalVerification = (props) => {
                           });
                         }}
                         isInvalid={!!errors.district}
-                      ></Form.Control>
+                      />
                       <Form.Control.Feedback type="invalid">
                         {errors.district}
                       </Form.Control.Feedback>
@@ -334,13 +333,26 @@ const ModalVerification = (props) => {
                   </Col>
                   <Col>
                     <Form.Group controlId="city">
-                     <AsyncSelect cacheOptions  defaultOptions isInvalid={!!errors.city} onChange={(val)=>{
+                    <Form.Control
+                        type="text"
+                        value={verifyData.city}
+                        placeholder="please enter city"
+                        onChange={(e) => {
+                          setVerificationField();
+                          setVerifyData({
+                            ...verifyData,
+                            ...{ city: e.target.value },
+                          });
+                        }}
+                        isInvalid={!!errors.city}
+                      ></Form.Control>
+                     {/* <AsyncSelect cacheOptions  defaultOptions isInvalid={!!errors.city} onChange={(val)=>{
                       setVerificationField();
                       setVerifyData({
                         ...verifyData,
                         ...{ city: val.value },
                       });
-                    }} />
+                    }} /> */}
                       <Form.Control.Feedback type="invalid">
                         {errors.city}
                       </Form.Control.Feedback>

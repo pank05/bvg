@@ -14,9 +14,17 @@ const Withdraw=()=>{
     const [withdrawList,setWithdraw]=useState([]);
     const dispatch = useDispatch();
 
-    useEffect(()=>{
-        dispatch(getAllCaseAPI({id:'all',status: ['withdraw']}));
-    },[])
+    // useEffect(()=>{
+    //     dispatch(getAllCaseAPI({id:'all',status: ['withdraw']}));
+    // },[])
+    useEffect(() => {
+        dispatch(
+          getAllCaseAPI({
+            id: "all",
+            status: ["withdraw"],
+          })
+        );
+      }, []);
 
     useEffect(()=>{
        setWithdraw(withdraws)

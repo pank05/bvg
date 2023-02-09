@@ -10,6 +10,9 @@ const AssignModal = (props) => {
 
   const [data, setData] = useState(assignModalVarData);
 
+  useEffect(()=>{
+       setData({...data,...props.assignData})
+  },[props.assignData])
   const [isCheckOutBtn, setIscheckOutBtn] = useState(false);
 
   useEffect(() => {
@@ -87,10 +90,8 @@ const AssignModal = (props) => {
                         <Form.Control
                           type="text"
                           placeholder="TAT Start Date"
-                          // {props.assignData.map((v) => v.checkId).join(",")}
-                          
-                          // value={props.defaultData.durationStart}
-                         />
+                          value={props.assignData.map((v)=>v.durationStart)}
+                         readOnly />
                       </Form.Group>
                     </Col>
                     <Col>

@@ -1,11 +1,9 @@
 import {Container,Row,Col,Form} from 'react-bootstrap';
 import { useState , useEffect } from 'react';
-import {addressNotFoundvari} from "../constant/afterVerification"
 import { useSelector ,useDispatch} from "react-redux";
 import {getStatusList} from "../actions/status";
 
 const AddressNotFound =(props)=>{
-    const [addressNotFound , setAddressNotFound]=useState(addressNotFoundvari);
     const [reasonList, setReasonList]=useState([]);
     const [landMark, setLandMark]=useState([
       {
@@ -57,15 +55,15 @@ const AddressNotFound =(props)=>{
             name={radios.name}
             type={radios.type}
             onChange={(v)=>{
-              setAddressNotFound({...addressNotFound,...{relationType:v.target.value}})
+              props.setUpdateAddressVerification({...props.updateAddressVerification,...{reasonNotFound:v.target.value}})
             }}/>  </Col>
          }) }
-         <p style={{float:"right",color: "#20c997"}}> {[...reasonList].find((d)=>addressNotFound.relationType ==d.id)?.label} </p>
+         <p style={{float:"right",color: "#20c997"}}> {[...reasonList].find((d)=>props.updateAddressVerification.relationType ==d.id)?.label} </p>
            </div> 
            </Form>
            <Form.Control type="text" placeholder="If other or Incomplete Address then given remark" 
            onChange={(e)=>{
-            setAddressNotFound({...addressNotFound,...{addressRemark:e.target.value}})
+            props.setUpdateAddressVerification({...props.updateAddressVerification,...{addressRemark:e.target.value}})
            }} /> <br/>
            <Row>
              <Col>Photo of Nearest Land mark up to which field executive has reached attached:</Col>
@@ -80,13 +78,12 @@ const AddressNotFound =(props)=>{
              type={radios.type}
              name={radios.name}
              onChange={(v)=>{
-               console.log({...addressNotFound,...{nearLandmark:v.target.value}})
-                setAddressNotFound({...addressNotFound,...{nearLandmark:v.target.value}})}  }/> 
+                props.setUpdateAddressVerification({...props.updateAddressVerification,...{nearLandmark:v.target.value}})}  }/> 
             ))}  
-            <p style={{float:"right",color: "#20c997"}}> {[...landMark].find((d)=>addressNotFound.nearLandmark ==d.value)?.label} </p>
+            <p style={{float:"right",color: "#20c997"}}> {[...landMark].find((d)=>props.updateAddressVerification.nearLandmark ==d.value)?.label} </p>
               </div>
            <Form.Control type="text" placeholder="Candidate State" onChange={(e)=>{
-              setAddressNotFound({...addressNotFound,...{candidateState:e.target.value}})
+              props.setUpdateAddressVerification({...props.updateAddressVerification,...{candidateState:e.target.value}})
            }} /><br/>
            {props.children}
            </Container>

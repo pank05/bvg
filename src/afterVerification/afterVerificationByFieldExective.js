@@ -4,9 +4,11 @@ import {FaFileImport} from "react-icons/fa";
 import {afterVerifyDataColoum} from "../mock/afterVerifyData";
 import { useState,useEffect } from "react";
 import { useDispatch ,useSelector} from "react-redux";
-import { getAllCaseAPI } from "../actions/verification";
+import { getAllCaseAPI,getCaseDataById } from "../actions/verification";
 import ModalAfterVerify from "../afterVerification/modalAfterVerify";
 import ModalAfterUnview from "./modalAfterVerifyUnview";
+import {updateAddrescaseDetails} from "../actions/review"
+
 const VerificationByFieldExective =(props)=>{
 
     const caseData = useSelector((state) => state?.verification?.list || []);
@@ -50,15 +52,60 @@ const VerificationByFieldExective =(props)=>{
 
       const handleCaseEditModal = (data) => {
         setModalType("edit");
-        console.log("dddd",data)
         setShow(true);
         setDeafultData(data);
+        dispatch(getCaseDataById(data.id))
       };
       
-      const handleUpdateCase=()=>{
+      const handleUpdateCase=(data)=>{
+        setDeafultData(data);
         setModalType("update");
         setShow(true);
+        dispatch(getCaseDataById(data.id))
+      }
 
+      const handleUpdateAddressSave =(data)=>{
+        let updateRecords =[...verifyFEData].map((record)=>{
+          let temp = {...record};
+          temp.state= data?.candidateState
+            temp.verifications = {
+                is_landmark:data?.nearLandmark,
+                verification_reason_id:data?.reasonNotFound,
+                verification_reason_remark:data?.addressRemark,
+                is_present:data?.address,
+                period_stay_from:data?.fromDate,
+                period_stay_to:data?.toDate,
+                address_status_id:data?.stayVerification,
+                residence_status_id:data?.residenceStatus,
+                residence_type_id:data?.residenceType,
+                area_type_id:data?.areaType,
+                additional_remark_json:data?.additionalRemarkByFE,
+                is_positive:data?.additionalRemark,
+            }
+            temp.candidates = {
+                verified_by:data?.verifyBy,
+                respondent_relation:data?.relationType,
+                person_name:data?.relationTypeMeetPerson,
+                person_contact:data?.meetPersonContactNo,
+                is_id_proof:data?.idProof,
+                signature_url:data?.candidateSignature
+            }
+            temp.case_details={
+                verification_date:data?.verificationDoneDate,
+        //         "verification_remark": "positive"
+            }
+            temp.users={
+                signature_url:data?.FESignature
+            }
+      return temp;
+});
+updateRecords.forEach((record)=>{
+  console.log("record",record)
+  dispatch(updateAddrescaseDetails(record)).then(()=>{
+      dispatch(getAllCaseAPI({id:'all',status: ['under_FE']}));
+      });
+});
+setShow(false);
       }
 
       const [modalTypes,setModalTypes]=useState('editUnview')
@@ -128,7 +175,7 @@ const VerificationByFieldExective =(props)=>{
           close={handleClose}
           type={modalType}
           defaultData={defaultData}
-        //   onUpdate={handleUpdateSaveButton}
+          onUpdate={handleUpdateAddressSave}
         //   onSave={handleEditSave}
         />
       </div>

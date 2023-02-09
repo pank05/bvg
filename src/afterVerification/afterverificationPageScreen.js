@@ -11,6 +11,7 @@ import { getAllCaseAPI, updateCaseById } from "../actions/verification";
 import {
   updateAuditCaseDetails,
   getAllAuditCase,
+  updateAddrescaseDetails,
   getByIdAuditCase,
 } from "../actions/review";
 
@@ -19,7 +20,7 @@ const AfterVerification = (props) => {
   const [verifyAdmin, setVerifyAdmin] = useState([]);
   const dispatch = useDispatch();
 
-  useEffect(() => {
+  useEffect(() =>{
     dispatch(
       getAllCaseAPI({
         id: "all",

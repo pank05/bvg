@@ -4,8 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { updateRadioClickModal } from "../constant/afterVerification";
 import { getStatusList } from "../actions/status";
 
-const AddressFound = (props) => {
-  const [address, setAddress] = useState(updateRadioClickModal);
+const AddressFound = (props) => {  
   const statusOption = useSelector((state) => state?.status?.list);
   const dispatch = useDispatch();
   const [verifiedByList, setVerifiedByList] = useState([]);
@@ -120,8 +119,8 @@ const AddressFound = (props) => {
                       name={radios.name}
                       type={radios.type}
                       onChange={(v) => {
-                        setAddress({
-                          ...address,
+                        props.setUpdateAddressVerification({
+                          ...props.updateAddressVerification,
                           ...{ verifyBy: v.target.value },
                         });
                       }}
@@ -130,7 +129,7 @@ const AddressFound = (props) => {
                 })}
               <p style={{ float: "right", color: "#20c997" }}>
                 {
-                  [...verifiedByList].find((d) => address.verifyBy == d.id)
+                  [...verifiedByList].find((d) => props.updateAddressVerification.verifyBy == d.id)
                     ?.label
                 }
               </p>
@@ -159,8 +158,8 @@ const AddressFound = (props) => {
                       name={radios.name}
                       type={radios.type}
                       onChange={(v) => {
-                        setAddress({
-                          ...address,
+                        props.setUpdateAddressVerification({
+                          ...props.updateAddressVerification,
                           ...{ relationType: v.target.value },
                         });
                       }}
@@ -168,11 +167,11 @@ const AddressFound = (props) => {
                   );
                 })}
               <p style={{ float: "right", color: "#20c997" }}>
-                {" "}
+                
                 {
-                  [...relationList].find((d) => address.relationType == d.id)
+                  [...relationList].find((d) => props.updateAddressVerification.relationType == d.id)
                     ?.label
-                }{" "}
+                }
               </p>
             </div>
           </Col>
@@ -183,8 +182,8 @@ const AddressFound = (props) => {
                   type="text"
                   placeholder="Name of Person meet"
                   onChange={(v) => {
-                    setAddress({
-                      ...address,
+                    props.setUpdateAddressVerification({
+                      ...props.updateAddressVerification,
                       ...{ relationTypeMeetPerson: v.target.value },
                     });
                   }}
@@ -197,8 +196,8 @@ const AddressFound = (props) => {
                   type="number"
                   placeholder="Contact No"
                   onChange={(v) => {
-                    setAddress({
-                      ...address,
+                    props.setUpdateAddressVerification({
+                      ...props.updateAddressVerification,
                       ...{ meetPersonContactNo: v.target.value },
                     });
                   }}
@@ -221,16 +220,15 @@ const AddressFound = (props) => {
                 type={radios.type}
                 name={radios.name}
                 onChange={(v) => {
-                  setAddress({ ...address, ...{ idProof: v.target.value } });
+                  props.setUpdateAddressVerification({ ...props.updateAddressVerification, ...{ idProof: v.target.value } });
                 }}
               />
             ))}
             <p style={{ float: "right", color: "#20c997" }}>
-              {" "}
               {
-                [...idProofByList].find((d) => address.idProof == d.value)
+                [...idProofByList].find((d) => props.updateAddressVerification.idProof == d.value)
                   ?.label
-              }{" "}
+              }
             </p>
           </div>
           <Row>
@@ -242,7 +240,7 @@ const AddressFound = (props) => {
                 type="date"
                 disabled={formChecked}
                 onChange={(e) => {
-                  setAddress({ ...address, ...{ fromDate: e.target.value } });
+                  props.setUpdateAddressVerification({ ...props.updateAddressVerification, ...{ fromDate: e.target.value } });
                 }}
               />
             </Col>
@@ -264,7 +262,7 @@ const AddressFound = (props) => {
                 type="date"
                 disabled={toChecked}
                 onChange={(e) => {
-                  setAddress({ ...address, ...{ toDate: e.target.value } });
+                  props.setUpdateAddressVerification({ ...props.updateAddressVerification, ...{ toDate: e.target.value } });
                 }}
               />
             </Col>
@@ -284,7 +282,7 @@ const AddressFound = (props) => {
             </Col>
             <Col>
               <p style={{ float: "right", color: "#20c997" }}>
-                From {address.fromDate} To {address.toDate}
+                From {props.updateAddressVerification.fromDate} To {props.updateAddressVerification.toDate}
               </p>
             </Col>
           </Row>
@@ -310,8 +308,8 @@ const AddressFound = (props) => {
                       name={radios.name}
                       type={radios.type}
                       onChange={(v) => {
-                        setAddress({
-                          ...address,
+                        props.setUpdateAddressVerification({
+                          ...props.updateAddressVerification,
                           ...{ stayVerification: v.target.value },
                         });
                       }}
@@ -319,12 +317,12 @@ const AddressFound = (props) => {
                   );
                 })}
               <p style={{ float: "right", color: "#20c997" }}>
-                {" "}
+                
                 {
                   [...stayVerificationList].find(
-                    (d) => address.stayVerification == d.id
+                    (d) => props.updateAddressVerification.stayVerification == d.id
                   )?.label
-                }{" "}
+                }
               </p>
             </div>
           </Col>
@@ -349,12 +347,8 @@ const AddressFound = (props) => {
                       name={radios.name}
                       type={radios.type}
                       onChange={(v) => {
-                        console.log({
-                          ...address,
-                          ...{ residenceStatus: v.target.value },
-                        });
-                        setAddress({
-                          ...address,
+                        props.setUpdateAddressVerification({
+                          ...props.updateAddressVerification,
                           ...{ residenceStatus: v.target.value },
                         });
                       }}
@@ -362,12 +356,12 @@ const AddressFound = (props) => {
                   );
                 })}
               <p style={{ float: "right", color: "#20c997" }}>
-                {" "}
+                
                 {
                   [...residenceStatusList].find(
-                    (d) => address.residenceStatus == d.id
+                    (d) => props.updateAddressVerification.residenceStatus == d.id
                   )?.label
-                }{" "}
+                }
               </p>
             </div>
           </Col>
@@ -391,12 +385,8 @@ const AddressFound = (props) => {
                     name={radios.name}
                     type={radios.type}
                     onChange={(v) => {
-                      console.log({
-                        ...address,
-                        ...{ residenceType: v.target.value },
-                      });
-                      setAddress({
-                        ...address,
+                      props.setUpdateAddressVerification({
+                        ...props.updateAddressVerification,
                         ...{ residenceType: v.target.value },
                       });
                     }}
@@ -404,12 +394,12 @@ const AddressFound = (props) => {
                 );
               })}
             <p style={{ float: "right", color: "#20c997" }}>
-              {" "}
+              
               {
                 [...residenceTypeList].find(
-                  (d) => address.residenceType == d.id
+                  (d) => props.updateAddressVerification.residenceType == d.id
                 )?.label
-              }{" "}
+              }
             </p>
           </div>
           <Row>
@@ -432,8 +422,8 @@ const AddressFound = (props) => {
                     name={radios.name}
                     type={radios.type}
                     onChange={(v) => {
-                      setAddress({
-                        ...address,
+                      props.setUpdateAddressVerification({
+                        ...props.updateAddressVerification,
                         ...{ areaType: v.target.value },
                       });
                     }}
@@ -441,10 +431,10 @@ const AddressFound = (props) => {
                 );
               })}
             <p style={{ float: "right", color: "#20c997" }}>
-              {" "}
+              
               {
-                [...areaTypeList].find((d) => address.areaType == d.id)?.label
-              }{" "}
+                [...areaTypeList].find((d) => props.updateAddressVerification.areaType == d.id)?.label
+              }
             </p>
           </div>
         </Row>

@@ -10,7 +10,7 @@ import {
   FloatingLabel,
   Card,
 } from "react-bootstrap";
-import { updateRadioClickModal,} from "../constant/afterVerification";
+import { updateRadioClickModal } from "../constant/afterVerification";
 import { FaMoneyBillAlt } from "react-icons/fa";
 import { FiEdit } from "react-icons/fi";
 import { PDFViewer } from "@react-pdf/renderer";
@@ -21,21 +21,25 @@ import AddressNotFound from "./addressNotFoundAfterVerify";
 import { useSelector, useDispatch } from "react-redux";
 import { useRef } from "react";
 import { getStatusList } from "../actions/status";
-import {verificationModalVarData} from "../constant/verificationVar";
+import { verificationModalVarData } from "../constant/verificationVar";
+import { checkUserHasRole } from "../utility/validation";
+import {updateSignatureURL} from "../actions/fieldexctive";
 
 const ModalAfterVerify = (props) => {
   const [verifyData, setVerifyData] = useState(verificationModalVarData);
   const userDetails = useSelector((state) => state?.user?.userProfile);
   const statusOption = useSelector((state) => state?.status?.list);
+  const fieldExecutive = useSelector((state) => state?.field?.list || []);
 
-  const statusList = useSelector(
-    (state) => state?.verification?.list || []
-  ).map((states) => {
-    return {
-      value: states.status,
-      label: states.status,
-    };
-  });
+  const statusList = useSelector((state) => state?.status?.list || []).map(
+    (states) => {
+      return {
+        value: states.status,
+        label: states.label,
+      };
+    }
+  );
+
   const [additionalRemarkByFE, setAdditionalRemarkByFE] = useState([
     {
       value: "1",
@@ -52,14 +56,14 @@ const ModalAfterVerify = (props) => {
   ]);
   const [verificationRemark, setVerificationRemark] = useState([
     {
-      key:"1",
+      key: "1",
       value: "1",
       label: "Active",
       name: "remark",
       type: "radio",
     },
     {
-      key:"2",
+      key: "2",
       value: "0",
       label: "Completed",
       name: "remark",
@@ -95,8 +99,48 @@ const ModalAfterVerify = (props) => {
     },
   ]);
 
+  const [caseStatus, setCaseStatus] = useState([]);
+
+  useEffect(() => {
+    if (checkUserHasRole(userDetails, ["admin"])) {
+      dispatch(
+        getStatusList({
+          label: ["verify_by_admin", "rejected_by_admin"],
+          type: ["case"],
+        })
+      );
+    }
+    if (checkUserHasRole(userDetails, ["employee"])) {
+      dispatch(
+        getStatusList({
+          label: ["rejected_by_employee", "verify_by_employee"],
+          type: ["case"],
+        })
+      );
+    }
+    if (checkUserHasRole(userDetails, ["FieldExecutive"])) {
+      dispatch(
+        getStatusList({
+          label: ["rejected_by_FE", "verify_by_FE"],
+          type: ["case"],
+        })
+      );
+    }
+  }, []);
+
+  useEffect(() => {
+    setCaseStatus(
+      (statusOption || []).filter(
+        (v) =>
+          v.type == "case" &&
+          ["verify_by_admin", "rejected_by_admin"].includes(v.label)
+      )
+    );
+  }, [statusOption]);
+
   const [addressList, setAddressList] = useState([]);
   const [addressChange, setAddressChange] = useState();
+
 
   useEffect(() => {
     setAddressList(
@@ -115,17 +159,20 @@ const ModalAfterVerify = (props) => {
   }, [additionalRemarkByFE]);
 
   const [imagePreview, setImagePreview] = useState(null);
+  const [candidateSignature, setCandidateSignature] = useState(null);
+
   const dispatch = useDispatch();
 
   const filePicekerRef = useRef(null);
+  const filePicekerRefCandidate = useRef(null);
 
-  const handlerChangeImage = (event) => {
+  const handlerChangeFESignature = (event) => {
     const reader = new FileReader();
     const selectedFile = event.target.files[0];
     if (selectedFile) {
       reader.readAsDataURL(selectedFile);
     }
-    setVerifyData({ ...verifyData, profile: selectedFile });
+    setUpdateAddressVerification({ ...updateRadioClickModal,FESignature:selectedFile});
 
     reader.onload = (readerEvent) => {
       if (selectedFile.type.includes("image")) {
@@ -134,6 +181,26 @@ const ModalAfterVerify = (props) => {
     };
   };
 
+  const handlerChangeCandidateSignature = (event) => {
+    const reader = new FileReader();
+    const selectedFile = event.target.files[0];
+    if (selectedFile) {
+      reader.readAsDataURL(selectedFile);
+    }
+    setUpdateAddressVerification({ ...updateRadioClickModal,image:selectedFile });
+
+    reader.onload = (readerEvent) => {
+      if (selectedFile.type.includes("image")) {
+        setCandidateSignature(readerEvent.target.result);
+      }
+    };
+  };
+
+  const handleUploadImage =(data)=>{
+    
+    dispatch(updateSignatureURL(data))
+    console.log("upload images",data)
+  }
   useEffect(() => {
     dispatch(
       getStatusList({
@@ -147,7 +214,9 @@ const ModalAfterVerify = (props) => {
     setVerifyData({ ...verifyData, ...props.defaultData });
   }, [props.defaultData]);
 
-  const [updateAddressVerification, setUpdateAddressVerification] = useState(updateRadioClickModal);
+  const [updateAddressVerification, setUpdateAddressVerification] = useState(
+    updateRadioClickModal
+  );
 
   const handleDownlpoadPdf = () => {
     console.log("download");
@@ -210,9 +279,7 @@ const ModalAfterVerify = (props) => {
                               ------
                             </Col>
                             <Col>
-                              <b className="found_size_for_text">
-                                Contact :
-                              </b>
+                              <b className="found_size_for_text">Contact :</b>
                               {props.defaultData.contactNo}
                             </Col>
                           </Row>
@@ -266,9 +333,7 @@ const ModalAfterVerify = (props) => {
                               ---------
                             </Col>
                             <Col>
-                              <b className="found_size_for_text">
-                                Remark :
-                              </b>
+                              <b className="found_size_for_text">Remark :</b>
                               --------
                             </Col>
                           </Row>
@@ -277,17 +342,15 @@ const ModalAfterVerify = (props) => {
                     </Accordion.Item>
                     <Accordion.Item eventKey="1">
                       <Accordion.Header>
-                        
                         Verification Status History
                       </Accordion.Header>
                       <Accordion.Body>
                         <Container>
                           <Row>
                             <Col>
-                               
                               <b className="found_size_for_text">
                                 ApplicationCreated :
-                              </b> 
+                              </b>
                               {userDetails.username} (
                               {userDetails?.roles?.map((v) => v.label)}) <br />
                             </Col>
@@ -295,10 +358,7 @@ const ModalAfterVerify = (props) => {
                           </Row>
                           <Row>
                             <Col>
-                               
-                              <b className="found_size_for_text">
-                                ASSIGNED :
-                              </b> 
+                              <b className="found_size_for_text">ASSIGNED :</b>
                               {userDetails.username} (
                               {userDetails?.roles?.map((v) => v.label)}) <br />
                             </Col>
@@ -306,41 +366,32 @@ const ModalAfterVerify = (props) => {
                           </Row>
                           <Row>
                             <Col>
-                               
-                              <b className="found_size_for_text">
-                                ACCEPTED: 
-                              </b> 
+                              <b className="found_size_for_text">ACCEPTED:</b>
                               {props.defaultData.EMP} <br />
                             </Col>
                             <Col>--Date-- </Col>
                           </Row>
                           <Row>
                             <Col>
-                               
-                              <b className="found_size_for_text">
-                                 
-                                SENT_TO_FE:
-                              </b> 
+                              <b className="found_size_for_text">SENT_TO_FE:</b>
                               {props.defaultData.EMP} <br />
                             </Col>
                             <Col>--Date-- </Col>
                           </Row>
                           <Row>
                             <Col>
-                               
                               <b className="found_size_for_text">
                                 VERIF_DONE_BY_FE:
-                              </b> 
+                              </b>
                               {props.defaultData.FE} <br />
                             </Col>
                             <Col>--Date-- </Col>
                           </Row>
                           <Row>
                             <Col>
-                               
                               <b className="found_size_for_text">
                                 EMP_COMPL_UNRE:
-                              </b> 
+                              </b>
                               {props.defaultData.EMP} <br />
                             </Col>
                             <Col>--Date-- </Col>
@@ -349,7 +400,7 @@ const ModalAfterVerify = (props) => {
                             <Col> </Col>
                             <Col>
                               Completed IN TAT by Employee pending for admin
-                              Review 
+                              Review
                             </Col>
                           </Row>
                         </Container>
@@ -492,8 +543,35 @@ const ModalAfterVerify = (props) => {
                       <Accordion.Body>
                         <Row>
                           <Col>
+                            {/* <div key={`inline-radio`}>
+                        {caseStatus
+                          .map((v) => {
+                            let temp = { ...v };
+                            temp.name = "verification";
+                            temp.type = "radio";
+                            return temp;
+                          })
+                          .map((radios) => {
+                            return (
+                              <Form.Check
+                                inline
+                                label={radios.label}
+                                value={radios.id}
+                                name={radios.name}
+                                type={radios.type}
+                                onChange={(v) => {
+                                  setUpdateAddressVerification({
+                                    ...updateAddressVerification,
+                                    ...{ address: v.target.value },
+                                  });
+                                  setAddressChange(!addressChange);
+                                }}
+                              />
+                            );
+                          })}
+                          </div> */}
                             <Select
-                              options={statusList}
+                              options={caseStatus}
                               onChange={(v) => {
                                 setVerifyData({
                                   ...verifyData,
@@ -678,13 +756,31 @@ const ModalAfterVerify = (props) => {
                             [...addressList].find(
                               (d) => updateAddressVerification.address == d.id
                             )?.label
-                          } 
+                          }
                         </p>
                         {addressChange
-                          ? " Address found" && <AddressFound />
-                          : "Address Not found" && <AddressNotFound />}
+                          ? " Address found" && (
+                              <AddressFound
+                                updateAddressVerification={
+                                  updateAddressVerification
+                                }
+                                setUpdateAddressVerification={
+                                  setUpdateAddressVerification
+                                }
+                              />
+                            )
+                          : "Address Not found" && (
+                              <AddressNotFound
+                                updateAddressVerification={
+                                  updateAddressVerification
+                                }
+                                setUpdateAddressVerification={
+                                  setUpdateAddressVerification
+                                }
+                              />
+                            )}
                       </div>
-                    </div> 
+                    </div>
                     <br /> <br />
                     <Accordion.Item eventKey="1">
                       <Accordion.Header>
@@ -694,7 +790,7 @@ const ModalAfterVerify = (props) => {
                         <div>
                           <Row>
                             <Col>
-                              <label> Verification status Remark:</label> 
+                              <label> Verification status Remark:</label>
                             </Col>
                             <Col>
                               <div key={`inline-radio`}>
@@ -706,10 +802,6 @@ const ModalAfterVerify = (props) => {
                                     type={radios.type}
                                     name={radios.name}
                                     onChange={(v) => {
-                                      console.log({
-                                        ...updateAddressVerification,
-                                        ...{ additionalRemark: v.target.value },
-                                      });
                                       setUpdateAddressVerification({
                                         ...updateAddressVerification,
                                         ...{ additionalRemark: v.target.value },
@@ -718,14 +810,13 @@ const ModalAfterVerify = (props) => {
                                   />
                                 ))}
                                 <p style={{ float: "right", color: "#20c997" }}>
-                                   
                                   {
                                     [...additionalRemarkByFE].find(
                                       (d) =>
                                         updateAddressVerification.additionalRemark ==
                                         d.value
                                     )?.label
-                                  } 
+                                  }
                                 </p>
                               </div>
                             </Col>
@@ -787,21 +878,36 @@ const ModalAfterVerify = (props) => {
                               />
                             ))}
                             <p style={{ float: "right", color: "#20c997" }}>
-                               
                               {
                                 [...verificationRemark].find(
                                   (d) =>
                                     updateAddressVerification.verificationRemarkByFE ==
                                     d.value
                                 )?.label
-                              } 
+                              }
                             </p>
                           </div>
                           <FloatingLabel
                             controlId="floatingTextarea"
                             className="mb-3"
                           >
-                            <Form.Control
+                            {/* <Form.Select
+                          aria-label="select FE"
+                          onChange={(e) => {
+                            setUpdateAddressVerification({
+                              ...updateAddressVerification,
+                              ...{ FE: e.target.value },
+                            });
+                          }}
+                        >
+                          <option>Select fieldExecutive</option>
+                          {fieldExecutive.map((FEList) => {
+                            return (
+                              <option value={FEList.id}>{FEList.name}</option>
+                            );
+                          })}
+                        </Form.Select> */}
+                          <Form.Control
                               type="text"
                               placeholder="FE Name"
                               onChange={(e) => {
@@ -843,14 +949,28 @@ const ModalAfterVerify = (props) => {
                               }}
                             />
                           )}
+                          <label> FE Signature</label>
+                          <br />
                         </Card>
-                        <label> FE Signature</label>
+                        <input
+                          ref={filePicekerRef}
+                          accept="image/*, video/*"
+                          onChange={handlerChangeFESignature}
+                          type="file"
+                          hidden
+                        />
+                        <Button
+                          className="btn"
+                          onClick={() => filePicekerRef.current.click()}
+                        >
+                          Select FE Signature
+                        </Button>
                       </Col>
                       <Col>
                         <Card style={{ width: "18rem", border: "none" }}>
-                          {imagePreview != null && (
+                          {candidateSignature != null && (
                             <img
-                              src={imagePreview}
+                              src={candidateSignature}
                               alt=""
                               style={{
                                 width: "70%",
@@ -859,8 +979,21 @@ const ModalAfterVerify = (props) => {
                               }}
                             />
                           )}
+                          <label>Responder Signature</label>
+                          <br />
                         </Card>
-                        <label> Responder Signature</label>
+                        <input
+                          ref={filePicekerRefCandidate}
+                          accept="image/*, video/*"
+                          onChange={handlerChangeCandidateSignature}
+                          type="file"
+                          hidden
+                        />
+                        <Button
+                          className="btn"
+                          onClick={() => filePicekerRefCandidate.current.click()} >
+                          Select candidate Signature
+                        </Button>
                       </Col>
                     </Row>
                   </div>
@@ -868,13 +1001,16 @@ const ModalAfterVerify = (props) => {
               </Modal.Body>
               <Modal.Footer>
                 <div>
+                <Button variant="warning" onClick={()=>{ handleUploadImage(updateAddressVerification)}}>Upload Images</Button>
+
                   <Button
                     variant="info"
-                    onClick={() => props.onUpdate(updateAddressVerification)}
+                    onClick={() => {
+                      props.onUpdate(updateAddressVerification);
+                    }}
                   >
                     Update
                   </Button>
-                  <Button variant="warning">Upload Images</Button>
                 </div>
               </Modal.Footer>
             </>

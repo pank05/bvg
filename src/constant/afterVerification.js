@@ -1,22 +1,3 @@
-// export const addressFoundVari={
-//     verifyBy:"",
-//     relationType:"",
-//     relationTypeMeetPerson:"",
-//     meetPersonContactNo:"",
-//     idProof:"",
-//     fromDate:"",
-//     toDate:"",
-//     stayVerification:"",
-//     residenceStatus:"",
-//     residenceType:"",
-//     areaType:"",
-// }
-export const addressNotFoundvari={ 
-    reasonNotFound:"",
-    addressRemark:"",
-    nearLandmark:"",
-    candidateState:"",
-}
 export const editRadioClickModal={
     audit_call_done: "",
     audit_call_done_remark:"",
@@ -28,6 +9,10 @@ export const editRadioClickModal={
     remark:"",
 }
  export const updateRadioClickModal={
+    reasonNotFound:"",
+    addressRemark:"",
+    nearLandmark:"",
+    candidateState:"",
     verifyBy:"",
     relationType:"",
     relationTypeMeetPerson:"",
@@ -44,8 +29,10 @@ export const editRadioClickModal={
     verificationRemarkByFE:"",
     verificationDoneDate:"",
     FE:"",
-    address:""
-    } 
+    address:"",
+    FESignature:"",
+    candidateSignature:""
+    }
 
 export const updateRadioUnviewModal={
     additionalRemarkFA:"",
@@ -68,5 +55,4 @@ export const updateRadioUnviewModal={
     verifyByRespondent:"",
     relationWithCandidate:"",
     nearLandmark:"",
-
 }
