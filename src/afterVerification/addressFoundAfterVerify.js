@@ -114,6 +114,7 @@ const AddressFound = (props) => {
                   return (
                     <Form.Check
                       inline
+                      checked={props.updateAddressVerification?.verifyBy == radios.id}
                       label={radios.label}
                       value={radios.id}
                       name={radios.name}
@@ -153,6 +154,7 @@ const AddressFound = (props) => {
                   return (
                     <Form.Check
                       inline
+                      checked={props.updateAddressVerification?.relationType == radios.id}
                       label={radios.label}
                       value={radios.id}
                       name={radios.name}
@@ -180,6 +182,7 @@ const AddressFound = (props) => {
               <Form.Group className="mb-3">
                 <Form.Control
                   type="text"
+                  value={props.updateAddressVerification?.relationTypeMeetPerson}
                   placeholder="Name of Person meet"
                   onChange={(v) => {
                     props.setUpdateAddressVerification({
@@ -194,6 +197,7 @@ const AddressFound = (props) => {
               <Form.Group className="mb-3">
                 <Form.Control
                   type="number"
+                  value={props.updateAddressVerification?.meetPersonContactNo}
                   placeholder="Contact No"
                   onChange={(v) => {
                     props.setUpdateAddressVerification({
@@ -215,6 +219,7 @@ const AddressFound = (props) => {
             {idProofByList.map((radios) => (
               <Form.Check
                 inline
+                checked={props.updateAddressVerification?.idProof == radios.value}
                 label={radios.label}
                 value={radios.value}
                 type={radios.type}
@@ -238,6 +243,7 @@ const AddressFound = (props) => {
             <Col>
               <Form.Control
                 type="date"
+                value={props.updateAddressVerification.fromDate}
                 disabled={formChecked}
                 onChange={(e) => {
                   props.setUpdateAddressVerification({ ...props.updateAddressVerification, ...{ fromDate: e.target.value } });
@@ -249,6 +255,7 @@ const AddressFound = (props) => {
                 type="checkbox"
                 label="By Birth"
                 checked={formChecked}
+                value={props.updateAddressVerification?.formChecked}
                 onChange={() => {
                   if (formChecked) {
                     setFormDate("");
@@ -261,6 +268,7 @@ const AddressFound = (props) => {
               <Form.Control
                 type="date"
                 disabled={toChecked}
+                value={props.updateAddressVerification.toDate}
                 onChange={(e) => {
                   props.setUpdateAddressVerification({ ...props.updateAddressVerification, ...{ toDate: e.target.value } });
                 }}
@@ -271,6 +279,7 @@ const AddressFound = (props) => {
                 type="checkbox"
                 label="Till Date"
                 name=""
+                value={props.updateAddressVerification?.toChecked}
                 checked={toChecked}
                 onChange={() => {
                   if (toChecked) {
@@ -304,6 +313,7 @@ const AddressFound = (props) => {
                     <Form.Check
                       inline
                       label={radios.label}
+                      checked={props.updateAddressVerification?.stayVerification == radios.id}
                       value={radios.id}
                       name={radios.name}
                       type={radios.type}
@@ -343,6 +353,7 @@ const AddressFound = (props) => {
                     <Form.Check
                       inline
                       label={radios.label}
+                      checked={props.updateAddressVerification?.residenceStatus == radios.id}
                       value={radios.id}
                       name={radios.name}
                       type={radios.type}
@@ -380,6 +391,7 @@ const AddressFound = (props) => {
                 return (
                   <Form.Check
                     inline
+                    checked={props.updateAddressVerification?.residenceType == radios.id}
                     label={radios.label}
                     value={radios.id}
                     name={radios.name}
@@ -417,6 +429,7 @@ const AddressFound = (props) => {
                 return (
                   <Form.Check
                     inline
+                    checked={props.updateAddressVerification?.areaType == radios.id}
                     label={radios.label}
                     value={radios.id}
                     name={radios.name}

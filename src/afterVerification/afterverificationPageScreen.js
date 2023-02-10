@@ -9,7 +9,7 @@ import { read, utils } from "xlsx";
 import { FaFileImport } from "react-icons/fa";
 import { getAllCaseAPI, updateCaseById } from "../actions/verification";
 import {
-  updateAuditCaseDetails,
+  // updateAuditCaseDetails,
   getAllAuditCase,
   updateAddrescaseDetails,
   getByIdAuditCase,
@@ -67,9 +67,9 @@ const AfterVerification = (props) => {
     });
     updateRecords.forEach((record) => {
       console.log("data", record);
-      dispatch(updateAuditCaseDetails(record)).then(() => {
-        dispatch(getAllCaseAPI({ id: "all", status: ["under_admin"] }));
-      });
+      // dispatch(updateAuditCaseDetails(record)).then(() => {
+      //   dispatch(getAllCaseAPI({ id: "all", status: ["under_admin"] }));
+      // });
     });
     setShowModal();
   };

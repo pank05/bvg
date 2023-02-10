@@ -22,12 +22,14 @@ import { useSelector, useDispatch } from "react-redux";
 import { useRef } from "react";
 import { getStatusList } from "../actions/status";
 import { verificationModalVarData } from "../constant/verificationVar";
+import {editRadioClickModal} from "../constant/afterVerification"
 import { checkUserHasRole } from "../utility/validation";
 import {updateSignatureURL} from "../actions/fieldexctive";
 
 const ModalAfterVerify = (props) => {
-  const [verifyData, setVerifyData] = useState(verificationModalVarData);
+  const [verifyData, setVerifyData] = useState(editRadioClickModal);
   const userDetails = useSelector((state) => state?.user?.userProfile);
+  const caseAllDetails=useSelector((state) => state?.verification?.caseDetails);
   const statusOption = useSelector((state) => state?.status?.list);
   const fieldExecutive = useSelector((state) => state?.field?.list || []);
 
@@ -36,6 +38,7 @@ const ModalAfterVerify = (props) => {
       return {
         value: states.status,
         label: states.label,
+        // type:'case'
       };
     }
   );
@@ -128,15 +131,48 @@ const ModalAfterVerify = (props) => {
     }
   }, []);
 
+// status verify && reject
   useEffect(() => {
     setCaseStatus(
       (statusOption || []).filter(
         (v) =>
           v.type == "case" &&
-          ["verify_by_admin", "rejected_by_admin"].includes(v.label)
+          ["verify_by_admin", "rejected_by_admin","rejected_by_FE", "verify_by_FE","rejected_by_employee", "verify_by_employee"].includes(v.label)
       )
     );
   }, [statusOption]);
+
+
+  // set default value
+  useEffect(()=>{
+    if(caseAllDetails && caseAllDetails.id){
+        setUpdateAddressVerification({
+        ...updateAddressVerification,
+        ...{ 
+          address: caseAllDetails.is_present,
+          verifyBy:caseAllDetails?.verified_by_id,
+          relationType:caseAllDetails?.responder_relation_id,
+          relationTypeMeetPerson:caseAllDetails?.person_name,
+          meetPersonContactNo:caseAllDetails?.person_contact,
+          idProof:caseAllDetails?.is_id_proof,
+          fromDate:caseAllDetails?.period_stay_from,
+          toDate:caseAllDetails?.period_stay_to,
+          stayVerification:caseAllDetails?.address_status_id,
+        areaType:caseAllDetails?.area_type_id,
+        residenceStatus:caseAllDetails?.residence_status_id,
+        residenceType:caseAllDetails?.residence_type_id,
+        reasonNotFound:caseAllDetails?.verification_reason_id,
+        nearLandmark:caseAllDetails?.is_landmark,
+        candidateState:caseAllDetails?.state_name,
+        additionalRemark:caseAllDetails
+        },
+      });
+      if(caseAllDetails?.is_present_name === 'address_found'){
+        setAddressChange(true);
+      }
+    }
+    
+  },[caseAllDetails])
 
   const [addressList, setAddressList] = useState([]);
   const [addressChange, setAddressChange] = useState();
@@ -172,7 +208,7 @@ const ModalAfterVerify = (props) => {
     if (selectedFile) {
       reader.readAsDataURL(selectedFile);
     }
-    setUpdateAddressVerification({ ...updateRadioClickModal,FESignature:selectedFile});
+    setUpdateAddressVerification({ ...updateRadioClickModal,image:selectedFile});
 
     reader.onload = (readerEvent) => {
       if (selectedFile.type.includes("image")) {
@@ -196,11 +232,36 @@ const ModalAfterVerify = (props) => {
     };
   };
 
-  const handleUploadImage =(data)=>{
-    
-    dispatch(updateSignatureURL(data))
-    console.log("upload images",data)
+  const handleUploadUserImage =(data)=>{
+    let updateRecords =[updateAddressVerification].map((record)=>{
+      let temp = {...record};
+        temp.users ={
+           typeType:'FE_Signature',
+           signature_url:data?.image?.name
+                }
+  return temp;
+});
+updateRecords.forEach((record)=>{
+console.log("record",record)
+    dispatch(updateSignatureURL(record))
+})
   }
+
+  const handleUploadCandidateImage =(data)=>{
+    let updateRecords =[updateAddressVerification].map((record)=>{
+      let temp = {...record};
+      temp.candidates = {
+        typeType:'candidate_signature',
+        signature_url:data?.image?.name
+      };
+  return temp;
+});
+updateRecords.forEach((record)=>{
+console.log("record",record)
+    dispatch(updateSignatureURL(record))
+})
+  }
+
   useEffect(() => {
     dispatch(
       getStatusList({
@@ -214,9 +275,7 @@ const ModalAfterVerify = (props) => {
     setVerifyData({ ...verifyData, ...props.defaultData });
   }, [props.defaultData]);
 
-  const [updateAddressVerification, setUpdateAddressVerification] = useState(
-    updateRadioClickModal
-  );
+  const [updateAddressVerification, setUpdateAddressVerification] = useState(updateRadioClickModal);
 
   const handleDownlpoadPdf = () => {
     console.log("download");
@@ -245,9 +304,10 @@ const ModalAfterVerify = (props) => {
               <Modal.Header className="update">
                 <h5>
                   Call and cross verify for <br />
-                  {props.defaultData.candidateName} &nbsp;
-                  {props.defaultData.checkId}
-                </h5>
+                  {caseAllDetails.candidate_name} &nbsp;
+                {caseAllDetails.check_id}  
+              </h5>
+              <h5>{caseAllDetails.company_name}</h5>
               </Modal.Header>
               <Modal.Body>
                 <div>
@@ -263,24 +323,24 @@ const ModalAfterVerify = (props) => {
                               <b className="found_size_for_text">
                                 Provided Candidate Contact :
                               </b>
-                              {props.defaultData.contactNo}
+                              {caseAllDetails?.contact_no}
                               <br />
                             </Col>
                             <Col>
                               <b className="found_size_for_text">
                                 Responder Name :
                               </b>
-                              {props.defaultData.candidateName}
+                              {caseAllDetails?.person_name}
                             </Col>
                           </Row>
                           <Row>
                             <Col>
                               <b className="found_size_for_text"> Relation :</b>
-                              ------
+                              {caseAllDetails?.responder_relation_label}
                             </Col>
                             <Col>
                               <b className="found_size_for_text">Contact :</b>
-                              {props.defaultData.contactNo}
+                              {caseAllDetails?.person_contact}
                             </Col>
                           </Row>
                           <Row>
@@ -288,13 +348,13 @@ const ModalAfterVerify = (props) => {
                               <b className="found_size_for_text">
                                 Tat Start Date :
                               </b>
-                              {props.defaultData.durationStart}
+                              {caseAllDetails?.duration_start}
                             </Col>
                             <Col>
                               <b className="found_size_for_text">
                                 Tat End Date :
                               </b>
-                              {props.defaultData.durationEnd}
+                              {caseAllDetails?.duration_end}
                             </Col>
                           </Row>
                           <Row>
@@ -302,27 +362,13 @@ const ModalAfterVerify = (props) => {
                               <b className="found_size_for_text">
                                 Assign Employee :
                               </b>
-                              {props.defaultData.EMP}
+                              {caseAllDetails.assigned_by_name}
                             </Col>
-                            <Col>
-                              <b className="found_size_for_text">
-                                Assign Employee ID :
-                              </b>
-                              {props.defaultData.EMP}
-                            </Col>
-                          </Row>
-                          <Row>
                             <Col>
                               <b className="found_size_for_text">
                                 Assign Field Executive :
                               </b>
-                              {props.defaultData.FE}
-                            </Col>
-                            <Col>
-                              <b className="found_size_for_text">
-                                Assign Field Executive ID:
-                              </b>
-                              {props.defaultData.FE}
+                              {caseAllDetails?.assigned_to_name}
                             </Col>
                           </Row>
                           <Row>
@@ -334,7 +380,7 @@ const ModalAfterVerify = (props) => {
                             </Col>
                             <Col>
                               <b className="found_size_for_text">Remark :</b>
-                              --------
+                              {caseAllDetails.remark}
                             </Col>
                           </Row>
                         </Container>
@@ -424,7 +470,7 @@ const ModalAfterVerify = (props) => {
                                     onChange={(v) => {
                                       setVerifyData({
                                         ...verifyData,
-                                        ...{ audit_call_done: v.target.value },
+                                        ...{ auditCallDone: v.target.value },
                                       });
                                     }}
                                   />
@@ -436,7 +482,7 @@ const ModalAfterVerify = (props) => {
                                     setVerifyData({
                                       ...verifyData,
                                       ...{
-                                        audit_call_done_remark: v.target.value,
+                                        auditCallDoneRemark: v.target.value,
                                       },
                                     })
                                   }
@@ -460,7 +506,7 @@ const ModalAfterVerify = (props) => {
                                       setVerifyData({
                                         ...verifyData,
                                         ...{
-                                          audit_call_status: v.target.value,
+                                          auditCallStatus: v.target.value,
                                         },
                                       });
                                     }}
@@ -473,7 +519,7 @@ const ModalAfterVerify = (props) => {
                                     setVerifyData({
                                       ...verifyData,
                                       ...{
-                                        audit_call_status_remark:
+                                        auditCallStatusRemark:
                                           v.target.value,
                                       },
                                     })
@@ -511,7 +557,7 @@ const ModalAfterVerify = (props) => {
                                           setVerifyData({
                                             ...verifyData,
                                             ...{
-                                              audit_case_status_id:
+                                              auditCaseStatusId:
                                                 v.target.value,
                                             },
                                           });
@@ -526,7 +572,7 @@ const ModalAfterVerify = (props) => {
                                     setVerifyData({
                                       ...verifyData,
                                       ...{
-                                        audit_case_status_remark:
+                                        auditCaseStatusRemark:
                                           v.target.value,
                                       },
                                     })
@@ -543,39 +589,12 @@ const ModalAfterVerify = (props) => {
                       <Accordion.Body>
                         <Row>
                           <Col>
-                            {/* <div key={`inline-radio`}>
-                        {caseStatus
-                          .map((v) => {
-                            let temp = { ...v };
-                            temp.name = "verification";
-                            temp.type = "radio";
-                            return temp;
-                          })
-                          .map((radios) => {
-                            return (
-                              <Form.Check
-                                inline
-                                label={radios.label}
-                                value={radios.id}
-                                name={radios.name}
-                                type={radios.type}
-                                onChange={(v) => {
-                                  setUpdateAddressVerification({
-                                    ...updateAddressVerification,
-                                    ...{ address: v.target.value },
-                                  });
-                                  setAddressChange(!addressChange);
-                                }}
-                              />
-                            );
-                          })}
-                          </div> */}
                             <Select
                               options={caseStatus}
                               onChange={(v) => {
                                 setVerifyData({
                                   ...verifyData,
-                                  ...{ status: v.value },
+                                  ...{status:v.label },
                                 });
                               }}
                             />
@@ -611,7 +630,7 @@ const ModalAfterVerify = (props) => {
             <>
               <Modal.Header>
                 <h1 className="div_center"> UPDATE VERIFICATION </h1>
-                <h6> Comp checkId:&nbsp;{props.defaultData.checkId} </h6>
+                <h6> Comp :{caseAllDetails?.company_name} checkId:&nbsp;{caseAllDetails?.check_id} </h6>
                 <Button onClick={handleDownlpoadPdf}> Download pdf </Button>
               </Modal.Header>
               <Modal.Body>
@@ -629,14 +648,14 @@ const ModalAfterVerify = (props) => {
                                 <Form.Control
                                   type="text"
                                   placeholder="Candidate Name"
-                                  value={props.defaultData.candidateName}
+                                  value={caseAllDetails?.candidate_name}
                                 />
                               </Col>
                               <Col>
                                 <Form.Control
                                   type="text"
                                   placeholder="Company Check Id"
-                                  value={props.defaultData.companyId}
+                                  value={caseAllDetails?.check_id}
                                 />
                               </Col>
                             </Row>
@@ -646,14 +665,14 @@ const ModalAfterVerify = (props) => {
                                 <Form.Control
                                   type="text"
                                   placeholder="Father's Name"
-                                  value={props.defaultData.fatherName}
+                                  value={caseAllDetails?.father_name}
                                 />
                               </Col>
                               <Col>
                                 <Form.Control
                                   type="text"
                                   placeholder="Candidate Contact No"
-                                  value={props.defaultData.contactNo}
+                                  value={caseAllDetails?.contact_no}
                                 />
                               </Col>
                             </Row>
@@ -663,7 +682,7 @@ const ModalAfterVerify = (props) => {
                                 <Form.Control
                                   type="text"
                                   placeholder="Address Give By Candidate "
-                                  value={props.defaultData.address}
+                                  value={caseAllDetails?.address}
                                 />
                               </Col>
                             </Row>
@@ -673,28 +692,28 @@ const ModalAfterVerify = (props) => {
                                 <Form.Control
                                   type="text"
                                   placeholder="Candidate City"
-                                  value={props.defaultData.city}
+                                  value={caseAllDetails?.city_name}
                                 />
                               </Col>
                               <Col>
                                 <Form.Control
                                   type="text"
                                   placeholder="Candidate District"
-                                  value={props.defaultData.district}
+                                  value={caseAllDetails?.district_name}
                                 />
                               </Col>
                               <Col>
                                 <Form.Control
                                   type="text"
                                   placeholder="Candidate State"
-                                  value={props.defaultData.state}
+                                  value={caseAllDetails?.state_name}
                                 />
                               </Col>
                               <Col>
                                 <Form.Control
                                   type="text"
                                   placeholder="Candidate Pin Code"
-                                  value={props.defaultData.pincode}
+                                  value={caseAllDetails?.pincode}
                                 />
                               </Col>
                             </Row>
@@ -704,14 +723,14 @@ const ModalAfterVerify = (props) => {
                                 <Form.Control
                                   type="text"
                                   placeholder="Landmark"
-                                  value={props.defaultData.landmark}
+                                  value={caseAllDetails?.location}
                                 />
                               </Col>
                               <Col>
                                 <Form.Control
                                   type="text"
                                   placeholder="RESUME ID(comp-checkId)"
-                                  value={props.defaultData.resumeId}
+                                  value={caseAllDetails?.resume_id}
                                   required
                                 />
                               </Col>
@@ -737,6 +756,7 @@ const ModalAfterVerify = (props) => {
                             return (
                               <Form.Check
                                 inline
+                                checked={updateAddressVerification?.address == radios.id}
                                 label={radios.label}
                                 value={radios.id}
                                 name={radios.name}
@@ -797,6 +817,7 @@ const ModalAfterVerify = (props) => {
                                 {additionalRemarkByFE.map((radios) => (
                                   <Form.Check
                                     inline
+                                    checked={updateAddressVerification?.additionalRemark == radios.value}
                                     label={radios.label}
                                     value={radios.value}
                                     type={radios.type}
@@ -825,6 +846,7 @@ const ModalAfterVerify = (props) => {
                             controlId="floatingTextarea"
                             label="positive"
                             className="mb-3"
+                            value={updateAddressVerification}
                           >
                             <Form.Control
                               as="textarea"
@@ -949,7 +971,7 @@ const ModalAfterVerify = (props) => {
                               }}
                             />
                           )}
-                          <label> FE Signature</label>
+                          {/* <label> FE Signature</label> */}
                           <br />
                         </Card>
                         <input
@@ -964,7 +986,9 @@ const ModalAfterVerify = (props) => {
                           onClick={() => filePicekerRef.current.click()}
                         >
                           Select FE Signature
-                        </Button>
+                        </Button>&nbsp;
+                        <Button variant="warning" onClick={()=>{ handleUploadUserImage(updateAddressVerification)}}>Upload Images</Button>
+
                       </Col>
                       <Col>
                         <Card style={{ width: "18rem", border: "none" }}>
@@ -979,7 +1003,7 @@ const ModalAfterVerify = (props) => {
                               }}
                             />
                           )}
-                          <label>Responder Signature</label>
+                          {/* <label>Responder Signature</label> */}
                           <br />
                         </Card>
                         <input
@@ -993,7 +1017,9 @@ const ModalAfterVerify = (props) => {
                           className="btn"
                           onClick={() => filePicekerRefCandidate.current.click()} >
                           Select candidate Signature
-                        </Button>
+                        </Button> &nbsp;
+                        <Button variant="warning" onClick={()=>{ handleUploadCandidateImage(updateAddressVerification)}}>Upload Images</Button>
+
                       </Col>
                     </Row>
                   </div>
@@ -1001,8 +1027,6 @@ const ModalAfterVerify = (props) => {
               </Modal.Body>
               <Modal.Footer>
                 <div>
-                <Button variant="warning" onClick={()=>{ handleUploadImage(updateAddressVerification)}}>Upload Images</Button>
-
                   <Button
                     variant="info"
                     onClick={() => {

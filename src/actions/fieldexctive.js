@@ -81,12 +81,13 @@ export const getAllFieldAPI = createAsyncThunk(
       export const updateSignatureURL = createAsyncThunk(
         'updateSignatureURL',
     async (data) => {
+
       let formData = new FormData();
        formData.append('image',data.image || '');
        formData.append('typeType',data.typeType || '');
        formData.append('user_id', data.user_id || '');
-  
-      const response  =  await axios.get(`/user/upload-file`,formData,{
+
+      const response  =  await axios.post(`/user/upload-file`,formData,{
             headers: {
               "Content-Type": "multipart/form-data",
               Authorization : `Bearer ${localStorage.getItem('_token') }`
@@ -95,6 +96,7 @@ export const getAllFieldAPI = createAsyncThunk(
            return response.data;
     }
       )
+      
     export const deleteFieldById = createAsyncThunk(
       'deleteFieldById',
       async (id) => {

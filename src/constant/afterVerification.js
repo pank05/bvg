@@ -1,13 +1,14 @@
 export const editRadioClickModal={
-    audit_call_done: "",
-    audit_call_done_remark:"",
-    audit_call_status: "",
-    audit_call_status_remark:"",
-    audit_case_status_id:"" ,
-    audit_case_status_remark:"",
+    auditCallDone: "",
+    auditCallDoneRemark:"",
+    auditCallStatus: "",
+    auditCallStatusRemark:"",
+    auditCaseStatusId:"" ,
+    auditCaseStatusRemark:"",
     status:"",
     remark:"",
 }
+
  export const updateRadioClickModal={
     reasonNotFound:"",
     addressRemark:"",

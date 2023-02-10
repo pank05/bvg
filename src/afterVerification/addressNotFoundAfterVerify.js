@@ -50,6 +50,7 @@ const AddressNotFound =(props)=>{
          }).map((radios) => {
          return <Col><Form.Check
             inline
+            checked={props.updateAddressVerification?.reasonNotFound == radios.id}
             label={radios.label}
             value={radios.id}
             name={radios.name}
@@ -62,6 +63,7 @@ const AddressNotFound =(props)=>{
            </div> 
            </Form>
            <Form.Control type="text" placeholder="If other or Incomplete Address then given remark" 
+           value={props.updateAddressVerification?.addressRemark}
            onChange={(e)=>{
             props.setUpdateAddressVerification({...props.updateAddressVerification,...{addressRemark:e.target.value}})
            }} /> <br/>
@@ -73,6 +75,7 @@ const AddressNotFound =(props)=>{
         landMark.map((radios) => (
           <Form.Check
              inline
+             checked={props.updateAddressVerification?.nearLandmark == radios.value}
              label={radios.label}
              value={radios.value}
              type={radios.type}
@@ -82,7 +85,9 @@ const AddressNotFound =(props)=>{
             ))}  
             <p style={{float:"right",color: "#20c997"}}> {[...landMark].find((d)=>props.updateAddressVerification.nearLandmark ==d.value)?.label} </p>
               </div>
-           <Form.Control type="text" placeholder="Candidate State" onChange={(e)=>{
+           <Form.Control type="text" placeholder="Candidate State"
+           value={props.updateAddressVerification?.candidateState}
+           onChange={(e)=>{
               props.setUpdateAddressVerification({...props.updateAddressVerification,...{candidateState:e.target.value}})
            }} /><br/>
            {props.children}

@@ -122,7 +122,8 @@ export const verificationSlice = createSlice({
     stateList:[],
     districtList:[],
     cityList:[],
-    currentCase:{}
+    currentCase:{},
+    caseDetails:{}
   },
   reducers: {
 
@@ -140,6 +141,8 @@ export const verificationSlice = createSlice({
       })
 
       builder.addCase(getCaseDataById.fulfilled, (state, action) =>{
+        console.log("action ",action.payload[0])
+        state.caseDetails = action.payload[0];
       });
        
       builder.addCase(updateCaseById.fulfilled,(state,action)=>{

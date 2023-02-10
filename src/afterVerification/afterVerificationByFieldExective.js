@@ -7,7 +7,7 @@ import { useDispatch ,useSelector} from "react-redux";
 import { getAllCaseAPI,getCaseDataById } from "../actions/verification";
 import ModalAfterVerify from "../afterVerification/modalAfterVerify";
 import ModalAfterUnview from "./modalAfterVerifyUnview";
-import {updateAddrescaseDetails} from "../actions/review"
+import {updateAddrescaseDetails,updateAddressAuditCaseDetails} from "../actions/review"
 
 const VerificationByFieldExective =(props)=>{
 
@@ -53,7 +53,7 @@ const VerificationByFieldExective =(props)=>{
       const handleCaseEditModal = (data) => {
         setModalType("edit");
         setShow(true);
-        setDeafultData(data);
+        // setDeafultData(data);
         dispatch(getCaseDataById(data.id))
       };
       
@@ -83,37 +83,64 @@ const VerificationByFieldExective =(props)=>{
                 is_positive:data?.additionalRemark,
             }
             temp.candidates = {
-                verified_by:data?.verifyBy,
-                respondent_relation:data?.relationType,
+                verified_by_id:data?.verifyBy,
+                responder_relation_id:data?.relationType,
                 person_name:data?.relationTypeMeetPerson,
                 person_contact:data?.meetPersonContactNo,
                 is_id_proof:data?.idProof,
-                signature_url:data?.candidateSignature
+                signature_url:data?.image?.name
             }
             temp.case_details={
                 verification_date:data?.verificationDoneDate,
         //         "verification_remark": "positive"
             }
             temp.users={
-                signature_url:data?.FESignature
+                signature_url:data?.image?.name
             }
       return temp;
 });
 updateRecords.forEach((record)=>{
   console.log("record",record)
-  dispatch(updateAddrescaseDetails(record)).then(()=>{
+  // dispatch(updateAddrescaseDetails(record)).then(()=>{
+  //     dispatch(getAllCaseAPI({id:'all',status: ['under_FE']}));
+  //     });
+});
+setShow(false);
+      }
+
+      const handleSaveVerifyByFE =(data)=>{
+        let updateRecords =[...verifyFEData].map((record)=>{
+          let temp = {...record};
+          temp.status= data?.status;
+          temp.remark= data?.remark;
+          temp.caseHistory = {
+              remark:data?.remark,
+              status_id:data?.status
+          };
+            temp.audit_call_statuses={
+              audit_call_done:data?.auditCallDone,
+              audit_call_done_remark:data?.auditCallDoneRemark,
+              audit_call_status: data?.auditCallStatus,
+              audit_call_status_remark: data?.auditCallStatusRemark,
+              audit_case_status_id: data?.auditCaseStatusId,
+              audit_case_status_remark: data?.auditCaseStatusRemark,
+            }
+      return temp;
+       });
+updateRecords.forEach((record)=>{
+  dispatch(updateAddressAuditCaseDetails(record)).then(()=>{
       dispatch(getAllCaseAPI({id:'all',status: ['under_FE']}));
       });
 });
-setShow(false);
+        setShow(false)
       }
 
       const [modalTypes,setModalTypes]=useState('editUnview')
 
       const handleReviewEditForm=(data)=>{
+        dispatch(getCaseDataById(data.id))
         setModalTypes('editUnview');
         setShowModal(true);
-        console.log("hello",data)
       }
 
       const handleUpdateVerifyForm=(data)=>{
@@ -176,7 +203,7 @@ setShow(false);
           type={modalType}
           defaultData={defaultData}
           onUpdate={handleUpdateAddressSave}
-        //   onSave={handleEditSave}
+          onSave={handleSaveVerifyByFE}
         />
       </div>
       <div>

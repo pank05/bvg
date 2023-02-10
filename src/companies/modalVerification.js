@@ -19,18 +19,21 @@ const ModalVerification = (props) => {
       label:v.name
    }
   }));
+
   const allState = useSelector((state) => state?.verification?.stateList || []).map((stateRecord)=>{
    return{
       value:stateRecord.id,
       label:stateRecord.name
    }
   });
+
   const districtList = useSelector((state) => state?.verification?.districtList || []).map((disList)=>{
    return{
       value:disList.id,
       label:disList.name
    }
   });
+  
   const cities = useSelector((state) => state?.verification?.cityList || []).map((cityName)=>{
    return {
       value:cityName.id,

@@ -13,10 +13,10 @@ export const updateAddrescaseDetails= createAsyncThunk(
     return response.data;
   } )
 
-  export const updateAuditCaseDetails = createAsyncThunk(
-  'updateAuditCaseDetails',
+  export const updateAddressAuditCaseDetails = createAsyncThunk(
+  'updateAddressAuditCaseDetails',
    async (data) => {
-    const response  =  await axios.put(`/auditcall/${data.id}`,data,
+    const response  =  await axios.put(`/verification/audit/${data.id}`,data,
     {
       headers:{
       Authorization : `Bearer ${localStorage.getItem('_token') }`
@@ -69,10 +69,10 @@ const reviewSlice = createSlice({
  extraReducers: (builder) => {
 
       builder.addCase(updateAddrescaseDetails.fulfilled,(state,payload)=>{
-        
+
       });
 
-      builder.addCase(updateAuditCaseDetails.fulfilled,(state,action)=>{
+      builder.addCase(updateAddressAuditCaseDetails.fulfilled,(state,action)=>{
       });
       
       builder.addCase(getAllAuditCase.fulfilled, (state,action) =>{
