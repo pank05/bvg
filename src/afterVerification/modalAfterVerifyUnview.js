@@ -13,27 +13,53 @@ import { updateRadioUnviewModal } from "../constant/afterVerification";
 import { useSelector, useDispatch } from "react-redux";
 import { useRef } from "react";
 import { getStatusList } from "../actions/status";
-import {verificationModalVarData} from "../constant/verificationVar";
 
 const ModalAfterUnview = (props) => {
   const [unview, setUnview] = useState();
-  const [auditDetails,setAuditDetails]=useState(verificationModalVarData)
   const userDetails = useSelector((state) => state?.user?.userProfile);
-  const caseAllDetails=useSelector((state) => state?.verification?.caseDetails);
+  const caseAllDetails = useSelector(
+    (state) => state?.verification?.caseDetails
+  );
   const statusOption = useSelector((state) => state?.status?.list);
-  const [auditCallData, setAuditCallData]=useState({});
   const dispatch = useDispatch();
 
   useEffect(() => {
     setUnview({ ...unview, ...props.defaultData });
-  }, [props.defaultData]); 
+  }, [props.defaultData]);
+
+  useEffect(() => {
+    if (caseAllDetails && caseAllDetails.id) {
+      setUpdateCaseByAdmin({
+        ...updateCaseByAdmin,
+        ...{
+          verificationRemarkForm: caseAllDetails.type_id,
+          birthCheckForm: caseAllDetails?.is_by_birth,
+          tillCheckForm: caseAllDetails?.is_till_date,
+          fromDate: caseAllDetails?.period_stay_from,
+          toDate: caseAllDetails?.period_stay_to,
+          contactNoRelative : caseAllDetails?.person_contact,
+          verificationDate:caseAllDetails?.verification_date,
+          verifyByRespondent:caseAllDetails?.verified_by_label ,
+          relationWithCandidate:caseAllDetails?.responder_relation_label,
+          nearLandmark:caseAllDetails?.location,
+          statusVerification:caseAllDetails?.status_of_verification,
+          buildingPhotoStatus:caseAllDetails?.building_photo,
+          addressProof:caseAllDetails?.address_proof,
+          landmarkPhotoStatus:caseAllDetails?.landmark_photo,
+          residenceStatus:caseAllDetails?.verification_residence_status ,
+          residenceType:caseAllDetails?.verification_residence_type
+        },
+      });
+    }
+  }, [caseAllDetails]);
 
   const [checkedDate, setCheckedDate] = useState(false);
   const [tillDate, setTillDate] = useState();
   const [checkedBirth, setCheckedBirth] = useState(false);
   const [birthDate, setBirthDate] = useState();
-  const [employeeRadio, setEmployeeRadio] = useState(updateRadioUnviewModal);
-  const [updateCaseByAdmin, setUpdateCaseByAdmin] = useState(updateRadioUnviewModal);
+  const [updateCaseByAdmin, setUpdateCaseByAdmin] = useState(
+    updateRadioUnviewModal
+  );
   const [verificationRemark, setVerificationRemark] = useState([
     {
       value: "1",
@@ -48,39 +74,48 @@ const ModalAfterUnview = (props) => {
       type: "radio",
     },
   ]);
-  const [buildingPhoto,setBuildingPhoto]=useState([{
-    value:"1",
-    label:'Yes',
-    name:'building_photo',
-    type:'radio'
-   },{
-    value:"0",
-    label:'No',
-    name:'building_photo',
-    type:'radio'
-   },])
-   const [addressProof,setAddressProof]=useState([{
-    value:"1",
-    label:'Yes',
-    name:'address_proof',
-    type:'radio'
-   },{
-    value:"0",
-    label:'No',
-    name:'address_proof',
-    type:'radio'
-   },])
-   const [landmarkPhoto,setLandmarkPhoto]=useState([{
-    value:"1",
-    label:'Yes',
-    name:'landmark_photo',
-    type:'radio'
-   },{
-    value:"0",
-    label:'No',
-    name:'landmark_photo',
-    type:'radio'
-   },])
+  const [buildingPhoto, setBuildingPhoto] = useState([
+    {
+      value: "1",
+      label: "Yes",
+      name: "building_photo",
+      type: "radio",
+    },
+    {
+      value: "0",
+      label: "No",
+      name: "building_photo",
+      type: "radio",
+    },
+  ]);
+  const [addressProof, setAddressProof] = useState([
+    {
+      value: "1",
+      label: "Yes",
+      name: "address_proof",
+      type: "radio",
+    },
+    {
+      value: "0",
+      label: "No",
+      name: "address_proof",
+      type: "radio",
+    },
+  ]);
+  const [landmarkPhoto, setLandmarkPhoto] = useState([
+    {
+      value: "1",
+      label: "Yes",
+      name: "landmark_photo",
+      type: "radio",
+    },
+    {
+      value: "0",
+      label: "No",
+      name: "landmark_photo",
+      type: "radio",
+    },
+  ]);
 
   useEffect(() => {
     setVerificationRemark(verificationRemark || []);
@@ -101,7 +136,7 @@ const ModalAfterUnview = (props) => {
   useEffect(() => {
     dispatch(
       getStatusList({
-        type: ["status_of_verification","residence_status","residence_type"],
+        type: ["status_of_verification", "residence_status", "residence_type"],
         reference: ["employee_address_verification"],
       })
     );
@@ -112,12 +147,31 @@ const ModalAfterUnview = (props) => {
   const [residenceTypeList, setResidenceTypeList] = useState([]);
 
   useEffect(() => {
-    setStatusVerificationList((statusOption || []).filter((v) =>v.type == "status_of_verification" &&v.reference == "employee_address_verification"));
-    setResidenceStatusList((statusOption || []).filter((v) =>v.type == "residence_status" &&v.reference == "employee_address_verification"));
-    setResidenceTypeList((statusOption || []).filter((v) =>v.type == "residence_type" &&v.reference == "employee_address_verification"));
+    setStatusVerificationList(
+      (statusOption || []).filter(
+        (v) =>
+          v.type == "status_of_verification" &&
+          v.reference == "employee_address_verification"
+      )
+    );
+
+    setResidenceStatusList(
+      (statusOption || []).filter(
+        (v) =>
+          v.type == "residence_status" &&
+          v.reference == "employee_address_verification"
+      )
+    );
+
+    setResidenceTypeList(
+      (statusOption || []).filter(
+        (v) =>
+          v.type == "residence_type" &&
+          v.reference == "employee_address_verification"
+      )
+    );
   }, [statusOption]);
 
-  useEffect(() => {}, [employeeRadio]);
   const [imagePreview, setImagePreview] = useState(null);
 
   const filePicekerRef = useRef(null);
@@ -153,7 +207,7 @@ const ModalAfterUnview = (props) => {
               <h5>
                 Call and cross verify for <br />
                 {caseAllDetails.candidate_name} &nbsp;
-                {caseAllDetails.check_id}  
+                {caseAllDetails.check_id}
               </h5>
               <h5>{caseAllDetails.company_name}</h5>
             </Modal.Header>
@@ -212,26 +266,12 @@ const ModalAfterUnview = (props) => {
                             </b>
                             {caseAllDetails.assigned_to_name}
                           </Col>
-                          {/* <Col>
-                            <b className="found_size_for_text">
-                              Assign Employee ID :
-                            </b>
-                             {caseAllDetails.defaultData.EMP} 
-                          </Col> */}
-                        {/* </Row>
-                        <Row> */}
                           <Col>
                             <b className="found_size_for_text">
                               Assign Field Executive :
                             </b>
                             {caseAllDetails?.assigned_by_name}
                           </Col>
-                          {/* <Col>
-                            <b className="found_size_for_text">
-                              Assign Field Executive ID:
-                            </b>
-                            {props.defaultData.FE}
-                          </Col> */}
                         </Row>
                         <Row>
                           <Col>
@@ -264,27 +304,21 @@ const ModalAfterUnview = (props) => {
                         </Row>
                         <Row>
                           <Col>
-                            <b className="found_size_for_text">
-                              ASSIGNED :
-                            </b>
+                            <b className="found_size_for_text">ASSIGNED :</b>
                             {caseAllDetails.assigned_to_name} <br />
                           </Col>
                           <Col>--Date-- </Col>
                         </Row>
                         <Row>
                           <Col>
-                            <b className="found_size_for_text">
-                              ACCEPTED:
-                            </b>
+                            <b className="found_size_for_text">ACCEPTED:</b>
                             {props.defaultData.EMP} <br />
                           </Col>
                           <Col>--Date-- </Col>
                         </Row>
                         <Row>
                           <Col>
-                            <b className="found_size_for_text">
-                              SENT_TO_FE:
-                            </b>
+                            <b className="found_size_for_text">SENT_TO_FE:</b>
                             {props.defaultData.EMP} <br />
                           </Col>
                           <Col>--Date-- </Col>
@@ -338,13 +372,24 @@ const ModalAfterUnview = (props) => {
                     <Accordion.Body>
                       <Form>
                         <Row>
-                          <Col>Audit Call Done : {caseAllDetails?.audit_call_done? 'Yes': 'No'} </Col>
-                          <Col>Audit call status : {caseAllDetails.audit_call_status? 'Positive' : 'Negative'}</Col>
-                          <Col>Tat Status : {caseAllDetails.audit_case_status_label} </Col>
-                        </Row> 
+                          <Col>
+                            Audit Call Done :{" "}
+                            {caseAllDetails?.audit_call_done ? "Yes" : "No"}{" "}
+                          </Col>
+                          <Col>
+                            Audit call status :{" "}
+                            {caseAllDetails.audit_call_status
+                              ? "Positive"
+                              : "Negative"}
+                          </Col>
+                          <Col>
+                            Tat Status :{" "}
+                            {caseAllDetails.audit_case_status_label}{" "}
+                          </Col>
+                        </Row>
                         <Row>
                           <Col> {caseAllDetails.audit_call_done_remark} </Col>
-                          <Col> {caseAllDetails.audit_call_status_remark }</Col>
+                          <Col> {caseAllDetails.audit_call_status_remark}</Col>
                           <Col> {caseAllDetails.audit_case_status_remark} </Col>
                         </Row>
                         <br />
@@ -378,7 +423,7 @@ const ModalAfterUnview = (props) => {
                             <Form.Control
                               type="text"
                               placeholder="Candidate Name"
-                              value={props.defaultData.candidateName}
+                              value={caseAllDetails?.candidate_name}
                             />
                           </Form.Group>
                         </Col>
@@ -387,7 +432,7 @@ const ModalAfterUnview = (props) => {
                             <Form.Control
                               type="text"
                               placeholder="CheckId"
-                              value={props.defaultData.checkId}
+                              value={caseAllDetails?.check_id}
                             />
                           </Form.Group>
                         </Col>
@@ -398,7 +443,7 @@ const ModalAfterUnview = (props) => {
                             <Form.Control
                               type="text"
                               placeholder="Father's Name"
-                              value={props.defaultData.fatherName}
+                              value={caseAllDetails?.father_name}
                             />
                           </Form.Group>
                         </Col>
@@ -407,7 +452,7 @@ const ModalAfterUnview = (props) => {
                             <Form.Control
                               type="text"
                               placeholder="Client Name"
-                              value={props.defaultData.clientName}
+                              value={caseAllDetails?.client_name}
                             />
                           </Form.Group>
                         </Col>
@@ -418,7 +463,7 @@ const ModalAfterUnview = (props) => {
                             <Form.Control
                               type="text"
                               placeholder="Resume ID"
-                              value={props.defaultData.resumeId}
+                              value={caseAllDetails?.resume_id}
                             />
                           </Form.Group>
                         </Col>
@@ -427,7 +472,7 @@ const ModalAfterUnview = (props) => {
                             <Form.Control
                               type="number"
                               placeholder="Telephone No"
-                              value={props.defaultData.contactNo}
+                              value={caseAllDetails?.contact_no}
                             />
                           </Form.Group>
                         </Col>
@@ -437,7 +482,7 @@ const ModalAfterUnview = (props) => {
                           <Form.Control
                             type="text"
                             placeholder="Address of Candidate(Full address)"
-                            value={props.defaultData.address}
+                            value={caseAllDetails.address}
                           />
                         </Form.Group>
                       </Row>
@@ -446,8 +491,8 @@ const ModalAfterUnview = (props) => {
                           <Form.Group className="mb-3">
                             <Form.Control
                               type="text"
-                              placeholder="Candidate City"
-                              value={props.defaultData.city}
+                              placeholder="Candidate State"
+                              value={caseAllDetails.state_name}
                             />
                           </Form.Group>
                         </Col>
@@ -456,7 +501,7 @@ const ModalAfterUnview = (props) => {
                             <Form.Control
                               type="text"
                               placeholder="Candidate District"
-                              value={props.defaultData.district}
+                              value={caseAllDetails?.district_name}
                             />
                           </Form.Group>
                         </Col>
@@ -464,8 +509,8 @@ const ModalAfterUnview = (props) => {
                           <Form.Group className="mb-3">
                             <Form.Control
                               type="text"
-                              placeholder="Candidate State"
-                              value={props.defaultData.state}
+                              placeholder="Candidate city"
+                              value={caseAllDetails?.city_name}
                             />
                           </Form.Group>
                         </Col>
@@ -474,7 +519,7 @@ const ModalAfterUnview = (props) => {
                             <Form.Control
                               type="text"
                               placeholder="Candidate Pin Code"
-                              value={props.defaultData.pincode}
+                              value={caseAllDetails?.pincode}
                             />
                           </Form.Group>
                         </Col>
@@ -504,6 +549,7 @@ const ModalAfterUnview = (props) => {
                                   return (
                                     <Form.Check
                                       inline
+                                      checked={updateCaseByAdmin?.statusVerification == radios.id}
                                       label={radios.label}
                                       value={radios.id}
                                       name={radios.name}
@@ -534,96 +580,102 @@ const ModalAfterUnview = (props) => {
                         <Row>
                           Building photo:
                           <div key={`inline-radio`}>
-                      {buildingPhoto.map((radios) => (
-                       <Form.Check
-                          inline
-                          label={radios.label}
-                          value={radios.value}
-                          type={radios.type}
-                          name={radios.name}
-                          onChange={(v) => {
-                            setUpdateCaseByAdmin({
-                              ...updateCaseByAdmin,
-                              ...{buildingPhotoStatus:v.target.value },
-                            });
-                          }}
-                        /> 
-                      ))}
-                        <Col>
-                        <Form.Control
-                              type="text"
-                              placeholder="If No,the Reason"
-                              onChange={(e) => {
+                            {buildingPhoto.map((radios) => (
+                              <Form.Check
+                                inline
+                                label={radios.label}
+                                checked={updateCaseByAdmin?.buildingPhotoStatus == radios.value}
+                                value={radios.value}
+                                type={radios.type}
+                                name={radios.name}
+                                onChange={(v) => {
                                   setUpdateCaseByAdmin({
                                     ...updateCaseByAdmin,
-                                    ...{buildingPhotoRemark:e.target.value}
-                                  })
-                              }}
-                            />
+                                    ...{ buildingPhotoStatus: v.target.value },
+                                  });
+                                }}
+                              />
+                            ))}
+                            <Col>
+                              <Form.Control
+                                type="text"
+                                value={updateCaseByAdmin?.buildingPhotoRemark}
+                                placeholder="If No,the Reason"
+                                onChange={(e) => {
+                                  setUpdateCaseByAdmin({
+                                    ...updateCaseByAdmin,
+                                    ...{ buildingPhotoRemark: e.target.value },
+                                  });
+                                }}
+                              />
                             </Col>
                           </div>
                         </Row>
                         <Row>
                           Address proof:
                           <div key={`inline-radio`}>
-                      {addressProof.map((radios) => (
-                       <Form.Check
-                          inline
-                          label={radios.label}
-                          value={radios.value}
-                          type={radios.type}
-                          name={radios.name}
-                          onChange={(v) => {
-                            setUpdateCaseByAdmin({
-                              ...updateCaseByAdmin,
-                              ...{addressProofStatus:v.target.value },
-                            });
-                          }}
-                        /> 
-                      ))}
-                        <Col>
-                        <Form.Control
-                              type="text"
-                              placeholder="If No,the Reason"
-                              onChange={(e) => {
+                            {addressProof.map((radios) => (
+                              <Form.Check
+                                inline
+                                checked={updateCaseByAdmin?.addressProofStatus == radios.value}
+                                label={radios.label}
+                                value={radios.value}
+                                type={radios.type}
+                                name={radios.name}
+                                onChange={(v) => {
                                   setUpdateCaseByAdmin({
                                     ...updateCaseByAdmin,
-                                    ...{addressProofRemark:e.target.value}
-                                  })
-                              }}
-                            />
+                                    ...{ addressProofStatus: v.target.value },
+                                  });
+                                }}
+                              />
+                            ))}
+                            <Col>
+                              <Form.Control
+                                type="text"
+                                value={updateCaseByAdmin?.addressProofRemark}
+                                placeholder="If No,the Reason"
+                                onChange={(e) => {
+                                  setUpdateCaseByAdmin({
+                                    ...updateCaseByAdmin,
+                                    ...{ addressProofRemark: e.target.value },
+                                  });
+                                }}
+                              />
                             </Col>
                           </div>
                         </Row>
                         <Row>
                           Landmark photo:
                           <div key={`inline-radio`}>
-                      {landmarkPhoto.map((radios) => (
-                       <Form.Check
-                          inline
-                          label={radios.label}
-                          value={radios.value}
-                          type={radios.type}
-                          name={radios.name}
-                          onChange={(v) => {
-                            setUpdateCaseByAdmin({
-                              ...updateCaseByAdmin,
-                              ...{landmarkPhotoStatus:v.target.value },
-                            });
-                          }}
-                        /> 
-                      ))}
-                        <Col>
-                        <Form.Control
-                              type="text"
-                              placeholder="If No,the Reason"
-                              onChange={(e) => {
+                            {landmarkPhoto.map((radios) => (
+                              <Form.Check
+                                inline
+                                checked={updateCaseByAdmin?.landmarkPhotoStatus == radios.value}
+                                label={radios.label}
+                                value={radios.value}
+                                type={radios.type}
+                                name={radios.name}
+                                onChange={(v) => {
                                   setUpdateCaseByAdmin({
                                     ...updateCaseByAdmin,
-                                    ...{landmarkPhotoRemark:e.target.value}
-                                  })
-                              }}
-                            />
+                                    ...{ landmarkPhotoStatus: v.target.value },
+                                  });
+                                }}
+                              />
+                            ))}
+                            <Col>
+                              <Form.Control
+                                type="text"
+                                value={updateCaseByAdmin?.landmarkPhotoRemark}
+                                placeholder="If No,the Reason"
+                                onChange={(e) => {
+                                  setUpdateCaseByAdmin({
+                                    ...updateCaseByAdmin,
+                                    ...{ landmarkPhotoRemark: e.target.value },
+                                  });
+                                }}
+                              />
                             </Col>
                           </div>
                         </Row>
@@ -631,58 +683,73 @@ const ModalAfterUnview = (props) => {
                         <br />
                         <Row>
                           <Col>
-                            <Form.Control type="date" disabled={checkedBirth} 
+                            <Form.Control
+                              type="date"
+                              value={updateCaseByAdmin.fromDate}
+                              disabled={updateCaseByAdmin?.birthCheckForm}
                               onChange={(e) => {
-                              setUpdateCaseByAdmin({ ...updateCaseByAdmin, ...{ fromDate: e.target.value } });
-                              }} />
-                          </Col>
-                          <Col>
-                            <Form.Check
-                              type="checkbox"
-                              label="By Birth"
-                              name=""
-                              checked={checkedBirth}
-                              onChange={() => {
-                                if (checkedBirth) {
-                                  setBirthDate("");
-                                }
-                                setCheckedBirth(!checkedBirth);
+                                setUpdateCaseByAdmin({
+                                  ...updateCaseByAdmin,
+                                  ...{ fromDate: e.target.value },
+                                });
                               }}
                             />
                           </Col>
                           <Col>
-                            <Form.Control type="date" disabled={checkedDate}
-                            onChange={(e)=>{
-                              setUpdateCaseByAdmin({ ...updateCaseByAdmin, ...{ toDate: e.target.value } });
-                            }} />
-                          </Col>
-                          <Col>
                             <Form.Check
-                              type="checkbox"
-                              label="Till Date"
-                              name=""
-                              checked={checkedDate}
-                              onChange={() => {
-                                if (checkedDate) {
-                                  setTillDate("");
-                                }
-                                setCheckedDate(!checkedDate);
+                              inline
+                              checked={updateCaseByAdmin?.birthCheckForm}
+                              label={"by_birth"}
+                              type={"checkbox"}
+                              name="by_birth"
+                              onChange={(v) => {
+                                setUpdateCaseByAdmin({
+                                  ...updateCaseByAdmin,
+                                  ...{ birthCheckForm: v.target.checked },
+                                });
                               }}
                             />
                           </Col>
-            <Row>
-              <p style={{ float: "right", color: "#20c997" }}>
-                From {updateCaseByAdmin.fromDate} To {updateCaseByAdmin.toDate}
-              </p>
-            </Row>
+                          <Col>
+              <Form.Control
+                type="date"
+                disabled={updateCaseByAdmin?.tillCheckForm}
+                value={updateCaseByAdmin.toDate}
+                onChange={(e) => {
+                  setUpdateCaseByAdmin({...updateCaseByAdmin, ...{ toDate: e.target.value } });
+                }}
+              />
+            </Col>
+            <Col>
+            <Form.Check
+                inline
+                checked={updateCaseByAdmin?.tillCheckForm}
+                label={'till_date'}
+                type={'checkbox'}
+                name='till_date'
+                onChange={(v) => {
+                  setUpdateCaseByAdmin({ ...updateCaseByAdmin, ...{ tillCheckForm: v.target.checked} });
+                }}
+              />
+            </Col>
+                          <Row>
+                            <p style={{ float: "right", color: "#20c997" }}>
+                              From {updateCaseByAdmin.fromDate} To
+                              {updateCaseByAdmin.toDate}
+                            </p>
+                          </Row>
                         </Row>
                         <br />
                         <Row>
                           <Form.Control
                             type="number"
                             placeholder="Contact No"
-                            onChange={(e)=>{
-                              setUpdateCaseByAdmin({...updateCaseByAdmin,...{contactNoRelative:e.target.value}})
+                            value={updateCaseByAdmin.contactNoRelative}
+                            onChange={(e) => {
+                              setUpdateCaseByAdmin({
+                                ...updateCaseByAdmin,
+                                ...{ contactNoRelative: e.target.value },
+                              });
                             }}
                           />
                         </Row>
@@ -690,90 +757,105 @@ const ModalAfterUnview = (props) => {
                         <Row> Verification Details: </Row>
                         <Row>
                           <Col>
-                            <Form.Control type="date" 
-                            onChange={(e)=>{
-                              setUpdateCaseByAdmin({...updateCaseByAdmin,...{verificationDate:e.target.value}})
-                            }}
+                            <Form.Control
+                              type="date"
+                              value={updateCaseByAdmin?.verificationDate}
+                              onChange={(e) => {
+                                setUpdateCaseByAdmin({
+                                  ...updateCaseByAdmin,
+                                  ...{ verificationDate: e.target.value },
+                                });
+                              }}
                             />
                           </Col>
                           <Col>
-                            <Form.Control type="time" 
-                            onChange={(e)=>{
-                              setUpdateCaseByAdmin({...updateCaseByAdmin,...{verificationTime:e.target.value}})
-                            }} />
+                            <Form.Control
+                              type="time"
+                              onChange={(e) => {
+                                setUpdateCaseByAdmin({
+                                  ...updateCaseByAdmin,
+                                  ...{ verificationTime: e.target.value },
+                                });
+                              }}
+                            />
                           </Col>
                         </Row>
                         <br />
                         <Row>Residence Status: </Row>
                         <Row>
-                        <div key={`inline-radio`}>
-                              {residenceStatusList
-                                .map((v) => {
-                                  let temp = { ...v };
-                                  temp.name = "residence_status";
-                                  temp.type = "radio";
-                                  return temp;
-                                })
-                                .map((radios) => {
-                                  return (
-                                    <Form.Check
-                                      inline
-                                      label={radios.label}
-                                      value={radios.id}
-                                      name={radios.name}
-                                      type={radios.type}
-                                      onChange={(v) => {
-                                        setUpdateCaseByAdmin({
-                                          ...updateCaseByAdmin,
-                                          ...{
-                                            residenceStatus: v.target.value,
-                                          },
-                                        });
-                                      }}
-                                    />
-                                  );
-                                })}
-                            </div>
+                          <div key={`inline-radio`}>
+                            {residenceStatusList
+                              .map((v) => {
+                                let temp = { ...v };
+                                temp.name = "residence_status";
+                                temp.type = "radio";
+                                return temp;
+                              })
+                              .map((radios) => {
+                                return (
+                                  <Form.Check
+                                    inline
+                                    label={radios.label}
+                                    checked={updateCaseByAdmin?.residenceStatus == radios.id}
+                                    value={radios.id}
+                                    name={radios.name}
+                                    type={radios.type}
+                                    onChange={(v) => {
+                                      setUpdateCaseByAdmin({
+                                        ...updateCaseByAdmin,
+                                        ...{
+                                          residenceStatus: v.target.value,
+                                        },
+                                      });
+                                    }}
+                                  />
+                                );
+                              })}
+                          </div>
                           <Col></Col>
-                          
                         </Row>
                         <Row>Residence Type: </Row>
                         <Row>
-                        <div key={`inline-radio`}>
-                              {residenceTypeList
-                                .map((v) => {
-                                  let temp = { ...v };
-                                  temp.name = "residence_type";
-                                  temp.type = "radio";
-                                  return temp;
-                                })
-                                .map((radios) => {
-                                  return (
-                                    <Form.Check
-                                      inline
-                                      label={radios.label}
-                                      value={radios.id}
-                                      name={radios.name}
-                                      type={radios.type}
-                                      onChange={(v) => {
-                                        setUpdateCaseByAdmin({
-                                          ...updateCaseByAdmin,
-                                          ...{
-                                            residenceType: v.target.value,
-                                          },
-                                        });
-                                      }}
-                                    />
-                                  );
-                                })}
-                            </div>
-                        </Row> 
+                          <div key={`inline-radio`}>
+                            {residenceTypeList
+                              .map((v) => {
+                                let temp = { ...v };
+                                temp.name = "residence_type";
+                                temp.type = "radio";
+                                return temp;
+                              })
+                              .map((radios) => {
+                                return (
+                                  <Form.Check
+                                    inline
+                                    label={radios.label}
+                                    checked={updateCaseByAdmin?.residenceType == radios.id}
+                                    value={radios.id}
+                                    name={radios.name}
+                                    type={radios.type}
+                                    onChange={(v) => {
+                                      setUpdateCaseByAdmin({
+                                        ...updateCaseByAdmin,
+                                        ...{
+                                          residenceType: v.target.value,
+                                        },
+                                      });
+                                    }}
+                                  />
+                                );
+                              })}
+                          </div>
+                        </Row>
                         <Row>
                           <Form.Control
                             type="text"
+                            value={updateCaseByAdmin?.verifyByRespondent }
                             placeholder="Verified By (Name of Respondent) "
-                            onChange={(e)=>{
-                              setUpdateCaseByAdmin({...updateCaseByAdmin,...{verifyByRespondent:e.target.value}})
+                            onChange={(e) => {
+                              setUpdateCaseByAdmin({
+                                ...updateCaseByAdmin,
+                                ...{ verifyByRespondent: e.target.value },
+                              });
                             }}
                           />
                         </Row>
@@ -781,9 +863,13 @@ const ModalAfterUnview = (props) => {
                         <Row>
                           <Form.Control
                             type="text"
+                            value={updateCaseByAdmin?.relationWithCandidate }
                             placeholder="Relation with the Candidate"
-                            onChange={(e)=>{
-                              setUpdateCaseByAdmin({...updateCaseByAdmin,...{relationWithCandidate:e.target.value}})
+                            onChange={(e) => {
+                              setUpdateCaseByAdmin({
+                                ...updateCaseByAdmin,
+                                ...{ relationWithCandidate: e.target.value },
+                              });
                             }}
                           />
                         </Row>
@@ -791,11 +877,18 @@ const ModalAfterUnview = (props) => {
                         <Row>
                           <Form.Control
                             type="text"
+                            value={updateCaseByAdmin?.nearLandmark}
                             placeholder="Nearrest Landmark"
-                            onChange={(e)=>{
-                              console.log({...updateCaseByAdmin,...{nearLandmark:e.target.value}})
-                              setUpdateCaseByAdmin({...updateCaseByAdmin,...{nearLandmark:e.target.value}})
-                            }} 
+                            onChange={(e) => {
+                              console.log({
+                                ...updateCaseByAdmin,
+                                ...{ nearLandmark: e.target.value },
+                              });
+                              setUpdateCaseByAdmin({
+                                ...updateCaseByAdmin,
+                                ...{ nearLandmark: e.target.value },
+                              });
+                            }}
                           />
                         </Row>
                         <br />
@@ -814,6 +907,7 @@ const ModalAfterUnview = (props) => {
                   <Row style={{ padding: "15px 20px 15px 20px" }}>
                     <Form.Control
                       as="textarea"
+                      value={caseAllDetails?.additional_remark_json}
                       placeholder="Remark if any"
                       onChange={(e) => {
                         setUpdateCaseByAdmin({
@@ -834,6 +928,10 @@ const ModalAfterUnview = (props) => {
                       {verificationRemark.map((radios) => (
                         <Form.Check
                           inline
+                          checked={
+                            updateCaseByAdmin?.verificationRemarkForm ==
+                            radios.value
+                          }
                           label={radios.label}
                           value={radios.value}
                           type={radios.type}
@@ -841,7 +939,7 @@ const ModalAfterUnview = (props) => {
                           onChange={(v) => {
                             setUpdateCaseByAdmin({
                               ...updateCaseByAdmin,
-                              ...{ verificationRemark: v.target.value },
+                              ...{ verificationRemarkForm: v.target.value },
                             });
                           }}
                         />
@@ -850,7 +948,8 @@ const ModalAfterUnview = (props) => {
                         {
                           [...verificationRemark].find(
                             (d) =>
-                              updateCaseByAdmin.verificationRemark == d.value
+                              updateCaseByAdmin.verificationRemarkForm ==
+                              d.value
                           )?.label
                         }
                       </p>
@@ -858,25 +957,6 @@ const ModalAfterUnview = (props) => {
                     <br />
                   </Form>
                 </div>
-                {/* <div style={{ border: "1px solid gray" }}>
-                  <br />
-                  <Row style={{ padding: "10px 10px 10px 10px" }}>
-                    <Col sm="8">
-                      <Form.Control
-                        type="text"
-                        placeholder="Field Agent Name"
-                        onChange={(e) => {
-                          setUpdateCaseByAdmin({
-                            ...updateCaseByAdmin,
-                            ...{ FE: e.target.value },
-                          });
-                        }}
-                      />
-                    </Col>
-                    <Col></Col>
-                  </Row>
-                  <br />
-                </div> */}
                 <br />
                 <div>
                   <Row>
@@ -944,7 +1024,7 @@ const ModalAfterUnview = (props) => {
               <div>
                 <Button
                   variant="info"
-                  onClick={() => props.onSubmit(employeeRadio)}
+                  onClick={() => props.onSubmit(updateCaseByAdmin)}
                 >
                   Update
                 </Button>

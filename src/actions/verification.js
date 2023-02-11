@@ -164,23 +164,13 @@ export const verificationSlice = createSlice({
             district:item.district_name,
             state:item.state_name, 
             pincode:item.pincode,
-            // EMP:item.assigned_to_name,
-            // FE:item.assigned_by_name, 
             landmark:item.location,
             resumeId:item.resume_id,
             durationEnd:item.duration_end,
             durationStart:item.duration_start,
             email:item.email,
-            // assignedTo:item?.assigned_to_name,
-            // assignedBy:item.assigned_by_name,
             clientName:item.client_name ,
             status:item.label,
-            // audit_call_done:item.audit_call_done,
-            // audit_call_done_remark:item.audit_call_done_remark,
-            // audit_call_status:item.audit_call_status,
-            // audit_call_status_remark:item.audit_call_status_remark,
-            // audit_case_status_id:item.audit_case_status_label,
-            // audit_case_status_remark:item.audit_case_status_remark,
           };
           return tmpData;
         })    

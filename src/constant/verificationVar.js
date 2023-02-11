@@ -1,6 +1,5 @@
 export const verificationModalVarData=[
     {
-        // checkPriority:""
         id:"",
         checkId:"",
         companyId:"", 
@@ -20,12 +19,6 @@ export const verificationModalVarData=[
         clientName:"", 
         resumeId:"",
         landmark:"",
-        // auditCallDone: "",
-        // audit_call_done_remark:"",
-        // audit_call_status: "",
-        // audit_call_status_remark:"",
-        // audit_case_status_id:"" ,
-        // audit_case_status_remark:"",
         status:"",
         remark:"",
         durationStart:"",

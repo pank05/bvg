@@ -1,7 +1,6 @@
 import { Container, Row, Col, Form } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { updateRadioClickModal } from "../constant/afterVerification";
 import { getStatusList } from "../actions/status";
 
 const AddressFound = (props) => {  
@@ -27,10 +26,6 @@ const AddressFound = (props) => {
       type: "radio",
     },
   ]);
-  const [formChecked, setFormChecked] = useState(false);
-  const [fotmDate, setFormDate] = useState();
-  const [toChecked, setToChecked] = useState(false);
-  const [toDate, setToDate] = useState();
 
   useEffect(() => {
     setVerifiedByList(
@@ -244,7 +239,7 @@ const AddressFound = (props) => {
               <Form.Control
                 type="date"
                 value={props.updateAddressVerification.fromDate}
-                disabled={formChecked}
+                disabled={props.updateAddressVerification?.birthCheckForm}
                 onChange={(e) => {
                   props.setUpdateAddressVerification({ ...props.updateAddressVerification, ...{ fromDate: e.target.value } });
                 }}
@@ -252,22 +247,20 @@ const AddressFound = (props) => {
             </Col>
             <Col>
               <Form.Check
-                type="checkbox"
-                label="By Birth"
-                checked={formChecked}
-                value={props.updateAddressVerification?.formChecked}
-                onChange={() => {
-                  if (formChecked) {
-                    setFormDate("");
-                  }
-                  setFormChecked(!formChecked);
+                inline
+                checked={props.updateAddressVerification?.birthCheckForm}
+                label={'by_birth'}
+                type={'checkbox'}
+                name='by_birth'
+                onChange={(v) => {
+                  props.setUpdateAddressVerification({ ...props.updateAddressVerification, ...{ birthCheckForm: v.target.checked} });
                 }}
               />
             </Col>
             <Col>
               <Form.Control
                 type="date"
-                disabled={toChecked}
+                disabled={props.updateAddressVerification?.tillCheckForm}
                 value={props.updateAddressVerification.toDate}
                 onChange={(e) => {
                   props.setUpdateAddressVerification({ ...props.updateAddressVerification, ...{ toDate: e.target.value } });
@@ -275,23 +268,22 @@ const AddressFound = (props) => {
               />
             </Col>
             <Col>
-              <Form.Check
-                type="checkbox"
-                label="Till Date"
-                name=""
-                value={props.updateAddressVerification?.toChecked}
-                checked={toChecked}
-                onChange={() => {
-                  if (toChecked) {
-                    setToDate("");
-                  }
-                  setToChecked(!toChecked);
+            <Form.Check
+                inline
+                checked={props.updateAddressVerification?.tillCheckForm}
+                label={'till_date'}
+                type={'checkbox'}
+                name='till_date'
+                onChange={(v) => {
+                  props.setUpdateAddressVerification({ ...props.updateAddressVerification, ...{ tillCheckForm: v.target.checked} });
                 }}
               />
             </Col>
             <Col>
               <p style={{ float: "right", color: "#20c997" }}>
-                From {props.updateAddressVerification.fromDate} To {props.updateAddressVerification.toDate}
+                From {props.updateAddressVerification.fromDate}
+                          &nbsp;    To  &nbsp;
+                {props.updateAddressVerification.toDate}
               </p>
             </Col>
           </Row>

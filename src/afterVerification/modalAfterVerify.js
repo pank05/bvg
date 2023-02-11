@@ -21,7 +21,6 @@ import AddressNotFound from "./addressNotFoundAfterVerify";
 import { useSelector, useDispatch } from "react-redux";
 import { useRef } from "react";
 import { getStatusList } from "../actions/status";
-import { verificationModalVarData } from "../constant/verificationVar";
 import {editRadioClickModal} from "../constant/afterVerification"
 import { checkUserHasRole } from "../utility/validation";
 import {updateSignatureURL} from "../actions/fieldexctive";
@@ -164,7 +163,13 @@ const ModalAfterVerify = (props) => {
         reasonNotFound:caseAllDetails?.verification_reason_id,
         nearLandmark:caseAllDetails?.is_landmark,
         candidateState:caseAllDetails?.state_name,
-        additionalRemark:caseAllDetails
+        additionalRemark:caseAllDetails?.is_id_proof,
+        additionalRemarkByFEForm:caseAllDetails?.additional_remark_json,
+        verificationDoneDate:caseAllDetails?.verification_date,
+        FE:caseAllDetails?.assigned_to_name,
+        verificationRemarkByFE:caseAllDetails?.type_id,
+        birthCheckForm:caseAllDetails?.is_by_birth,
+        tillCheckForm:caseAllDetails?.is_till_date
         },
       });
       if(caseAllDetails?.is_present_name === 'address_found'){
@@ -846,15 +851,15 @@ console.log("record",record)
                             controlId="floatingTextarea"
                             label="positive"
                             className="mb-3"
-                            value={updateAddressVerification}
                           >
-                            <Form.Control
+                          <Form.Control
+                             value={updateAddressVerification?.additionalRemarkByFEForm}
                               as="textarea"
                               placeholder="Remark if any"
                               onChange={(e) => {
                                 setUpdateAddressVerification({
                                   ...updateAddressVerification,
-                                  ...{ additionalRemarkByFE: e.target.value },
+                                  ...{ additionalRemarkByFEForm: e.target.value },
                                 });
                               }}
                             />
@@ -885,11 +890,13 @@ console.log("record",record)
                             {verificationRemark.map((radios) => (
                               <Form.Check
                                 inline
+                                checked={updateAddressVerification?.verificationRemarkByFE == radios.value}
                                 label={radios.label}
                                 value={radios.value}
                                 type={radios.type}
                                 name={radios.name}
                                 onChange={(v) => {
+                                  console.log({verificationRemarkByFE: v.target.value})
                                   setUpdateAddressVerification({
                                     ...updateAddressVerification,
                                     ...{
@@ -908,30 +915,11 @@ console.log("record",record)
                                 )?.label
                               }
                             </p>
-                          </div>
-                          <FloatingLabel
-                            controlId="floatingTextarea"
-                            className="mb-3"
-                          >
-                            {/* <Form.Select
-                          aria-label="select FE"
-                          onChange={(e) => {
-                            setUpdateAddressVerification({
-                              ...updateAddressVerification,
-                              ...{ FE: e.target.value },
-                            });
-                          }}
-                        >
-                          <option>Select fieldExecutive</option>
-                          {fieldExecutive.map((FEList) => {
-                            return (
-                              <option value={FEList.id}>{FEList.name}</option>
-                            );
-                          })}
-                        </Form.Select> */}
+                          </div><br/>
                           <Form.Control
                               type="text"
                               placeholder="FE Name"
+                              value={updateAddressVerification?.FE}
                               onChange={(e) => {
                                 setUpdateAddressVerification({
                                   ...updateAddressVerification,
@@ -942,6 +930,7 @@ console.log("record",record)
                             <br />
                             <Form.Control
                               type="date"
+                              value={updateAddressVerification?.verificationDoneDate}
                               placeholder="verification date"
                               onChange={(e) => {
                                 setUpdateAddressVerification({
@@ -950,7 +939,6 @@ console.log("record",record)
                                 });
                               }}
                             />
-                          </FloatingLabel>
                         </div>
                       </Accordion.Body>
                     </Accordion.Item>
@@ -971,7 +959,6 @@ console.log("record",record)
                               }}
                             />
                           )}
-                          {/* <label> FE Signature</label> */}
                           <br />
                         </Card>
                         <input
@@ -1003,7 +990,6 @@ console.log("record",record)
                               }}
                             />
                           )}
-                          {/* <label>Responder Signature</label> */}
                           <br />
                         </Card>
                         <input
