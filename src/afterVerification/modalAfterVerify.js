@@ -31,6 +31,7 @@ const ModalAfterVerify = (props) => {
   const caseAllDetails=useSelector((state) => state?.verification?.caseDetails);
   const statusOption = useSelector((state) => state?.status?.list);
   const fieldExecutive = useSelector((state) => state?.field?.list || []);
+  const caseHistoryDetails =useSelector((state)=> state?.verification?.caseHistory);
 
   const statusList = useSelector((state) => state?.status?.list || []).map(
     (states) => {
@@ -397,6 +398,16 @@ console.log("record",record)
                       </Accordion.Header>
                       <Accordion.Body>
                         <Container>
+                        {caseHistoryDetails.map((v)=>{
+                        return <Row>
+                          <Col><b>{v.name} </b>  </Col>
+                          <Col>{v.username}</Col>
+                          <Col>{v.created} </Col>
+                          <Col> {v.remark}</Col>
+                          </Row>
+                      })}
+                        </Container>
+                        {/* <Container>
                           <Row>
                             <Col>
                               <b className="found_size_for_text">
@@ -454,7 +465,7 @@ console.log("record",record)
                               Review
                             </Col>
                           </Row>
-                        </Container>
+                        </Container> */}
                       </Accordion.Body>
                     </Accordion.Item>
                     <Accordion.Item eventKey="2">

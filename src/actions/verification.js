@@ -4,28 +4,7 @@ import axios from 'axios';
 export const postAddCaseAPI = createAsyncThunk(
   'postAddCaseAPI',
   async (data)=>{
-    let addData = {
-            company_id:data.companyId,
-            check_id:data.checkId,
-            candidate_name:data.candidateName,
-            father_name:data.fatherName,
-            contact_no:data.contactNo,
-            alternate_no:data.alternateNo,
-            city_id:data.city,
-            client_name:data.clientName,
-            state_id:data.state,
-            verification_type:data.verificationType,
-            pincode:data.pincode,
-            address:data.address,
-            district_id:data.district,
-            // duration_end:data.duration,
-            // EMP:data.latest_version,
-            // FE:data.latest_version,
-            location:data.landmark,
-            resume_id:data.resumeId,
-            duration_start:(new Date),
-  };
-    const response = await axios.post('/cases/create',addData,{
+    const response = await axios.post('/cases/create',data,{
       headers:{
         Authorization : `Bearer ${localStorage.getItem('_token') }`
       }});
@@ -49,6 +28,18 @@ export const getAllCaseAPI = createAsyncThunk(
     'getCaseDataById',
     async (id) => {
     const response  =  await axios.get(`/cases/${id}`,
+    {
+      headers:{
+      Authorization : `Bearer ${localStorage.getItem('_token') }`
+    }
+  });
+       return response.data;
+  })
+
+  export const getCaseHistoryById = createAsyncThunk(
+    'getCaseHistoryById',
+    async (id) => {
+    const response  =  await axios.get(`/verification/history/${id}`,
     {
       headers:{
       Authorization : `Bearer ${localStorage.getItem('_token') }`
@@ -123,7 +114,8 @@ export const verificationSlice = createSlice({
     districtList:[],
     cityList:[],
     currentCase:{},
-    caseDetails:{}
+    caseDetails:{},
+    caseHistory:[]
   },
   reducers: {
 
@@ -138,6 +130,11 @@ export const verificationSlice = createSlice({
         const users = state.list;
         users.splice(index, 1);
         data.payload=(users);
+      })
+
+      builder.addCase(getCaseHistoryById.fulfilled,(state,action)=>{
+        console.log("action ",action.payload)
+        state.caseHistory = action.payload;
       })
 
       builder.addCase(getCaseDataById.fulfilled, (state, action) =>{

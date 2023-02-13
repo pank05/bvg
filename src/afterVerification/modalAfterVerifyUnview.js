@@ -17,10 +17,9 @@ import { getStatusList } from "../actions/status";
 const ModalAfterUnview = (props) => {
   const [unview, setUnview] = useState();
   const userDetails = useSelector((state) => state?.user?.userProfile);
-  const caseAllDetails = useSelector(
-    (state) => state?.verification?.caseDetails
-  );
+  const caseAllDetails = useSelector((state) => state?.verification?.caseDetails);
   const statusOption = useSelector((state) => state?.status?.list);
+  const caseHistoryDetails =useSelector((state)=> state?.verification?.caseHistory);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -44,10 +43,14 @@ const ModalAfterUnview = (props) => {
           nearLandmark:caseAllDetails?.location,
           statusVerification:caseAllDetails?.status_of_verification,
           buildingPhotoStatus:caseAllDetails?.building_photo,
-          addressProof:caseAllDetails?.address_proof,
+          addressProofStatus:caseAllDetails?.address_proof,
           landmarkPhotoStatus:caseAllDetails?.landmark_photo,
           residenceStatus:caseAllDetails?.verification_residence_status ,
-          residenceType:caseAllDetails?.verification_residence_type
+          residenceType:caseAllDetails?.verification_residence_type,
+          verificationTime:caseAllDetails?.verification_time,
+          buildingPhotoRemark:caseAllDetails?.building_photo_remark,
+          addressProofRemark:caseAllDetails?.address_proof_remark,
+          landmarkPhotoRemark:caseAllDetails?.landmark_photo_remark,
         },
       });
     }
@@ -292,6 +295,16 @@ const ModalAfterUnview = (props) => {
                     </Accordion.Header>
                     <Accordion.Body>
                       <Container>
+                      {caseHistoryDetails.map((v)=>{
+                        return <Row>
+                          <Col><b>{v.name} </b>  </Col>
+                          <Col>{v.username}</Col>
+                          <Col>{v.created} </Col>
+                          <Col> {v.remark}</Col>
+                          </Row>
+                      })}
+                      </Container>
+                      {/* <Container>
                         <Row>
                           <Col>
                             <b className="found_size_for_text">
@@ -364,7 +377,7 @@ const ModalAfterUnview = (props) => {
                             close
                           </Col>
                         </Row>
-                      </Container>
+                      </Container> */}
                     </Accordion.Body>
                   </Accordion.Item>
                   <Accordion.Item eventKey="2">
@@ -771,6 +784,7 @@ const ModalAfterUnview = (props) => {
                           <Col>
                             <Form.Control
                               type="time"
+                              value={updateCaseByAdmin?.verificationTime}
                               onChange={(e) => {
                                 setUpdateCaseByAdmin({
                                   ...updateCaseByAdmin,

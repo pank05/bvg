@@ -58,7 +58,30 @@ const VerificationList_Page=(para)=>{
                      }
 
                  const handleAddSave =(data)=>{
-                     dispatch(postAddCaseAPI(data)).then(()=>{
+                    let caseData= {
+                        company_id:data.companyId,
+            check_id:data.checkId,
+            candidate_name:data.candidateName,
+            father_name:data.fatherName,
+            contact_no:data.contactNo,
+            alternate_no:data.alternateNo,
+            city_id:data.city,
+            client_name:data.clientName,
+            state_id:data.state,
+            verification_type:data.verificationType,
+            pincode:data.pincode,
+            address:data.address,
+            district_id:data.district,
+            location:data.landmark,
+            resume_id:data.resumeId,
+            duration_start:(new Date),
+            // caseHistory:{
+            //   assigned_to:data?.assignedTo ,
+            //   assigned_by:data?.assignedBy
+            // }
+                    }
+                    console.log("data",caseData)
+                     dispatch(postAddCaseAPI(caseData)).then(()=>{
                      dispatch(getAllCaseAPI({id:'all'}));
                      });
                      setShow(false);
