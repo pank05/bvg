@@ -74,7 +74,7 @@ export const getAllCaseAPI = createAsyncThunk(
     export const getDistrictById = createAsyncThunk(
       'getDistrictById',
       async (id,data) => {
-      const response  =  await axios.get(`/state/district/${id}`,data,{
+      const response  =  await axios.get(`/state/district/${id}`,{
         headers:{
         Authorization : `Bearer ${localStorage.getItem('_token') }`
       }
@@ -86,7 +86,7 @@ export const getAllCaseAPI = createAsyncThunk(
       'getCityBySearch',
       async (filter) => {
         let urlParam = filter.name ? `?name=${filter.name}` : '';
-      const response  =  await axios.get(`state/city/${filter.id}${urlParam}`,{},{
+      const response  =  await axios.get(`state/city/${filter.id}${urlParam}`,{
         headers:{
         Authorization : `Bearer ${localStorage.getItem('_token') }`
       }
@@ -98,9 +98,9 @@ export const getAllStates = createAsyncThunk(
       'getAllStates',
       async (id) => {
         const response  =  await axios.get(`state/list/${id}`,{
-              headers: {
-                Authorization : `Bearer ${localStorage.getItem('_token') }`
-              }
+          headers:{
+            Authorization : `Bearer ${localStorage.getItem('_token') }`
+          }
              });
              return response.data;
       } )

@@ -11,23 +11,20 @@ const Withdraw=()=>{
     
     const withdraws = useSelector(state=> state?.verification?.list || []);
     const userProfile = useSelector((state) => state?.user?.userProfile);
-    const [withdrawList,setWithdraw]=useState([]);
+    const [withdrawList,setWithdrawList]=useState([]);
     const dispatch = useDispatch();
 
-    // useEffect(()=>{
-    //     dispatch(getAllCaseAPI({id:'all',status: ['withdraw']}));
-    // },[])
     useEffect(() => {
         dispatch(
           getAllCaseAPI({
             id: "all",
-            status: ["withdraw"],
+            status: ["withdraw","rejected_by_employee"],
           })
         );
       }, []);
 
     useEffect(()=>{
-       setWithdraw(withdraws)
+        setWithdrawList(withdraws)
     },[withdraws])
 
     const[withdrawData,setWithdrawData] = useState({});
@@ -39,7 +36,7 @@ const Withdraw=()=>{
 
     const handleSaveAssign=(data)=>{
          let updateRecords =[...withdrawList].map((record)=>{
-            let temp = {...record};
+            let temp = {...record}
             temp.duration_end = data.durationEnd;
             temp.status= "under_employee"
             temp.caseHistory = {
@@ -50,8 +47,9 @@ const Withdraw=()=>{
           return temp;
          });
     updateRecords.forEach((record)=>{
+        console.log("record",record)
          dispatch(updateCaseById(record)).then(()=>{
-         dispatch(getAllCaseAPI({id:'all',status: ['withdraw']}));
+         dispatch(getAllCaseAPI({id:'all',status: ['withdraw',"rejected_by_employee"]}));
         });
      });
         setIsOpenModal(false)
@@ -86,14 +84,14 @@ const Withdraw=()=>{
             resume_id:data.resumeId,
             duration_start:data.durationStart
             })).then(()=>{ 
-            dispatch(getAllCaseAPI({id:'all',status: ['withdraw']}));
+            dispatch(getAllCaseAPI({id:'all',status: ['withdraw',"rejected_by_employee"]}));
         });
         setShow(false)
     }
 
     const handlewithdrawcaseDelete=(id)=>{
             dispatch(deleteCaseDataById(id)).then(()=>{
-            dispatch(getAllCaseAPI({id:'all',status: ['withdraw']}));
+            dispatch(getAllCaseAPI({id:'all',status: ['withdraw',"rejected_by_employee"]}));
             });
         setShow(!show)
     }
@@ -102,11 +100,12 @@ const Withdraw=()=>{
         console.log(withdrawData)
         setWithdrawData(withdrawData);
      }
+
     return(
         <Container>
             <div>  <h1>Withdraw Verification List</h1>
             <Button variant="info" className='Button_assing' disabled={!(withdrawData.length >0)}
-                     onClick={()=>handleAssignEmployee()}  >
+                     onClick={()=>handleAssignEmployee(withdrawData)}  >
                   Assign </Button>
                   </div><br/> 
                 <div  className="icon-aline"  >

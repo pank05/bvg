@@ -28,6 +28,7 @@ import DashboardFEScreen from './dashboardFEScreen';
 import AssignToFEScreen from './assign/assignToFEScreen';
 import AssignFEToOtherScreen from './assign/assignFEToOthers';
 import VerificationByFieldExective from './afterVerification/afterVerificationByFieldExective';
+import VerificationByEmployee from './afterVerification/afterVerificationByEmployee';
 
 function App() {
   const dispatch=useDispatch();
@@ -58,7 +59,7 @@ function App() {
       return <>
         <Route path="Dashboard" element={withHeader(<DashboardEmployeeScreen />)}/>
         <Route path="VerificationList-Page" element={withHeader(<VerificationList_Page />)}/>
-        <Route path="AfterVerification" element={withHeader(<AfterVerification />)}/>
+        <Route path="verificationByEmp" element={withHeader(<VerificationByEmployee />)}/>
        <Route path="VerificationStatus" element={withHeader(<VerificationStatus />)}/>
        <Route path="AssignToFE" element={withHeader(<AssignToFEScreen />)}/>
       </>

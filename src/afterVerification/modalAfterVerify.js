@@ -6,6 +6,7 @@ import {
   Container,
   Row,
   Col,
+  Table,
   Form,
   FloatingLabel,
   Card,
@@ -24,13 +25,13 @@ import { getStatusList } from "../actions/status";
 import {editRadioClickModal} from "../constant/afterVerification"
 import { checkUserHasRole } from "../utility/validation";
 import {updateSignatureURL} from "../actions/fieldexctive";
+import moment from "moment";
 
 const ModalAfterVerify = (props) => {
   const [verifyData, setVerifyData] = useState(editRadioClickModal);
   const userDetails = useSelector((state) => state?.user?.userProfile);
   const caseAllDetails=useSelector((state) => state?.verification?.caseDetails);
   const statusOption = useSelector((state) => state?.status?.list);
-  const fieldExecutive = useSelector((state) => state?.field?.list || []);
   const caseHistoryDetails =useSelector((state)=> state?.verification?.caseHistory);
 
   const statusList = useSelector((state) => state?.status?.list || []).map(
@@ -73,7 +74,7 @@ const ModalAfterVerify = (props) => {
       type: "radio",
     },
   ]);
-  const [auditCallDone, setAuditCallDone] = useState([
+  const [auditCallDoneList, setAuditCallDoneList] = useState([
     {
       id: 1,
       label: "Yes",
@@ -146,10 +147,25 @@ const ModalAfterVerify = (props) => {
   // set default value
   useEffect(()=>{
     if(caseAllDetails && caseAllDetails.id){
+      setVerifyData({
+        ...verifyData,
+        ...{
+              auditCallDone:caseAllDetails?.audit_call_done,
+              auditCallDoneRemark:caseAllDetails?.audit_call_done_remark,
+              auditCallStatus:caseAllDetails?.audit_call_status,
+              auditCallStatusRemark:caseAllDetails?.audit_call_status_remark,
+              auditCaseStatusId:caseAllDetails?.audit_case_status_id,
+              auditCaseStatusRemark:caseAllDetails?.audit_case_status_label,
+              id:caseAllDetails.id
+
+        }})
+    }
+
+    if(caseAllDetails && caseAllDetails.id){
         setUpdateAddressVerification({
         ...updateAddressVerification,
         ...{ 
-          address: caseAllDetails.is_present,
+          address: caseAllDetails?.is_present,
           verifyBy:caseAllDetails?.verified_by_id,
           relationType:caseAllDetails?.responder_relation_id,
           relationTypeMeetPerson:caseAllDetails?.person_name,
@@ -170,14 +186,15 @@ const ModalAfterVerify = (props) => {
         FE:caseAllDetails?.assigned_to_name,
         verificationRemarkByFE:caseAllDetails?.type_id,
         birthCheckForm:caseAllDetails?.is_by_birth,
-        tillCheckForm:caseAllDetails?.is_till_date
+        tillCheckForm:caseAllDetails?.is_till_date,
+        id:caseAllDetails.id
+
         },
       });
       if(caseAllDetails?.is_present_name === 'address_found'){
         setAddressChange(true);
       }
     }
-    
   },[caseAllDetails])
 
   const [addressList, setAddressList] = useState([]);
@@ -277,9 +294,6 @@ console.log("record",record)
     );
   }, []);
 
-  useEffect(() => {
-    setVerifyData({ ...verifyData, ...props.defaultData });
-  }, [props.defaultData]);
 
   const [updateAddressVerification, setUpdateAddressVerification] = useState(updateRadioClickModal);
 
@@ -398,74 +412,30 @@ console.log("record",record)
                       </Accordion.Header>
                       <Accordion.Body>
                         <Container>
+                        <Table  bordered  responsive>
+                          <thead>
+                            <tr>
+                              <th> Label</th>
+                              <th>Assigned To</th>
+                              <th>Assigned By</th>
+                              <th> Date</th>
+                              <th>Remark</th>
+                            </tr>
+                          </thead>
                         {caseHistoryDetails.map((v)=>{
-                        return <Row>
-                          <Col><b>{v.name} </b>  </Col>
-                          <Col>{v.username}</Col>
-                          <Col>{v.created} </Col>
-                          <Col> {v.remark}</Col>
-                          </Row>
+                          return  <tbody>
+                            <tr>
+                              <td>{v.name}</td>
+                              <td>{v.assigned_to_name}</td>
+                              <td>{v.assigned_by_name}</td>
+                              <td>{moment(v.created).format("MMMM Do YYYY")}</td>
+                              <td> {v.remark}</td>
+                            </tr>
+                           
+                          </tbody>
                       })}
+                       </Table>
                         </Container>
-                        {/* <Container>
-                          <Row>
-                            <Col>
-                              <b className="found_size_for_text">
-                                ApplicationCreated :
-                              </b>
-                              {userDetails.username} (
-                              {userDetails?.roles?.map((v) => v.label)}) <br />
-                            </Col>
-                            <Col>--Date-- </Col>
-                          </Row>
-                          <Row>
-                            <Col>
-                              <b className="found_size_for_text">ASSIGNED :</b>
-                              {userDetails.username} (
-                              {userDetails?.roles?.map((v) => v.label)}) <br />
-                            </Col>
-                            <Col>--Date-- </Col>
-                          </Row>
-                          <Row>
-                            <Col>
-                              <b className="found_size_for_text">ACCEPTED:</b>
-                              {props.defaultData.EMP} <br />
-                            </Col>
-                            <Col>--Date-- </Col>
-                          </Row>
-                          <Row>
-                            <Col>
-                              <b className="found_size_for_text">SENT_TO_FE:</b>
-                              {props.defaultData.EMP} <br />
-                            </Col>
-                            <Col>--Date-- </Col>
-                          </Row>
-                          <Row>
-                            <Col>
-                              <b className="found_size_for_text">
-                                VERIF_DONE_BY_FE:
-                              </b>
-                              {props.defaultData.FE} <br />
-                            </Col>
-                            <Col>--Date-- </Col>
-                          </Row>
-                          <Row>
-                            <Col>
-                              <b className="found_size_for_text">
-                                EMP_COMPL_UNRE:
-                              </b>
-                              {props.defaultData.EMP} <br />
-                            </Col>
-                            <Col>--Date-- </Col>
-                          </Row>
-                          <Row>
-                            <Col> </Col>
-                            <Col>
-                              Completed IN TAT by Employee pending for admin
-                              Review
-                            </Col>
-                          </Row>
-                        </Container> */}
                       </Accordion.Body>
                     </Accordion.Item>
                     <Accordion.Item eventKey="2">
@@ -476,9 +446,10 @@ console.log("record",record)
                             <Col>Audit Call Done : </Col>
                             <Col>
                               <div key={`inline-radio`}>
-                                {auditCallDone.map((radios) => (
+                                {auditCallDoneList.map((radios) => (
                                   <Form.Check
                                     inline
+                                    checked={verifyData?.auditCallDone  == radios.id}
                                     label={radios.label}
                                     value={radios.id}
                                     type={radios.type}
@@ -494,6 +465,7 @@ console.log("record",record)
                                 <Form.Control
                                   type="text"
                                   placeholder="Remark If call not done "
+                                  value={verifyData.auditCallDoneRemark}
                                   onChange={(v) =>
                                     setVerifyData({
                                       ...verifyData,
@@ -514,6 +486,7 @@ console.log("record",record)
                                 {auditcallStatus.map((radios) => (
                                   <Form.Check
                                     inline
+                                    checked={verifyData?.auditCallStatus == radios.id}
                                     label={radios.label}
                                     value={radios.id}
                                     type={radios.type}
@@ -530,6 +503,7 @@ console.log("record",record)
                                 ))}
                                 <Form.Control
                                   type="text"
+                                  value={verifyData?.auditCallStatusRemark}
                                   placeholder="Remark If call not done "
                                   onChange={(v) =>
                                     setVerifyData({
@@ -565,6 +539,7 @@ console.log("record",record)
                                     return (
                                       <Form.Check
                                         inline
+                                        checked={verifyData?.auditCaseStatusId == radios.id}
                                         label={radios.label}
                                         value={radios.id}
                                         name={radios.name}
@@ -583,6 +558,7 @@ console.log("record",record)
                                   })}
                                 <Form.Control
                                   type="text"
+                                  value={verifyData?.auditCaseStatusRemark}
                                   placeholder="case status Remark"
                                   onChange={(v) =>
                                     setVerifyData({

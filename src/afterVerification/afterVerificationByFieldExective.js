@@ -1,6 +1,5 @@
-import { Container, Form, Button, Row, Col, InputGroup } from "react-bootstrap";
+import { Container, Button } from "react-bootstrap";
 import OpalTable from "../opalTable";
-import { FaFileImport } from "react-icons/fa";
 import { afterVerifyDataColoum } from "../mock/afterVerifyData";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -55,6 +54,7 @@ const VerificationByFieldExective = (props) => {
   };
 
   const handleCaseEditModal = (data) => {
+    dispatch(getCaseHistoryById(data.id))
     setModalType("edit");
     setShow(true);
     dispatch(getCaseDataById(data.id));
@@ -68,8 +68,10 @@ const VerificationByFieldExective = (props) => {
   };
 
   const handleUpdateAddressSave = (data) => {
-    let updateRecords = [...verifyFEData].map((record) => {
-      let temp = { ...record };
+    let selectRecord = [...verifyFEData].filter((v) => v.id === data.id);
+    if (selectRecord.length > 0) {
+      let updateRecords =  selectRecord.map((record) => {
+        let temp = { ...record };
       temp.state = data?.candidateState;
       temp.verifications = {
         type_id: data?.verificationRemarkByFE,
@@ -109,12 +111,15 @@ const VerificationByFieldExective = (props) => {
         dispatch(getAllCaseAPI({ id: "all", status: ["under_FE"] }));
       });
     });
+  }
     setShow(false);
   };
 
   const handleSaveVerifyByFE = (data) => {
-    let updateRecords = [...verifyFEData].map((record) => {
-      let temp = { ...record };
+    let selectRecord = [...verifyFEData].filter((v) => v.id === data.id);
+    if (selectRecord.length > 0) {
+      let updateRecords =  selectRecord.map((record) => {
+        let temp = { ...record };
       temp.status = data?.status;
       temp.remark = data?.remark;
       temp.caseHistory = {
@@ -136,6 +141,7 @@ const VerificationByFieldExective = (props) => {
         dispatch(getAllCaseAPI({ id: "all", status: ["under_FE"] }));
       });
     });
+  }
     setShow(false);
   };
 
@@ -155,14 +161,17 @@ const VerificationByFieldExective = (props) => {
   };
 
   const handleUpdateVerifyByFE = (data) => {
-    let updateRecords = [...verifyFEData].map((record) => {
-      let temp = { ...record };
+    let selectRecord = [...verifyFEData].filter((v) => v.id === data.id);
+    if (selectRecord.length > 0) {
+      let updateRecords =  selectRecord.map((record) => {
+        let temp = { ...record };
       temp.verifications = {
         verification_residence_type:data?.residenceType ,
         verification_residence_status:data?.residenceStatus,
       };
 
       temp.case_details = {
+        verification_date: data?.verificationDoneDate,
         status_of_verification:data?.statusVerification,
         building_photo :data?.buildingPhotoStatus,
         building_photo_remark:data?.buildingPhotoRemark, 
@@ -178,9 +187,10 @@ const VerificationByFieldExective = (props) => {
     updateRecords.forEach((record) => {
       console.log("record",record)
       dispatch(updateAddrescaseDetails(record)).then(() => {
-        dispatch(getAllCaseAPI({ id: "all", status: ["under_FE"] }));
+        dispatch(getAllCaseAPI({ id: "all", status: ["verify_by_FE"] }));
       });
     });
+  }
     setShowModal(false);
   };
 
@@ -207,24 +217,6 @@ const VerificationByFieldExective = (props) => {
         </h2>
       </div>
       <div className="icon-aline">
-        {/* <Row>
-          <Col></Col>
-          <Col></Col>
-          <Col>
-            <InputGroup className="mb-3">
-              <Button variant="success" id="button-addon1">
-                <FaFileImport />
-              </Button>
-              <Form.Control
-                type="file"
-                // onChange={handleImport}
-                aria-label="Example text with button addon"
-                aria-describedby="basic-addon1"
-                accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
-              />
-            </InputGroup>
-          </Col>
-        </Row> */}
         <OpalTable
           headers={afterVerifyDataColoum}
           rowData={verifyFEData || []}

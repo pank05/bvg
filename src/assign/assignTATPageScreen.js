@@ -18,11 +18,11 @@ const AssignTAT=()=>{
     const dispatch = useDispatch();
 
     useEffect(()=>{
-        dispatch(getAllCaseAPI({id:'all',status: ['under_admin','under_employee']}));
+        dispatch(getAllCaseAPI({id:'all',status: ['under_admin','under_employee',"rejected_by_admin","rejected_by_employee"]}));
     },[])
 
     useEffect(()=>{
-       setTatData(assigns.filter(t=>t.status == "under_employee" ))
+       setTatData(assigns.filter((val)=> (val.status == "under_employee") ||  (val.status ==  "rejected_by_admin") ))
     },[assigns])
 
     const [item,setItem] = useState([]);
@@ -31,11 +31,11 @@ const AssignTAT=()=>{
     const [buttonType,setButtonType]=useState('assign')
     const [buttonState, setButtonState] = useState(true)
     const [actionButtonState, setActionButtonState] = useState(true)
-   
+
     const handleViewAssign = () => {
         setButtonState(false)
         const unassignedData = assigns.filter((val)=>{
-          return val.status == "under_employee" 
+          return  (val.status == "under_employee") ||  (val.status ==  "rejected_by_admin")
           })
         setTatData(unassignedData);
         setActionButtonState(!actionButtonState);
@@ -44,7 +44,7 @@ const AssignTAT=()=>{
     const handleViewNotAssign=()=>{
         setButtonState(true)
         const assignedData = assigns.filter((val)=>{
-            return val.status == "under_admin" 
+            return  (val.status == 'under_admin' ) || (val.status == "rejected_by_employee")
             })
         setTatData(assignedData);
         setActionButtonState(!actionButtonState);
@@ -63,7 +63,6 @@ const AssignTAT=()=>{
     const handleAssignSave=(data)=>{
        let updateRecords =[...assignTAT].map((record)=>{
                     let temp = {...record};
-                    // temp.id=data.id ;
                     temp.duration_end = data.durationEnd;
                     temp.status= "under_employee"
                     temp.caseHistory = {
@@ -75,7 +74,7 @@ const AssignTAT=()=>{
         });
         updateRecords.forEach((record)=>{
             dispatch(updateCaseById(record)).then(()=>{
-                dispatch(getAllCaseAPI({id:'all',status: ['under_admin']}));
+            dispatch(getAllCaseAPI({id:'all',status: ['under_admin']}));
                 });
         });
         setShow(false);
@@ -102,8 +101,8 @@ const AssignTAT=()=>{
 
      const onClickCheck = (item) =>{
         setItem(item);
-        setAssignTAT(item.filter(val=> val.status == "under_admin"));
-        setWithdrawTAT(item.filter(val=> val.status == "under_employee"))
+        setAssignTAT(item.filter((val)=> (val.status == 'under_admin' ) || (val.status == "rejected_by_employee") ));
+        setWithdrawTAT(item.filter((val)=> (val.status == "under_employee") ||  (val.status ==  "rejected_by_admin") ))
      }
 
     return(
@@ -134,7 +133,8 @@ const AssignTAT=()=>{
                      />
                 </div>
     <div>
-        <AssignModal show={show} close={handleClose} assignData={item} type={buttonType}  onSave={handleAssignSave}
+        <AssignModal show={show} close={handleClose} assignData={item} 
+        type={buttonType}  onSave={handleAssignSave}
          onDelete={handleWithdrawCase}   /> 
     </div>
     </Container>

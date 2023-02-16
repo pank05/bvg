@@ -4,6 +4,7 @@ import {
   Button,
   Accordion,
   Container,
+  Table,
   Row,
   Col,
   Form,
@@ -12,6 +13,7 @@ import {
 import { updateRadioUnviewModal } from "../constant/afterVerification";
 import { useSelector, useDispatch } from "react-redux";
 import { useRef } from "react";
+import moment from "moment";
 import { getStatusList } from "../actions/status";
 
 const ModalAfterUnview = (props) => {
@@ -51,15 +53,12 @@ const ModalAfterUnview = (props) => {
           buildingPhotoRemark:caseAllDetails?.building_photo_remark,
           addressProofRemark:caseAllDetails?.address_proof_remark,
           landmarkPhotoRemark:caseAllDetails?.landmark_photo_remark,
+          id:caseAllDetails.id
         },
       });
     }
   }, [caseAllDetails]);
 
-  const [checkedDate, setCheckedDate] = useState(false);
-  const [tillDate, setTillDate] = useState();
-  const [checkedBirth, setCheckedBirth] = useState(false);
-  const [birthDate, setBirthDate] = useState();
   const [updateCaseByAdmin, setUpdateCaseByAdmin] = useState(
     updateRadioUnviewModal
   );
@@ -295,89 +294,30 @@ const ModalAfterUnview = (props) => {
                     </Accordion.Header>
                     <Accordion.Body>
                       <Container>
-                      {caseHistoryDetails.map((v)=>{
-                        return <Row>
-                          <Col><b>{v.name} </b>  </Col>
-                          <Col>{v.username}</Col>
-                          <Col>{v.created} </Col>
-                          <Col> {v.remark}</Col>
-                          </Row>
+                        <Table striped bordered hover responsive>
+                          <thead>
+                            <tr>
+                              <th> Label</th>
+                              <th>Assigned To</th>
+                              <th>Assigned By</th>
+                              <th> Date</th>
+                              <th>Remark</th>
+                            </tr>
+                          </thead>
+                        {caseHistoryDetails.map((v)=>{
+                          return  <tbody>
+                            <tr>
+                              <td>{v.name}</td>
+                              <td>{v.assigned_to_name}</td>
+                              <td>{v.assigned_by_name}</td>
+                              <td>{moment(v.created).format("MMMM Do YYYY")}</td>
+                              <td> {v.remark}</td>
+                            </tr>
+                           
+                          </tbody>
                       })}
+                       </Table>
                       </Container>
-                      {/* <Container>
-                        <Row>
-                          <Col>
-                            <b className="found_size_for_text">
-                              ApplicationCreated :
-                            </b>
-                            {userDetails.username} (
-                            {userDetails?.roles?.map((v) => v.label)}) <br />
-                          </Col>
-                          <Col>{caseAllDetails.duration_start}</Col>
-                        </Row>
-                        <Row>
-                          <Col>
-                            <b className="found_size_for_text">ASSIGNED :</b>
-                            {caseAllDetails.assigned_to_name} <br />
-                          </Col>
-                          <Col>--Date-- </Col>
-                        </Row>
-                        <Row>
-                          <Col>
-                            <b className="found_size_for_text">ACCEPTED:</b>
-                            {props.defaultData.EMP} <br />
-                          </Col>
-                          <Col>--Date-- </Col>
-                        </Row>
-                        <Row>
-                          <Col>
-                            <b className="found_size_for_text">SENT_TO_FE:</b>
-                            {props.defaultData.EMP} <br />
-                          </Col>
-                          <Col>--Date-- </Col>
-                        </Row>
-                        <Row>
-                          <Col>
-                            <b className="found_size_for_text">
-                              VERIF_DONE_BY_FE:
-                            </b>
-                            {props.defaultData.FE} <br />
-                          </Col>
-                          <Col>--Date-- </Col>
-                        </Row>
-                        <Row>
-                          <Col>
-                            <b className="found_size_for_text">
-                              EMP_COMPL_UNRE:
-                            </b>
-                            {props.defaultData.EMP} <br />
-                          </Col>
-                          <Col>--Date-- </Col>
-                        </Row>
-                        <Row>
-                          <Col> </Col>
-                          <Col>
-                            Completed OUT TAT by Employee pending for admin
-                            Review
-                          </Col>
-                        </Row>
-                        <Row>
-                          <Col>
-                            <b className="found_size_for_text">
-                              VERIFIED_BY_ADMIN:
-                            </b>
-                            ------ <br />
-                          </Col>
-                          <Col>--Date-- </Col>
-                        </Row>
-                        <Row>
-                          <Col> </Col>
-                          <Col>
-                            Verification Done Success Full case completed and
-                            close
-                          </Col>
-                        </Row>
-                      </Container> */}
                     </Accordion.Body>
                   </Accordion.Item>
                   <Accordion.Item eventKey="2">
@@ -386,18 +326,18 @@ const ModalAfterUnview = (props) => {
                       <Form>
                         <Row>
                           <Col>
-                            Audit Call Done :{" "}
-                            {caseAllDetails?.audit_call_done ? "Yes" : "No"}{" "}
+                            Audit Call Done :
+                            {caseAllDetails?.audit_call_done ? "Yes" : "No"}
                           </Col>
                           <Col>
-                            Audit call status :{" "}
+                            Audit call status :
                             {caseAllDetails.audit_call_status
                               ? "Positive"
                               : "Negative"}
                           </Col>
                           <Col>
-                            Tat Status :{" "}
-                            {caseAllDetails.audit_case_status_label}{" "}
+                            Tat Status :
+                            {caseAllDetails.audit_case_status_label}
                           </Col>
                         </Row>
                         <Row>

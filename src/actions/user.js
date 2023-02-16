@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import axios from "axios";
 
-export const authUserData = createAsyncThunk(
+  export const authUserData = createAsyncThunk(
     'authUserData',
     async (data) => {
     const response = await axios.post('accounts/authenticate',data);
@@ -13,8 +13,7 @@ export const authUserData = createAsyncThunk(
             response.data ={};
            }
        return response.data;
-  });
-
+    });
 
   export const getDetails = createAsyncThunk(
     'getDetails',

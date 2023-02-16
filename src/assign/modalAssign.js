@@ -90,7 +90,7 @@ const AssignModal = (props) => {
                         <Form.Control
                           type="text"
                           placeholder="TAT Start Date"
-                          value={props.assignData.map((v)=>v.durationStart)}
+                          // value={props?.assignData.map((v)=>v.durationStart)}
                          readOnly />
                       </Form.Group>
                     </Col>
@@ -190,7 +190,7 @@ const AssignModal = (props) => {
                     Are you sure To withdraw this {props.assignData.length}{" "}
                     Verification forms
                   </h4>
-                  {props.assignData.map((v) => v.checkId).join(",")}
+                  {/* {props?.assignData.map((v) => v.checkId).join(",")} */}
                   <br/><br/>
                   <Form.Group controlId="remark">
                         <Form.Control

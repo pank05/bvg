@@ -25,30 +25,6 @@ export const updateAddrescaseDetails= createAsyncThunk(
     return response.data;
   } )
 
-  export const getAllAuditCase = createAsyncThunk(
-    'getAllAuditCase',
-    async ({id,status}) => {
-      const response  =  await axios.post(`/auditcall/${id}`,{
-        status
-      },{
-            headers: {
-              Authorization : `Bearer ${localStorage.getItem('_token') }`
-            }
-           });
-           return response.data;
-    } )
-
-    export const getByIdAuditCase = createAsyncThunk(
-      'getByIdAuditCase',
-      async (id) => {
-      const response  =  await axios.post(`/auditcall/${id}`,
-      {
-        headers:{
-        Authorization : `Bearer ${localStorage.getItem('_token') }`
-      }
-    });
-         return response.data;
-    })
 
 const reviewSlice = createSlice({
   name: 'review',
@@ -74,13 +50,7 @@ const reviewSlice = createSlice({
 
       builder.addCase(updateAddressAuditCaseDetails.fulfilled,(state,action)=>{
       });
-      
-      builder.addCase(getAllAuditCase.fulfilled, (state,action) =>{
-        state.list=action.payload ;
-      });
-      builder.addCase(getByIdAuditCase.fulfilled, (state, action) =>{
-        state.list=action.payload ;
-      });
+
 
   }
   

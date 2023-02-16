@@ -1,18 +1,22 @@
 import { useState, useEffect } from "react";
 import ModalAfterVerify from "./modalAfterVerify";
 import ModalAfterUnview from "./modalAfterVerifyUnview";
-import { Container, Button, InputGroup, Col, Row, Form } from "react-bootstrap";
+import { Container, Button } from "react-bootstrap";
 import OpalTable from "../opalTable";
 import { afterVerifyDataColoum } from "../mock/afterVerifyData";
 import { useSelector, useDispatch } from "react-redux";
 import { read, utils } from "xlsx";
 import { FaFileImport } from "react-icons/fa";
-import { getAllCaseAPI, updateCaseById } from "../actions/verification";
 import {
-  // updateAuditCaseDetails,
-  getAllAuditCase,
+  getAllCaseAPI,
+  updateCaseById,
+  getCaseHistoryById,
+  getCaseDataById,
+} from "../actions/verification";
+
+import {
   updateAddrescaseDetails,
-  getByIdAuditCase,
+  updateAddressAuditCaseDetails,
 } from "../actions/review";
 
 const AfterVerification = (props) => {
@@ -20,86 +24,24 @@ const AfterVerification = (props) => {
   const [verifyAdmin, setVerifyAdmin] = useState([]);
   const dispatch = useDispatch();
 
-  useEffect(() =>{
+  useEffect(() => {
     dispatch(
       getAllCaseAPI({
         id: "all",
-        status: ["under_employee", "verify_by_admin"],
+        status: ["verify_by_employee", "verify_by_admin","rejected_by_employee" ],
       })
     );
   }, []);
 
   useEffect(() => {
-    setVerifyAdmin(review.filter((t) => t.status == "under_employee"));
+    setVerifyAdmin(review.filter((t) => (t.status == "verify_by_employee") || (t.status == "rejected_by_employee ")));
   }, [review]);
 
+  // useEffect(() => {
+  //   setVerifyAdmin(review.filter((t) => t.status == "verify_by_admin"));
+  // }, [review]);
+
   const [buttonType, setButtonType] = useState("View Verified By Admin");
-  const [actionButton, setActionButton] = useState(true);
-  const [modalType, setModalType] = useState("edit");
-  const [showModal, setShowModal] = useState(false);
-  const handleClose = () => setShowModal(false);
-  const [defaultData, setDeafultData] = useState({});
-
-  const handleEditModal = (data) => {
-    setModalType("edit");
-    setShowModal(true);
-    setDeafultData(data);
-  };
-  
-  const handleUpdateForm = (data) => {
-    setModalType("update");
-    setShowModal(true);
-    setDeafultData(data);
-  };
-
-  const handleEditSave = (data) => {
-    let updateRecords = [...verifyAdmin].map((record) => {
-      let temp = { ...record };
-      temp.audit_call_done = data.audit_call_done;
-      temp.audit_call_done_remark = data.audit_call_done_remark;
-      temp.audit_call_status = data.audit_call_status;
-      temp.audit_call_status_remark = data.audit_call_status_remark;
-      temp.audit_case_status_id = data.audit_case_status_id;
-      temp.audit_case_status_remark = data.audit_case_status_remark;
-      temp.status = data.status;
-      temp.remark = data.remark;
-      return temp;
-    });
-    updateRecords.forEach((record) => {
-      console.log("data", record);
-      // dispatch(updateAuditCaseDetails(record)).then(() => {
-      //   dispatch(getAllCaseAPI({ id: "all", status: ["under_admin"] }));
-      // });
-    });
-    setShowModal();
-  };
-
-  const handleUpdateSaveButton = (data) => {
-    console.log("updateDAta",data)
-    // let update = verifyAdmin.find((ele) => ele.id === updateRadio.id);
-    setShowModal();
-  };
-  const [modalUnview, setModalUnview] = useState("editUnview");
-  const [showUnview, setShowUnview] = useState(false);
-  const handleCloseUn = () => setShowUnview(false);
-
-  const handleUnreviewEditForm = (data) => {
-    setModalUnview("editUnview");
-    setShowUnview(true);
-    console.log(data)
-    setDeafultData(data)
-    dispatch(getByIdAuditCase(data.id));
-  }
-
-  const handleUnreviewUpdateForm = (unview) => {
-    setModalUnview("updateUnview");
-    setShowUnview(true);
-    setDeafultData(unview);
-  };
-
-  const handleUNviewUpdateSaveButton = (employeeRadio) => {
-    let change = verifyAdmin.find((ele) => ele.id === employeeRadio.id);
-  };
 
   const handleViewVerify = () => {
     setButtonType("View Verified By Admin ");
@@ -114,46 +56,157 @@ const AfterVerification = (props) => {
     setButtonType("View Unreview");
     setActionButton(!actionButton);
     const unViewVerifyData = review.filter((val) => {
-      return val.status == "under_employee";
+      return val.status == "verify_by_employee";
     });
     setVerifyAdmin(unViewVerifyData);
   };
 
-  const handleImport = ($event) => {
-    const files = $event.target.files;
-    if (files.length) {
-      const file = files[0];
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        const wb = read(event.target.result);
-        const sheets = wb.SheetNames;
+  const [actionButton, setActionButton] = useState(true);
+  const [modalType, setModalType] = useState("edit");
+  const [showModal, setShowModal] = useState(false);
+  const handleClose = () => setShowModal(false);
+  const [defaultData, setDeafultData] = useState({});
 
-        if (sheets.length) {
-          const rows = utils.sheet_to_json(wb.Sheets[sheets[0]]);
+  const handleEditVerifyByemp = (data) => {
+    setModalType("edit");
+    setShowModal(true);
+    dispatch(getCaseHistoryById(data.id));
+    dispatch(getCaseDataById(data.id));
+  };
 
-          let rowData = rows.map((item) => {
-            let importData = {
-              CheckId: item["Asd ID"],
-              CheckName: item["Client Name"],
-              Candidate_Name: item["Applicant Name"],
-              ContactNo: item["Contact Details"],
-              TAT_Status: item.Location,
-              Closer_Date: item.State,
-              Pin_Code: item["Type of Check"],
-              EMP: item["Whom to Allocate"],
-              FE: item["Duration"],
-              Father_Name: item["Fathers Name"],
-              Address: item["Address - Details"],
-              APP_STATUS: item["Type of Check"],
-            };
-            console.log("data ", importData);
-            return importData;
-          });
-          setVerifyAdmin(rowData);
-        }
+  const handleUpdateAddressByemp = (data) => {
+    dispatch(getCaseDataById(data.id));
+    setModalType("update");
+    setShowModal(true);
+  };
+
+  const handleVerifyByAdmin = (data) => {
+    let selectRecord = [...verifyAdmin].filter((v) => v.id === data.id);
+    if (selectRecord.length > 0) {
+      let updateRecord =  selectRecord.map((record) => {
+        let temp = { ...record };
+      temp.status = data?.status;
+      temp.remark = data?.remark;
+      temp.caseHistory = {
+        remark: data?.remark,
+        status_id: data?.status,
       };
-      reader.readAsArrayBuffer(file);
+      temp.audit_call_statuses = {
+        audit_call_done: data?.auditCallDone,
+        audit_call_done_remark: data?.auditCallDoneRemark,
+        audit_call_status: data?.auditCallStatus,
+        audit_call_status_remark: data?.auditCallStatusRemark,
+        audit_case_status_id: data?.auditCaseStatusId,
+        audit_case_status_remark: data?.auditCaseStatusRemark,
+      };
+      return temp;
+    });
+    updateRecord.forEach((record) => {
+      console.log("recird", record);
+      dispatch(updateAddressAuditCaseDetails(record)).then(() => {
+        dispatch(getAllCaseAPI({ id: "all", status: ["verify_by_employee"] }));
+      });
+    });
+  }
+    setShowModal();
+  };
+
+  const handleUpdateAddress= (data) => {
+      let selectRecord = [...verifyAdmin].filter((v) => v.id === data.id);
+    if (selectRecord.length > 0) {
+      let updateRecords =  selectRecord.map((record) => {
+        let temp = { ...record };
+      temp.state = data?.candidateState;
+      temp.verifications = {
+        type_id: data?.verificationRemarkByFE,
+        is_landmark: data?.nearLandmark,
+        verification_reason_id: data?.reasonNotFound,
+        verification_reason_remark: data?.addressRemark,
+        is_present: data?.address,
+        is_by_birth: data?.birthCheckForm,
+        is_till_date: data?.tillCheckForm,
+        period_stay_from: data?.fromDate,
+        period_stay_to: data?.toDate,
+        address_status_id: data?.stayVerification,
+        residence_status_id: data?.residenceStatus,
+        residence_type_id: data?.residenceType,
+        area_type_id: data?.areaType,
+        is_positive: data?.additionalRemark,
+        additional_remark_json: data?.additionalRemarkByFEForm,
+      };
+      temp.candidates = {
+        verified_by_id: data?.verifyBy,
+        responder_relation_id: data?.relationType,
+        person_name: data?.relationTypeMeetPerson,
+        person_contact: data?.meetPersonContactNo,
+        is_id_proof: data?.idProof,
+        signature_url: data?.image?.name,
+      };
+      temp.case_details = {
+        verification_date: data?.verificationDoneDate,
+      };
+      temp.users = {
+        signature_url: data?.image?.name,
+      };
+      return temp;
+      })
+    updateRecords.forEach((record) => {
+      console.log("updateRecord",record)
+      dispatch(updateAddrescaseDetails(record)).then(() => {
+        dispatch(getAllCaseAPI({ id: "all", status: ["verify_by_employee"] }));
+      });
+    });
+  }
+    setShowModal();
+  };
+
+  const [modalUnview, setModalUnview] = useState("editUnview");
+  const [showUnview, setShowUnview] = useState(false);
+  const handleCloseUn = () => setShowUnview(false);
+
+  const  handleEditVerifyByAdmin = (data) => {
+    setModalUnview("editUnview");
+    dispatch(getCaseHistoryById(data.id));
+    dispatch(getCaseDataById(data.id));
+    setShowUnview(true);
+  };
+
+  const handleUpdateAddressByAdmin = (data) => {
+    setModalUnview("updateUnview");
+    setShowUnview(true);
+    dispatch(getCaseDataById(data.id));
+  };
+
+  const handleUpdateAddressBy= (data) => {
+    let selectRecord = [...verifyAdmin].filter((v) => v.id === data.id);
+    if (selectRecord.length > 0) {
+      let updateRecord =  selectRecord.map((record) => {
+        let temp = { ...record };
+        temp.verifications = {
+          verification_residence_type: data?.residenceType,
+          verification_residence_status: data?.residenceStatus,
+        };
+
+        temp.case_details = {
+          status_of_verification: data?.statusVerification,
+          building_photo: data?.buildingPhotoStatus,
+          building_photo_remark: data?.buildingPhotoRemark,
+          address_proof: data?.addressProofStatus,
+          address_proof_remark: data?.addressProofRemark,
+          landmark_photo: data?.landmarkPhotoStatus,
+          landmark_photo_remark: data?.landmarkPhotoRemark,
+          verification_time: data?.verificationTime,
+        };
+        return temp;
+      });
+      updateRecord.forEach((record) => {
+        console.log("record",record)
+        dispatch(updateAddrescaseDetails(record)).then(() => {
+        dispatch(getAllCaseAPI({ id: "all", status: ["verify_by_admin"] }));
+        });
+      });
     }
+    setShowUnview(false)
   };
 
   return (
@@ -174,37 +227,16 @@ const AfterVerification = (props) => {
             style={{ align: "rigth" }}
             onClick={actionButton ? handleViewVerify : handleReview}
           >
-
             {actionButton ? "View Verified By Admin" : "View Unreview"}
           </Button>
         </h2>
       </div>
       <div className="icon-aline">
-        <Row>
-          <Col></Col>
-          <Col></Col>
-          <Col>
-            <InputGroup className="mb-3">
-              <Button variant="success" id="button-addon1">
-                <FaFileImport />
-              </Button>
-              <Form.Control
-                type="file"
-                onChange={handleImport}
-                aria-label="Example text with button addon"
-                aria-describedby="basic-addon1"
-                accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
-              />
-            </InputGroup>
-          </Col>
-        </Row>
         <OpalTable
           headers={afterVerifyDataColoum}
           rowData={verifyAdmin || []}
-          edit={actionButton ? handleEditModal : handleUnreviewEditForm}
-          viewButton={
-            actionButton ? handleUpdateForm : handleUnreviewUpdateForm
-          }
+          edit={actionButton ? handleEditVerifyByemp : handleEditVerifyByAdmin}
+          viewButton={ actionButton ? handleUpdateAddressByemp : handleUpdateAddressByAdmin }
         />
       </div>
       <div>
@@ -214,19 +246,18 @@ const AfterVerification = (props) => {
           close={handleClose}
           type={modalType}
           defaultData={defaultData}
-          onUpdate={handleUpdateSaveButton}
-          onSave={handleEditSave}
+          onUpdate={handleUpdateAddress}
+          onSave={handleVerifyByAdmin}
         />
       </div>
       <div>
-        {/* under_admin */}
+        {/* verify admin  */}
         <ModalAfterUnview
           open={showUnview}
           onClose={handleCloseUn}
           type={modalUnview}
-        //   auditData={data}
           defaultData={defaultData}
-          onSubmit={handleUNviewUpdateSaveButton}
+          onSubmit={handleUpdateAddressBy}
         />
       </div>
 

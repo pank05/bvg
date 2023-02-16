@@ -67,24 +67,6 @@ export const companySlice = createSlice({
     clearCurrentCompany:(state)=>{
       state.currentCompany ={};
     },
-   
-    // addCompany:(state,data) =>{
-    //   state.list.push({id:state.list.length+1,...data.payload});
-    // },
-
-    // updateCompany:(state,data) =>{
-    //   let updateRecord = data.payload;
-    //   let record =  state.list.find((val)=>val.id===updateRecord.id);
-    //   if(record){
-    //     record.city = updateRecord.city;
-    //     record.name = updateRecord.name;
-    //     record.contact_number = updateRecord.contact_number;
-    //     record.contact_person = updateRecord.contact_person;
-    //     record.email = updateRecord.email;
-    //     record.address = updateRecord.address;
-    //     record.short_name = updateRecord.short_name;
-    //   }
-    // },
     
     deleteCompany:(state,data) =>{
       const index = data.payload;
