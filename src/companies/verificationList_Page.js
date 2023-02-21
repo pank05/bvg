@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { read, utils } from 'xlsx';
 import {useParams} from 'react-router-dom';
 import { getCompanyDataById,clearCurrentCompany,getAllCompaniesAPI} from "../actions/company";
-import {postAddCaseAPI,getAllCaseAPI,getCaseDataById ,updateCaseById,deleteCaseDataById} from "../actions/verification";
+import {postAddCaseAPI,getAllCaseAPI,getCaseDataById ,updateCaseById,deleteCaseDataById ,bulkAddCases} from "../actions/verification";
 import { checkUserHasRole } from "../utility/validation";
 
 const VerificationList_Page=(para)=>{
@@ -75,10 +75,6 @@ const VerificationList_Page=(para)=>{
             location:data.landmark,
             resume_id:data.resumeId,
             duration_start:(new Date),
-            // caseHistory:{
-            //   assigned_to:data?.assignedTo ,
-            //   assigned_by:data?.assignedBy
-            // }
                     }
                     console.log("data",caseData)
                      dispatch(postAddCaseAPI(caseData)).then(()=>{
@@ -125,45 +121,22 @@ const VerificationList_Page=(para)=>{
                     setShow(false)
                    }
 
-                  const handleImport = ($event) => {
-                    const files = $event.target.files;
-                    if (files.length) {
-                        const file = files[0];
-                        const reader = new FileReader();
-                        reader.onload = (event) => {
-                            const wb = read(event.target.result);
-                            const sheets = wb.SheetNames;
-            
-                            if (sheets.length) {
-                                const rows = utils.sheet_to_json(wb.Sheets[sheets[0]]);
-                            
-                                let rowData = rows.map((item)=>{
-                                    
-                                    let importData = {
-                                        checkId:item['Asd ID'],
-                                        clientName:item['Client Name'],
-                                        candidateName:item['Applicant Name'],
-                                        fatherName:item['Fathers Name'],
-                                        contactNo:item['Contact Details'],
-                                        city:item.Location,
-                                        state:item.State,
-                                        verificationType:item['Type of Check'],
-                                        EMP:item['Whom to Allocate'],
-                                        duration:item.Duration,
-                                        address:item['Address - Details'],
-                                    } ;
-                                    return importData;
-                                  });
-                                  setVerification(rowData);
-                            }
-                        }
-                        reader.readAsArrayBuffer(file);
-                    }
-                  }
-
                 const onClickCheck = (defaultData) =>{
                     setDeafultData(defaultData);
                  }
+
+                 const handleBulkCasesUpload =($event)=>{
+                    const files = $event.target.files;
+                    if (files.length) {
+                        const file = files[0];
+                        const formData = new FormData();
+                        formData.append('cases',file);
+                        dispatch(bulkAddCases(formData)) .then(()=>{
+                     dispatch(getAllCaseAPI({id:'all'}));
+                     });
+                    }
+                 }
+
     return(
         <Container>
                <div style={{textAlign: "left", fontSize:"12px"}}> 
@@ -178,21 +151,18 @@ const VerificationList_Page=(para)=>{
                 <div style={{textAlign:"-webkit-right"}}>
                 {currentSelection.name}
                 <br/>
-            <Button>
-                Verification Form
-            </Button>
-            </div>
 
+            </div>
                 <div className="icon-aline">
                     <Row>
                         <Col></Col>
                         <Col></Col>
                         <Col>
-                        <InputGroup className="mb-3">
-                           <Button variant="success" id="button-addon1">
+                        <InputGroup className="mb-3" >
+                           <Button variant="success" id="button-addon1" >
                            < FaFileImport />
                            </Button>
-                         <Form.Control type="file"  onChange={handleImport}
+                         <Form.Control type="file"  onChange={(data)=>{handleBulkCasesUpload(data)}}
                            aria-label="Example text with button addon" aria-describedby="basic-addon1"
                            accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
                         </InputGroup>
@@ -207,8 +177,8 @@ const VerificationList_Page=(para)=>{
                 </div>
                 <br/>
              <div > 
-                <ModalVerification show={show} close={handleClose} type={modalType} onUpdate={handleUpdateVerification} 
-                onSave={handleAddSave}  onDelete={handleDeleteData} defaultData={defaultData} /> 
+                {show && <ModalVerification show={show} close={handleClose} type={modalType} onUpdate={handleUpdateVerification} 
+                onSave={handleAddSave}  onDelete={handleDeleteData} defaultData={defaultData} /> }
               </div>  
               {para.children}
               </Container>

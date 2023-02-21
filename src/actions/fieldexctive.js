@@ -29,7 +29,6 @@ import axios from 'axios';
 export const getAllFieldAPI = createAsyncThunk(
   'getAllFieldAPI',
   async () => {
-    // admin,employee
     const response  =  await axios.get(`/user/all?userType=FieldExecutive`,{
           headers: {
             Authorization : `Bearer ${localStorage.getItem('_token') }`
@@ -81,13 +80,7 @@ export const getAllFieldAPI = createAsyncThunk(
       export const updateSignatureURL = createAsyncThunk(
         'updateSignatureURL',
     async (data) => {
-
-      let formData = new FormData();
-       formData.append('image',data.image || '');
-       formData.append('typeType',data.typeType || '');
-       formData.append('user_id', data.user_id || '');
-
-      const response  =  await axios.post(`/user/upload-file`,formData,{
+      const response  =  await axios.post(`/user/upload-file`,data,{
             headers: {
               "Content-Type": "multipart/form-data",
               Authorization : `Bearer ${localStorage.getItem('_token') }`
@@ -123,7 +116,7 @@ export const fieldExecutiveSlice = createSlice({
      state.list.push({id:state.list,...data.payload});
   })
 
-  builder.addCase(getFieldById.fulfilled, (state, data) =>{
+  builder.addCase(getFieldById.fulfilled, (state, action) =>{
     })
 
     builder.addCase(updateSignatureURL.fulfilled,(state,data)=>{
@@ -143,7 +136,7 @@ export const fieldExecutiveSlice = createSlice({
         email:item.email,
         password:item.password,
         reset_pass:item.reset_password,
-        image_url:item.profile,
+        image_url:item.image_url,
         company_name:item?.companies[0]?.name,
         area:item?.user_detail?.region,
       };

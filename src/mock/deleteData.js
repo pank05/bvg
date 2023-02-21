@@ -8,7 +8,7 @@ export const deleteDataColoum =[
     {
         id:2,
         columnId:"companyId",
-        label:"CompID" ,
+        label:"Company" ,
         isShow:false
     },
     {

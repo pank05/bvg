@@ -14,8 +14,8 @@ import {
 import { updateRadioClickModal } from "../constant/afterVerification";
 import { FaMoneyBillAlt } from "react-icons/fa";
 import { FiEdit } from "react-icons/fi";
-import { PDFViewer } from "@react-pdf/renderer";
-import { PDFDownloadLink } from "@react-pdf/renderer";
+// import PDF from "./PDF";
+import { PDFViewer, ReactPDF, PDFDownloadLink } from "@react-pdf/renderer";
 import Select from "react-select";
 import AddressFound from "./addressFoundAfterVerify";
 import AddressNotFound from "./addressNotFoundAfterVerify";
@@ -160,7 +160,6 @@ const ModalAfterVerify = (props) => {
 
         }})
     }
-
     if(caseAllDetails && caseAllDetails.id){
         setUpdateAddressVerification({
         ...updateAddressVerification,
@@ -187,8 +186,9 @@ const ModalAfterVerify = (props) => {
         verificationRemarkByFE:caseAllDetails?.type_id,
         birthCheckForm:caseAllDetails?.is_by_birth,
         tillCheckForm:caseAllDetails?.is_till_date,
-        id:caseAllDetails.id
-
+        id:caseAllDetails.id,
+        candidateSignature:caseAllDetails?.signature_url,
+        user_signature:caseAllDetails?.user_signature
         },
       });
       if(caseAllDetails?.is_present_name === 'address_found'){
@@ -231,7 +231,7 @@ const ModalAfterVerify = (props) => {
     if (selectedFile) {
       reader.readAsDataURL(selectedFile);
     }
-    setUpdateAddressVerification({ ...updateRadioClickModal,image:selectedFile});
+    setUpdateAddressVerification({ ...updateAddressVerification,fe_signature:selectedFile});
 
     reader.onload = (readerEvent) => {
       if (selectedFile.type.includes("image")) {
@@ -240,13 +240,21 @@ const ModalAfterVerify = (props) => {
     };
   };
 
+    const handleUploadUserImage =()=>{
+  let formData = new FormData();
+  formData.append('image',updateAddressVerification?.fe_signature);
+  formData.append('fileType','FE_Signature');
+  formData.append('refernce_id',userDetails.id);
+  dispatch(updateSignatureURL(formData));
+  }
+
   const handlerChangeCandidateSignature = (event) => {
     const reader = new FileReader();
     const selectedFile = event.target.files[0];
     if (selectedFile) {
       reader.readAsDataURL(selectedFile);
     }
-    setUpdateAddressVerification({ ...updateRadioClickModal,image:selectedFile });
+    setUpdateAddressVerification({ ...updateAddressVerification,candidate_image:selectedFile });
 
     reader.onload = (readerEvent) => {
       if (selectedFile.type.includes("image")) {
@@ -255,34 +263,13 @@ const ModalAfterVerify = (props) => {
     };
   };
 
-  const handleUploadUserImage =(data)=>{
-    let updateRecords =[updateAddressVerification].map((record)=>{
-      let temp = {...record};
-        temp.users ={
-           typeType:'FE_Signature',
-           signature_url:data?.image?.name
-                }
-  return temp;
-});
-updateRecords.forEach((record)=>{
-console.log("record",record)
-    dispatch(updateSignatureURL(record))
-})
-  }
+  const handleUploadCandidateImage =()=>{
 
-  const handleUploadCandidateImage =(data)=>{
-    let updateRecords =[updateAddressVerification].map((record)=>{
-      let temp = {...record};
-      temp.candidates = {
-        typeType:'candidate_signature',
-        signature_url:data?.image?.name
-      };
-  return temp;
-});
-updateRecords.forEach((record)=>{
-console.log("record",record)
-    dispatch(updateSignatureURL(record))
-})
+    let formData = new FormData();
+    formData.append('image',updateAddressVerification.candidate_image);
+    formData.append('fileType','candidate_signature');
+    formData.append('refernce_id',updateAddressVerification.id);
+    dispatch(updateSignatureURL(formData));
   }
 
   useEffect(() => {
@@ -298,13 +285,15 @@ console.log("record",record)
   const [updateAddressVerification, setUpdateAddressVerification] = useState(updateRadioClickModal);
 
   const handleDownlpoadPdf = () => {
-    console.log("download");
-    {
-      /* <PDFDownloadLink
+    console.log("download",  <PDFViewer>
+    <ModalAfterVerify />
+  </PDFViewer> );
+    
+       <PDFDownloadLink
       document={< ModalAfterVerify/> || ''}
       fileName="verification.pdf"
-    /> */
-    }
+    /> 
+    
   };
 
   return (
@@ -623,7 +612,7 @@ console.log("record",record)
               <Modal.Header>
                 <h1 className="div_center"> UPDATE VERIFICATION </h1>
                 <h6> Comp :{caseAllDetails?.company_name} checkId:&nbsp;{caseAllDetails?.check_id} </h6>
-                <Button onClick={handleDownlpoadPdf}> Download pdf </Button>
+                <Button onClick={()=>handleDownlpoadPdf()}> Download pdf </Button>
               </Modal.Header>
               <Modal.Body>
                 <Form>
@@ -883,7 +872,6 @@ console.log("record",record)
                                 type={radios.type}
                                 name={radios.name}
                                 onChange={(v) => {
-                                  console.log({verificationRemarkByFE: v.target.value})
                                   setUpdateAddressVerification({
                                     ...updateAddressVerification,
                                     ...{
@@ -938,7 +926,7 @@ console.log("record",record)
                           {imagePreview != null && (
                             <img
                               src={imagePreview}
-                              alt=""
+                              alt="..."
                               style={{
                                 width: "70%",
                                 height: "70%",
@@ -961,15 +949,14 @@ console.log("record",record)
                         >
                           Select FE Signature
                         </Button>&nbsp;
-                        <Button variant="warning" onClick={()=>{ handleUploadUserImage(updateAddressVerification)}}>Upload Images</Button>
-
+                        <Button variant="warning" onClick={()=>{ handleUploadUserImage()}}>Upload FE Signature</Button>
                       </Col>
                       <Col>
                         <Card style={{ width: "18rem", border: "none" }}>
                           {candidateSignature != null && (
                             <img
                               src={candidateSignature}
-                              alt=""
+                              alt="..."
                               style={{
                                 width: "70%",
                                 height: "70%",
@@ -991,8 +978,7 @@ console.log("record",record)
                           onClick={() => filePicekerRefCandidate.current.click()} >
                           Select candidate Signature
                         </Button> &nbsp;
-                        <Button variant="warning" onClick={()=>{ handleUploadCandidateImage(updateAddressVerification)}}>Upload Images</Button>
-
+                        <Button variant="warning" onClick={()=>{ handleUploadCandidateImage()}}>Upload candidate Signature</Button>
                       </Col>
                     </Row>
                   </div>

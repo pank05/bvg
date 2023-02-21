@@ -47,8 +47,7 @@ const ModalVerification = (props) => {
 
   useEffect(() => {
     dispatch(getAllStates('all'));
-   //  dispatch(getCityBySearch());
-    dispatch(getAllCompaniesAPI('all'));
+    dispatch(getAllCompaniesAPI({id:'all',is_active:1}));
     return () => {
       // unmount event
       resetForm();

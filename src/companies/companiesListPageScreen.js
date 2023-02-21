@@ -5,7 +5,8 @@ import {companiesDataColoum} from "../mock/companiesData";
 import CompaniesModal from "./companiesModal";
 import {FaUserPlus} from "react-icons/fa" ;
 import { useDispatch, useSelector } from "react-redux";
-import { getCompanyDataById,deleteCompany,getAllCompaniesAPI,postAddCompaniesAPI,updateCompanyById} from "../actions/company";
+import { getCompanyDataById,softDeleteCaseDataById,getAllCompaniesAPI,postAddCompaniesAPI,updateCompanyById} from "../actions/company";
+import { AiOutlineConsoleSql } from "react-icons/ai";
 
 const CompaniesListPage=(Para)=>{
   const companies = useSelector(state=> state?.company?.list || []);
@@ -19,7 +20,7 @@ const CompaniesListPage=(Para)=>{
   const dispatch = useDispatch();
 
   useEffect(()=>{
-   dispatch(getAllCompaniesAPI('all'))
+   dispatch(getAllCompaniesAPI({id:'all'}))
   },[])
 
   useEffect(()=>{
@@ -39,23 +40,29 @@ const CompaniesListPage=(Para)=>{
   }
   const handleAddCompaniesSave=(data)=>{
     dispatch(postAddCompaniesAPI(data)).then(()=>{
-      dispatch(getAllCompaniesAPI('all'));
+      dispatch(getAllCompaniesAPI({id:'all'}));
     })
     setShow(false)
   }
   const handleUpdateCompanies=(data)=>{
     dispatch(updateCompanyById(data)).then(()=>{
-      dispatch(getAllCompaniesAPI('all'));
+      dispatch(getAllCompaniesAPI({id:'all'}));
     })
     setShow(false)
   }
-  const handleDeleteCompanies=(id)=>{
-    dispatch(deleteCompany(id))
-    setShow(false)
+
+  const handleDeleteCompanies=(event,data)=>{
+    if(event.target.checked){
+        dispatch(updateCompanyById({id:data.id})).then(()=>{
+        dispatch(getAllCompaniesAPI({id:'all'}));
+      })
+    }else{
+      dispatch(softDeleteCaseDataById(data.id)).then(()=>{
+      dispatch(getAllCompaniesAPI({id:'all'}));
+    })
+    }
   }
-  const handleToggleActiveButton=()=>{
-    console.log("toggle")
-  }
+  
     return(
       <Container>
         <div>

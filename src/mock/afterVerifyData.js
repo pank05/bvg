@@ -8,7 +8,7 @@ export const afterVerifyDataColoum =[
     {
         id:2,
         columnId:"companyId",
-        label:"Company Name" ,
+        label:"Company" ,
         isShow:false
     },
     {

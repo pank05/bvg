@@ -15,7 +15,7 @@ const EmployeeModal= (props)=>{
    const [passwordShowAdd, setPasswordShowAdd]=useState(false);
   
    useEffect(()=>{
-    dispatch(getAllCompaniesAPI('all'))
+    dispatch(getAllCompaniesAPI({id:'all',is_active:1}))
     return ()=>{
       resetForm();
      }

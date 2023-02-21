@@ -38,7 +38,6 @@ const OpalTable = (props)=>{
         }
         setTableHeader(data)
        }
-    //    row.candidateName ||
        const applyFilterfn = () =>{
         return (tableData || [])
         .filter((row) =>        
@@ -91,10 +90,10 @@ const OpalTable = (props)=>{
                                 case 'action':
                                     tmp.cell= (row) =>  <ButtonToolbar >
                                         <ButtonGroup className="me-2" >
-                                            <Button  className="btn btn-info" onClick={()=>props.edit(row)}><BiEdit style={{color:"white"}}  /></Button> 
+                                            <Button  className="btn btn-info" disabled={!(row.is_active)} onClick={()=>props.edit(row)}><BiEdit style={{color:"white"}}  /></Button> 
                                         </ButtonGroup>
                                         <ButtonGroup className="me-2" style={{alignItems:"center"}} >
-                                           <Form.Check type="switch" id="custom-switch" onClick={()=>props.toggle(row)} />
+                                           <Form.Check type="switch" checked={row.is_active} id="custom-switch" onChange={(event)=>props.toggle(event,row)}  />
                                         </ButtonGroup>
                                     </ButtonToolbar>;
                                      break;

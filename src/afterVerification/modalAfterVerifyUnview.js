@@ -53,7 +53,9 @@ const ModalAfterUnview = (props) => {
           buildingPhotoRemark:caseAllDetails?.building_photo_remark,
           addressProofRemark:caseAllDetails?.address_proof_remark,
           landmarkPhotoRemark:caseAllDetails?.landmark_photo_remark,
-          id:caseAllDetails.id
+          id:caseAllDetails.id,
+          signature_url:caseAllDetails?.signature_url,
+          user_signature:caseAllDetails?.user_signature
         },
       });
     }
@@ -175,23 +177,12 @@ const ModalAfterUnview = (props) => {
   }, [statusOption]);
 
   const [imagePreview, setImagePreview] = useState(null);
+  const [candidateSignature, setCandidateSignature] = useState(null);
 
-  const filePicekerRef = useRef(null);
 
-  const handlerChangeImage = (event) => {
-    const reader = new FileReader();
-    const selectedFile = event.target.files[0];
-    if (selectedFile) {
-      reader.readAsDataURL(selectedFile);
-    }
-    setUnview({ ...unview, profile: selectedFile });
-
-    reader.onload = (readerEvent) => {
-      if (selectedFile.type.includes("image")) {
-        setImagePreview(readerEvent.target.result);
-      }
-    };
-  };
+  const handleDownlpoadPdf =()=>{
+       console.log("downloadPDF")
+  }
 
   return (
     <div style={{ width: "800px" }}>
@@ -358,9 +349,9 @@ const ModalAfterUnview = (props) => {
         {props.type === "updateUnview" ? (
           <div>
             <Modal.Header>
-              <Modal.Title id="contained-modal-title-vcenter">
-                UPDATE VERIFICATION
-              </Modal.Title>
+                <h1>UPDATE VERIFICATION</h1>
+                <h6> Comp :{caseAllDetails?.company_name} checkId:&nbsp;{caseAllDetails?.check_id} </h6>
+                <Button onClick={handleDownlpoadPdf}> Download pdf </Button>
             </Modal.Header>
             <Modal.Body>
               <Accordion defaultActiveKey="0">
@@ -915,39 +906,26 @@ const ModalAfterUnview = (props) => {
                 <div>
                   <Row>
                     <Col>
-                      <Card style={{ width: "18rem", border: "none" }}>
-                        <Card.Body>
-                          {imagePreview != null && (
+                    <Card style={{ width: "18rem", border: "none" }}>
+                      {/* {imagePreview != null && ( */}
                             <img
-                              src={imagePreview}
-                              alt=""
+                              src={updateCaseByAdmin?.user_signature}
+                              alt="..."
                               style={{
                                 width: "70%",
                                 height: "70%",
                                 paddingLeft: "20px",
                               }}
                             />
-                          )}
-                          <Card.Text>FE Signature</Card.Text>
-                          {/* <input
-					ref={filePicekerRef}
-					accept="image/*, video/*"
-					onChange={handlerChangeImage}
-					type="file"
-					hidden
-				/>
-        <Button className="btn" onClick={() => filePicekerRef.current.click()}>
-        Select Images
-        </Button> */}
-                        </Card.Body>
-                      </Card>
+                      {/* )} */}
+                          <br />
+                        </Card>
                     </Col>
                     <Col>
-                      <Card style={{ width: "18rem", border: "none" }}>
-                        <Card.Body>
-                          {imagePreview != null && (
+                    <Card style={{ width: "30rem", border: "none" }}>
+                      {/* {candidateSignature != null && ( */}
                             <img
-                              src={imagePreview}
+                              src={updateCaseByAdmin?.signature_url}
                               alt=""
                               style={{
                                 width: "70%",
@@ -955,20 +933,9 @@ const ModalAfterUnview = (props) => {
                                 paddingLeft: "20px",
                               }}
                             />
-                          )}
-                          <Card.Text>Responder Signature </Card.Text>
-                          {/* <input
-					ref={filePicekerRef}
-					accept="image/*, video/*"
-					onChange={handlerChangeImage}
-					type="file"
-					hidden
-				/>
-        <Button className="btn" onClick={() => filePicekerRef.current.click()}>
-        Select Images
-        </Button> */}
-                        </Card.Body>
-                      </Card>
+                      {/* // )} */}
+                          <br />
+                        </Card>
                     </Col>
                   </Row>
                 </div>
@@ -982,7 +949,7 @@ const ModalAfterUnview = (props) => {
                 >
                   Update
                 </Button>
-                <Button variant="warning">Upload Images</Button>
+                {/* <Button variant="warning">Upload Images</Button> */}
               </div>
             </Modal.Footer>
           </div>

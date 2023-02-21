@@ -26,7 +26,6 @@ import { checkUserHasRole } from './utility/validation';
 import DashboardEmployeeScreen from './dashboardEmployee';
 import DashboardFEScreen from './dashboardFEScreen';
 import AssignToFEScreen from './assign/assignToFEScreen';
-import AssignFEToOtherScreen from './assign/assignFEToOthers';
 import VerificationByFieldExective from './afterVerification/afterVerificationByFieldExective';
 import VerificationByEmployee from './afterVerification/afterVerificationByEmployee';
 
@@ -44,8 +43,7 @@ function App() {
       <Route path="EmployeeListPage" element={withHeader(<EmployeeListPage />)}/>
       <Route path="ViewStatistics" element={withHeader(<ViewStatistics />)}/>
        <Route path="ViewCompanies" element={withHeader(<ViewCompanies />)}/>
-       <Route path="VerificationList-Page" element={withHeader(<VerificationList_Page />)}/>
-       <Route path="VerificationList-Page/:id" element={withHeader(<VerificationList_Page />)}/>
+       <Route path="VerificationList-Page/:id?" element={withHeader(<VerificationList_Page />)}/>
        <Route path="FieldExecutivePage" element={withHeader(<FieldExecutivePage />)}/>
        <Route path="AssignTAT" element={withHeader(<AssignTAT />)}/>
        <Route path="Withdraw" element={withHeader(<Withdraw />)}/>
@@ -68,7 +66,6 @@ function App() {
       return<>
         <Route path="Dashboard" element={withHeader(<DashboardFEScreen/>)}/>
         <Route path="VerificationByFE" element={withHeader(<VerificationByFieldExective />)}/>
-        {/* <Route path="AssignFE" element={withHeader(<AssignFEToOtherScreen/>)}/> */}
         <Route path="VerificationList-Page" element={withHeader(<VerificationList_Page />)}/>
         <Route path="VerificationStatus" element={withHeader(<VerificationStatus />)}/>
       </>

@@ -22,7 +22,7 @@ const AssignTAT=()=>{
     },[])
 
     useEffect(()=>{
-       setTatData(assigns.filter((val)=> (val.status == "under_employee") ||  (val.status ==  "rejected_by_admin") ))
+       setTatData(assigns.filter((val)=> val.status == "under_employee"))
     },[assigns])
 
     const [item,setItem] = useState([]);

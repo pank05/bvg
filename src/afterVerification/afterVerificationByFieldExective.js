@@ -61,7 +61,7 @@ const VerificationByFieldExective = (props) => {
   };
 
   const handleUpdateCase = (data) => {
-    setDeafultData(data);
+    // setDeafultData(data);
     setModalType("update");
     setShow(true);
     dispatch(getCaseDataById(data.id));
@@ -96,14 +96,14 @@ const VerificationByFieldExective = (props) => {
         person_name: data?.relationTypeMeetPerson,
         person_contact: data?.meetPersonContactNo,
         is_id_proof: data?.idProof,
-        signature_url: data?.image?.name,
+        // signature_url: data?.image?.name,
       };
       temp.case_details = {
         verification_date: data?.verificationDoneDate,
       };
-      temp.users = {
-        signature_url: data?.image?.name,
-      };
+      // temp.users = {
+      //   signature_url: data?.image?.name,
+      // };
       return temp;
     });
     updateRecords.forEach((record) => {

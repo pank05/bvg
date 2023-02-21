@@ -7,7 +7,7 @@ export const verificationDataColumn = [{
 {
     id:2,
     columnId:"companyId",
-    label:"Company ID" ,
+    label:"Company" ,
     isShow:false
 },
 {

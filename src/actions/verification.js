@@ -11,6 +11,16 @@ export const postAddCaseAPI = createAsyncThunk(
     return response.data;
   })
 
+export const bulkAddCases= createAsyncThunk(
+  'bulkAddCases',
+  async (data)=>{
+    const response = await axios.post('/cases/bulk-upload-cases',data,{
+      headers:{
+        Authorization : `Bearer ${localStorage.getItem('_token') }`
+      }});
+    return response.data;
+  } )
+
 export const getAllCaseAPI = createAsyncThunk(
   'getAllCaseAPI',
   async ({id,status}) => {
@@ -86,7 +96,7 @@ export const getAllCaseAPI = createAsyncThunk(
       'getCityBySearch',
       async (filter) => {
         let urlParam = filter.name ? `?name=${filter.name}` : '';
-      const response  =  await axios.get(`state/city/${filter.id}${urlParam}`,{
+      const response  =  await axios.get(`/state/city/${filter.id}${urlParam}`,{
         headers:{
         Authorization : `Bearer ${localStorage.getItem('_token') }`
       }
@@ -97,7 +107,7 @@ export const getAllCaseAPI = createAsyncThunk(
 export const getAllStates = createAsyncThunk(
       'getAllStates',
       async (id) => {
-        const response  =  await axios.get(`state/list/${id}`,{
+        const response  =  await axios.get(`/state/list/${id}`,{
           headers:{
             Authorization : `Bearer ${localStorage.getItem('_token') }`
           }
@@ -122,8 +132,13 @@ export const verificationSlice = createSlice({
   },
   extraReducers: (builder) => {
       builder.addCase(postAddCaseAPI.fulfilled, (state, data) =>{
+        
+        // state.list =data.payload;
         // state.list.push(data.payload);
         //  state.list.push({id:state.list.length+1,...data.payload});
+      })
+
+      builder.addCase(bulkAddCases.fulfilled,(state,data)=>{
       })
 
       builder.addCase(deleteCaseDataById.fulfilled,(state,data,index)=>{
@@ -138,7 +153,7 @@ export const verificationSlice = createSlice({
       })
 
       builder.addCase(getCaseDataById.fulfilled, (state, action) =>{
-        console.log("action ",action.payload[0])
+        console.log("action caseDetails",action.payload[0])
         state.caseDetails = action.payload[0];
       });
        

@@ -3,8 +3,8 @@ import axios from "axios";
 
 export const getAllCompaniesAPI = createAsyncThunk(
   'getAllCompaniesAPI',
-  async (id) => {
-    const response  =  await axios.get(`/company/${id}`,{
+  async ({id,is_active}) => {
+    const response  =  await axios.post(`/company/${id}`,{is_active},{
           headers: {
             Authorization : `Bearer ${localStorage.getItem('_token') }`
           }
@@ -15,16 +15,19 @@ export const getAllCompaniesAPI = createAsyncThunk(
   export const updateCompanyById = createAsyncThunk(
     'updateCompanyById',
     async (data) => {
-      let updateData = {
-        name:data.name,
-        contact_number:data.contact_number,
-        alternate_number:data.alternate_number,
-        city:data.city,
-        contact_person:data.contact_person,
-        email:data.email,
-        address:data.address,
-        short_name:data.short_name
-    };
+      let updateData= {};
+      if(data.email){
+        updateData = {
+          name:data.name,
+          contact_number:data.contact_number,
+          alternate_number:data.alternate_number,
+          city:data.city,
+          contact_person:data.contact_person,
+          email:data.email,
+          address:data.address,
+          short_name:data.short_name
+      };
+      }
       const response  =  await axios.put(`/company/${data.id}`,updateData,{
         headers:{
         Authorization : `Bearer ${localStorage.getItem('_token') }`
@@ -36,7 +39,7 @@ export const getAllCompaniesAPI = createAsyncThunk(
     export const getCompanyDataById = createAsyncThunk(
       'getCompanyDataById',
       async (id) => {
-      const response  =  await axios.get(`/company/${id}`,{
+      const response  =  await axios.post(`/company/${id}`,{},{
         headers:{
         Authorization : `Bearer ${localStorage.getItem('_token') }`
       }
@@ -54,7 +57,19 @@ export const getAllCompaniesAPI = createAsyncThunk(
       return response.data;
     }
   )
-  
+
+  export const softDeleteCaseDataById = createAsyncThunk(
+    'softDeleteCaseDataById',
+    async (id) => {
+    const response  =  await axios.put(`company/delete/${id}`,{},{
+      headers:{
+        Authorization : `Bearer ${localStorage.getItem('_token') }`
+      }
+    });
+    return response.data;
+  })
+
+
 export const companySlice = createSlice({
 
   name: 'companies',
@@ -67,12 +82,10 @@ export const companySlice = createSlice({
     clearCurrentCompany:(state)=>{
       state.currentCompany ={};
     },
-    
-    deleteCompany:(state,data) =>{
-      const index = data.payload;
-      const newTodos = state.list.filter(todo => todo.id !== index)
-      state.list = newTodos
-    }
+    clearCompanyList:(state)=>{
+      state.list =[];
+    },
+
   },
   extraReducers:(builder) =>{
       builder.addCase(getAllCompaniesAPI.fulfilled, (state, action) =>{
@@ -86,7 +99,8 @@ export const companySlice = createSlice({
             address:item.address,
             contact_person:item.contact_person,
             short_name:item.short_name,
-            email:item.email
+            email:item.email,
+            is_active:item.is_active
           };
           return tmpData;
         })
@@ -99,12 +113,17 @@ export const companySlice = createSlice({
       builder.addCase(getCompanyDataById.fulfilled, (state, data) =>{
         state.currentCompany = data.payload;
       });
+      
       builder.addCase(updateCompanyById.fulfilled, (state, data) =>{
       });
+
+      builder.addCase(softDeleteCaseDataById.fulfilled,(state,data) =>{
+
+      })
       
   }
 });
 
-export const {deleteCompany,clearCurrentCompany} = companySlice.actions
+export const {clearCurrentCompany,clearCompanyList} = companySlice.actions
 
 export default companySlice.reducer

@@ -2,14 +2,17 @@ import { useEffect } from "react";
 import { Container,Button,Col,Row,Nav } from "react-bootstrap";
 import { useSelector ,useDispatch} from "react-redux";
 import { Link } from 'react-router-dom';
-import {getAllCompaniesAPI} from '../actions/company';
+import {getAllCompaniesAPI,clearCompanyList} from '../actions/company';
 
 const ViewCompanies=()=>{
   const companies = useSelector(state=> state?.company?.list || []);
   const dispatch=useDispatch();
 
   useEffect(()=>{
-    dispatch(getAllCompaniesAPI('all'))
+    dispatch(getAllCompaniesAPI({id:'all',is_active:1}));
+    return ()=>{
+      dispatch(clearCompanyList());
+    }
   },[])
 
     return(

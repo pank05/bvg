@@ -5,11 +5,8 @@ import { Container, Button } from "react-bootstrap";
 import OpalTable from "../opalTable";
 import { afterVerifyDataColoum } from "../mock/afterVerifyData";
 import { useSelector, useDispatch } from "react-redux";
-import { read, utils } from "xlsx";
-import { FaFileImport } from "react-icons/fa";
 import {
   getAllCaseAPI,
-  updateCaseById,
   getCaseHistoryById,
   getCaseDataById,
 } from "../actions/verification";
@@ -56,7 +53,7 @@ const AfterVerification = (props) => {
     setButtonType("View Unreview");
     setActionButton(!actionButton);
     const unViewVerifyData = review.filter((val) => {
-      return val.status == "verify_by_employee";
+      return (val.status == "verify_by_employee") || (val.status ==  "rejected_by_employee ");
     });
     setVerifyAdmin(unViewVerifyData);
   };

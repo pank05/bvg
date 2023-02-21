@@ -10,6 +10,7 @@ export const companiesModalVarData=[
     contact_person:"",
     email:"",
     address:"",
-    short_name:""
+    short_name:"",
+    isActive:""
 }
 ]
