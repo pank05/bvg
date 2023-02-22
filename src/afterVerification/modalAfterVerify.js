@@ -182,13 +182,16 @@ const ModalAfterVerify = (props) => {
         additionalRemark:caseAllDetails?.is_id_proof,
         additionalRemarkByFEForm:caseAllDetails?.additional_remark_json,
         verificationDoneDate:caseAllDetails?.verification_date,
-        FE:caseAllDetails?.assigned_to_name,
+        FE:caseAllDetails?.user_name,
         verificationRemarkByFE:caseAllDetails?.type_id,
         birthCheckForm:caseAllDetails?.is_by_birth,
         tillCheckForm:caseAllDetails?.is_till_date,
         id:caseAllDetails.id,
-        candidateSignature:caseAllDetails?.signature_url,
-        user_signature:caseAllDetails?.user_signature
+        signature_url:caseAllDetails?.signature_url,
+        user_signature:caseAllDetails?.user_signature,
+        addressRemark:caseAllDetails?.verification_reason_remark,
+        reasonNotFound:caseAllDetails?.verification_reason_id,
+        nearLandmark:caseAllDetails?.is_landmark
         },
       });
       if(caseAllDetails?.is_present_name === 'address_found'){
@@ -740,6 +743,7 @@ const ModalAfterVerify = (props) => {
                                 checked={updateAddressVerification?.address == radios.id}
                                 label={radios.label}
                                 value={radios.id}
+                                key={radios.id}
                                 name={radios.name}
                                 type={radios.type}
                                 onChange={(v) => {
@@ -793,9 +797,10 @@ const ModalAfterVerify = (props) => {
                             <Col>
                               <label> Verification status Remark:</label>
                             </Col>
-                            <Col>
-                              <div key={`inline-radio`}>
+                            <Row>
                                 {additionalRemarkByFE.map((radios) => (
+                                  <Col>
+                                   <div key={radios.id}>
                                   <Form.Check
                                     inline
                                     checked={updateAddressVerification?.additionalRemark == radios.value}
@@ -810,7 +815,10 @@ const ModalAfterVerify = (props) => {
                                       });
                                     }}
                                   />
+                                </div>
+                                </Col>
                                 ))}
+                                <Col> 
                                 <p style={{ float: "right", color: "#20c997" }}>
                                   {
                                     [...additionalRemarkByFE].find(
@@ -819,9 +827,8 @@ const ModalAfterVerify = (props) => {
                                         d.value
                                     )?.label
                                   }
-                                </p>
-                              </div>
-                            </Col>
+                                </p> 
+                                </Col></Row>
                           </Row>
                           <FloatingLabel
                             controlId="floatingTextarea"
@@ -936,6 +943,18 @@ const ModalAfterVerify = (props) => {
                           )}
                           <br />
                         </Card>
+                        <Card style={{ width: "18rem", border: "none" }}>
+                            <img
+                              src={updateAddressVerification?.user_signature}
+                              alt="..."
+                              style={{
+                                width: "70%",
+                                height: "70%",
+                                paddingLeft: "20px",
+                              }}
+                            />
+                          <br />
+                        </Card>
                         <input
                           ref={filePicekerRef}
                           accept="image/*, video/*"
@@ -952,6 +971,18 @@ const ModalAfterVerify = (props) => {
                         <Button variant="warning" onClick={()=>{ handleUploadUserImage()}}>Upload FE Signature</Button>
                       </Col>
                       <Col>
+                      <Card style={{ width: "18rem", border: "none" }}>
+                            <img
+                              src={updateAddressVerification?.signature_url}
+                              alt="..."
+                              style={{
+                                width: "70%",
+                                height: "70%",
+                                paddingLeft: "20px",
+                              }}
+                            />
+                          <br />
+                        </Card>
                         <Card style={{ width: "18rem", border: "none" }}>
                           {candidateSignature != null && (
                             <img

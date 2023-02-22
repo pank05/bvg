@@ -32,10 +32,7 @@ const EmployeeToFEAssign =(props)=>{
                         <Form.Control
                           type="text"
                           placeholder="TAT Start Date"
-                          // value={props.assignData.durationStart}
-                          // value={props?.assignData.map((v)=>v.durationStart)}
-
-                         />
+                          value={props?.assignData.map((v)=>v.durationStart)}  />
                       </Form.Group>
                     </Col>
                     <Col>
@@ -43,19 +40,8 @@ const EmployeeToFEAssign =(props)=>{
                         <Form.Control
                           type="date"
                           placeholder="TAT End Date"
-                          // value={props?.assignData.map((v)=>v.durationEnd)}
-                        //   onChange={(e) => {
-                        //     // setAssignField();
-                        //     setAssignFEData({
-                        //       ...assignFEData,
-                        //       ...{ durationEnd: e.target.value },
-                        //     });
-                        //   }}
-                        //   isInvalid={!!assignErrors.durationEnd}
+                          value={props?.assignData.map((v)=>v.durationEnd)}
                         />
-                        {/* <Form.Control.Feedback type="invalid">
-                          {assignErrors.durationEnd}
-                        </Form.Control.Feedback> */}
                       </Form.Group>
                     </Col>
                   </Row>
@@ -66,13 +52,11 @@ const EmployeeToFEAssign =(props)=>{
                         <Form.Select
                           aria-label="Default select example"
                           onChange={(e) => {
-                            // setAssignField();
                             setAssignFEData({
                               ...assignFEData,
                               ...{ assignedTo: e.target.value },
                             });
                           }}
-                        //   isInvalid={!!assignErrors.assignedTo}
                         >
                           <option>Select fieldExecutive</option>
                           {fieldExecutive.map((FEList) => {
@@ -81,9 +65,6 @@ const EmployeeToFEAssign =(props)=>{
                             );
                           })}
                         </Form.Select>
-                        {/* <Form.Control.Feedback type="invalid">
-                          {assignErrors.assignedTo}
-                        </Form.Control.Feedback> */}
                       </Form.Group>
                     </Col>
                   </Row>

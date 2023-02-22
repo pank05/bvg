@@ -204,9 +204,8 @@ const VerificationByEmployee =(props)=>{
           <Button
             className="btn btn-primary"
             style={{ align: "rigth" }}
-            onClick={actionButton ? handleViewVerifyByFE : handleViewVerifyByEmp}
-          >            {actionButton ? "View Verified By FE" : "View Unreview"}
-            {actionButton ? "View Verified By Employee" : "View Unreview"}
+            onClick={actionButton ? handleViewVerifyByFE : handleViewVerifyByEmp}>            
+            {actionButton ? "View Unreview"  :  "View Verified By Employee"}
           </Button>
         </h2>
       </div>

@@ -13,6 +13,7 @@ import {
 
 const VerificationByFieldExective = (props) => {
   const caseData = useSelector((state) => state?.verification?.list || []);
+  const userDetails = useSelector((state) => state?.user?.userProfile); 
   const [verifyFEData, setVerifyFEData] = useState([]);
   const dispatch = useDispatch();
 
@@ -61,7 +62,6 @@ const VerificationByFieldExective = (props) => {
   };
 
   const handleUpdateCase = (data) => {
-    // setDeafultData(data);
     setModalType("update");
     setShow(true);
     dispatch(getCaseDataById(data.id));
@@ -96,17 +96,20 @@ const VerificationByFieldExective = (props) => {
         person_name: data?.relationTypeMeetPerson,
         person_contact: data?.meetPersonContactNo,
         is_id_proof: data?.idProof,
-        // signature_url: data?.image?.name,
+        signature_url: data?.image?.name,
+        user_name:userDetails?.username,
+        user_id:userDetails?.id
       };
       temp.case_details = {
         verification_date: data?.verificationDoneDate,
       };
-      // temp.users = {
-      //   signature_url: data?.image?.name,
-      // };
+      temp.users = {
+        signature_url: data?.image?.name,
+      };
       return temp;
     });
     updateRecords.forEach((record) => {
+      console.log(record)
       dispatch(updateAddrescaseDetails(record)).then(() => {
         dispatch(getAllCaseAPI({ id: "all", status: ["under_FE"] }));
       });
@@ -166,6 +169,8 @@ const VerificationByFieldExective = (props) => {
       let updateRecords =  selectRecord.map((record) => {
         let temp = { ...record };
       temp.verifications = {
+        additional_remark_json: data?.additionalRemarkByFEForm,
+        type_id: data?.verificationRemarkByFE,
         verification_residence_type:data?.residenceType ,
         verification_residence_status:data?.residenceStatus,
       };

@@ -90,7 +90,7 @@ const AssignModal = (props) => {
                         <Form.Control
                           type="text"
                           placeholder="TAT Start Date"
-                          // value={props?.assignData.map((v)=>v.durationStart)}
+                          value={props?.assignData.map((v)=>v.durationStart)}
                          readOnly />
                       </Form.Group>
                     </Col>

@@ -23,20 +23,13 @@ const AfterVerification = (props) => {
 
   useEffect(() => {
     dispatch(
-      getAllCaseAPI({
-        id: "all",
-        status: ["verify_by_employee", "verify_by_admin","rejected_by_employee" ],
-      })
+      getAllCaseAPI({ id: "all", status: ["verify_by_employee", "verify_by_admin","rejected_by_employee"] })
     );
   }, []);
 
   useEffect(() => {
-    setVerifyAdmin(review.filter((t) => (t.status == "verify_by_employee") || (t.status == "rejected_by_employee ")));
+    setVerifyAdmin(review.filter((t) => (t.status == "verify_by_employee") || (t.status == "rejected_by_employee") ));
   }, [review]);
-
-  // useEffect(() => {
-  //   setVerifyAdmin(review.filter((t) => t.status == "verify_by_admin"));
-  // }, [review]);
 
   const [buttonType, setButtonType] = useState("View Verified By Admin");
 
@@ -53,7 +46,7 @@ const AfterVerification = (props) => {
     setButtonType("View Unreview");
     setActionButton(!actionButton);
     const unViewVerifyData = review.filter((val) => {
-      return (val.status == "verify_by_employee") || (val.status ==  "rejected_by_employee ");
+      return (val.status == "verify_by_employee") || (val.status == "rejected_by_employee")
     });
     setVerifyAdmin(unViewVerifyData);
   };
@@ -101,7 +94,7 @@ const AfterVerification = (props) => {
     updateRecord.forEach((record) => {
       console.log("recird", record);
       dispatch(updateAddressAuditCaseDetails(record)).then(() => {
-        dispatch(getAllCaseAPI({ id: "all", status: ["verify_by_employee"] }));
+        dispatch(getAllCaseAPI({ id: "all", status: ["verify_by_employee" ,"rejected_by_employee"] }));
       });
     });
   }
@@ -150,7 +143,7 @@ const AfterVerification = (props) => {
     updateRecords.forEach((record) => {
       console.log("updateRecord",record)
       dispatch(updateAddrescaseDetails(record)).then(() => {
-        dispatch(getAllCaseAPI({ id: "all", status: ["verify_by_employee"] }));
+        dispatch(getAllCaseAPI({ id: "all", status: ["verify_by_employee","rejected_by_employee"] }));
       });
     });
   }

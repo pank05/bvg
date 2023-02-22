@@ -903,11 +903,9 @@ const ModalAfterUnview = (props) => {
                   </Form>
                 </div>
                 <br />
-                <div>
-                  <Row>
-                    <Col>
+                <div style={{ display:"flex"}}>
+  
                     <Card style={{ width: "18rem", border: "none" }}>
-                      {/* {imagePreview != null && ( */}
                             <img
                               src={updateCaseByAdmin?.user_signature}
                               alt="..."
@@ -917,13 +915,12 @@ const ModalAfterUnview = (props) => {
                                 paddingLeft: "20px",
                               }}
                             />
-                      {/* )} */}
+                            <b style={{paddingLeft: "20px"}}> FE Signature</b>
+
                           <br />
                         </Card>
-                    </Col>
-                    <Col>
+
                     <Card style={{ width: "30rem", border: "none" }}>
-                      {/* {candidateSignature != null && ( */}
                             <img
                               src={updateCaseByAdmin?.signature_url}
                               alt=""
@@ -933,11 +930,10 @@ const ModalAfterUnview = (props) => {
                                 paddingLeft: "20px",
                               }}
                             />
-                      {/* // )} */}
+                            <b style={{paddingLeft: "70px"}}> candidate Signature</b>
                           <br />
                         </Card>
-                    </Col>
-                  </Row>
+
                 </div>
               </Accordion>
             </Modal.Body>
@@ -949,7 +945,6 @@ const ModalAfterUnview = (props) => {
                 >
                   Update
                 </Button>
-                {/* <Button variant="warning">Upload Images</Button> */}
               </div>
             </Modal.Footer>
           </div>

@@ -60,7 +60,6 @@ const Opal =(props)=> {
     if(checkUserHasRole(userProfile,['FieldExecutive'])){
       return <>
           <Nav.Link  as={Link} to="/dashboard"  className='opal-nav' onClick={handleClose}> <span><AiFillDashboard/></span> &nbsp; Dashboard</Nav.Link>
-          {/* <Nav.Link as={Link} to="/AssignFE"   className='opal-nav' onClick={handleClose}><span> <FaUpload/> </span> &nbsp;  AssignTAT</Nav.Link> */}
           <Nav.Link as={Link} to="/VerificationList-Page" className='opal-nav' onClick={handleClose}> <span> <MdOutlineGridOn/> </span> &nbsp; Verification </Nav.Link>
           <Nav.Link as={Link} to="/VerificationByFE" className='opal-nav' onClick={handleClose}> <span> <FaCheckCircle/> </span> &nbsp; Verification By FE</Nav.Link> 
           <Nav.Link as={Link} to="/VerificationStatus"  className='opal-nav' onClick={handleClose}> <span> <FaChartBar/> </span> &nbsp; Verification Status</Nav.Link>
@@ -73,7 +72,6 @@ const Opal =(props)=> {
 
   return (
     <div className='nav-alignment'>
-     
       <Navbar  key={show} bg="light" expand={show} className=" flex-grow-1 navbar navbar-dark bg-dark" >
       <Container >
             <Navbar.Brand ><h1>OPAL</h1></Navbar.Brand>
