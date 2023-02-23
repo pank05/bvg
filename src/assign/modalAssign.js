@@ -116,17 +116,6 @@ const AssignModal = (props) => {
                   </Row>
                   <br />
                   <Row>
-                    {/* <Col>
-                     <Form.Group controlId="checkPriority">
-                   <Form.Check type="checkbox" label="Special Priority" checked={isCheckOutBtn} 
-                   onChange={(e)=>{
-                    setIscheckOutBtn(!isCheckOutBtn);   
-                    setAssignField()
-                    }}
-                   isInvalid={!!assignErrors.checkPriority}/>
-                  <Form.Control.Feedback type="invalid"> {assignErrors.checkPriority}</Form.Control.Feedback>
-                   </Form.Group> 
-                   </Col>   */}
                   </Row>
                   <br />
                   <Row>
@@ -187,10 +176,10 @@ const AssignModal = (props) => {
               <div>
                 <Form>
                   <h4>
-                    Are you sure To withdraw this {props.assignData.length}{" "}
+                    Are you sure To withdraw this {props.assignData.length} &nbsp;
                     Verification forms
                   </h4>
-                  {/* {props?.assignData.map((v) => v.checkId).join(",")} */}
+                  {props?.assignData.map((v) => v.checkId).join(",")}
                   <br/><br/>
                   <Form.Group controlId="remark">
                         <Form.Control

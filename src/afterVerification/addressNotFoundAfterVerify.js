@@ -40,7 +40,7 @@ const AddressNotFound =(props)=>{
              <Row>
                  <Col>REASON OF ADDRESS NOT FOUND:</Col>  </Row>
              <Form>
-             <div key={`inline-radio`} >
+             <div  >
          {
          reasonList.map(v=>{
           let temp  = {...v};
@@ -54,6 +54,7 @@ const AddressNotFound =(props)=>{
             label={radios.label}
             value={radios.id}
             name={radios.name}
+            // key={radios.id}
             type={radios.type}
             onChange={(v)=>{
               props.setUpdateAddressVerification({...props.updateAddressVerification,...{reasonNotFound:v.target.value}})

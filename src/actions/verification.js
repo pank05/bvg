@@ -125,10 +125,13 @@ export const verificationSlice = createSlice({
     cityList:[],
     currentCase:{},
     caseDetails:{},
-    caseHistory:[]
+    caseHistory:[],
+    currentCase:{}
   },
   reducers: {
-
+    clearCurrentCase:(state)=>{
+      state.currentCase ={};
+    },
   },
   extraReducers: (builder) => {
       builder.addCase(postAddCaseAPI.fulfilled, (state, data) =>{
@@ -202,6 +205,6 @@ export const verificationSlice = createSlice({
   }
   
 })
-export const { } = verificationSlice.actions
+export const { clearCurrentCase} = verificationSlice.actions
 
 export default verificationSlice.reducer

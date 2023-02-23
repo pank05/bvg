@@ -5,7 +5,23 @@ import {AiOutlineHdd} from "react-icons/ai" ;
 import {BsFillArrowRightCircleFill} from "react-icons/bs" ;
 import {Container,Row,Col,Nav } from 'react-bootstrap' ;
 import { Link } from 'react-router-dom';
- const Dashboard=()=>{
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { getAllCompaniesAPI} from "./actions/company"
+
+ const Dashboard=(props)=>{
+
+  const company =useSelector((state)=>state?.companies?.list || [] )
+  const employee =useSelector((state)=>state?.employee?.list || [])
+  const FieldExecutive =useSelector((state)=>state?.field?.list || [])
+  const casesList =useSelector((state)=>state?.verification?.list || [])
+
+  const dispatch=useDispatch
+  let getCompany =  company.length;
+
+  // useEffect(()=>{
+  //   dispatch(getAllCompaniesAPI({id:'all',is_active:1}))
+  //  },[])
 
  return(
       <div>
@@ -26,7 +42,7 @@ import { Link } from 'react-router-dom';
     </div>
   <hr/>
     <div className="d-flex bd-highlight">
-      <div style={{color:"white"}}> View Company List</div>
+      <div style={{color:"white" ,paddingLeft:"20px"}}> <h6>View Company List  &nbsp; {Object.keys(company).length}</h6>  </div><br/>
       <div className="p-2 flex-grow-1 bd-highlight ,icon-aline"> <BsFillArrowRightCircleFill/> </div>
       </div>
       </Nav.Link>
@@ -38,12 +54,12 @@ import { Link } from 'react-router-dom';
  <Nav.Link as={Link} to="/EmployeeListPage" className="dash-href">
 <div className="d-flex bd-highlight">
     <div className="p-2 bd-highlight ,cardicon"  >
-  <RiContactsBookLine size={70} style={{color:"white"}}/>  </div>
+  <RiContactsBookLine size={70} style={{color:"white" }}/>  </div>
    <div className="p-2 flex-grow-1 bd-highlight,com-style" > Employee!</div>  
     </div>
   <hr/>
     <div className="d-flex bd-highlight">
-      <div style={{color:"white"}}> View Employee List </div>
+      <div style={{color:"white" ,paddingLeft:"20px"}}><h6>View Employee List &nbsp;  {Object.keys(employee).length}</h6> </div>
       <div className="p-2 flex-grow-1 bd-highlight, icon-aline"> <BsFillArrowRightCircleFill/> </div>
       </div>
     </Nav.Link>
@@ -60,7 +76,7 @@ import { Link } from 'react-router-dom';
        </div>
        <hr/>
       <div className="d-flex bd-highlight">
-      <div style={{color:"white"}}> View Verification </div>
+      <div style={{color:"white" ,paddingLeft:"20px"}}> <h6>View Verification &nbsp; {Object.keys(casesList).length} </h6></div>
       <div className="p-2 flex-grow-1 bd-highlight,icon-aline"> <BsFillArrowRightCircleFill/> </div>
       </div>
     </Nav.Link>
@@ -78,7 +94,7 @@ import { Link } from 'react-router-dom';
     </div>
   <hr/>
     <div className="d-flex bd-highlight">
-      <div style={{color:"white"}}> View  Field Executive</div>
+      <div style={{color:"white",paddingLeft:"20px"}}><h6>View  Field Executive &nbsp; {Object.keys(FieldExecutive).length} </h6> </div>
       <div className="p-2 flex-grow-1 bd-highlight,icon-aline"> <BsFillArrowRightCircleFill/> </div>
       </div>
     </Nav.Link>

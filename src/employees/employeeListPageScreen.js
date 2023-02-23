@@ -80,11 +80,9 @@ const  handleToggleModal= (id)=>{
                   />
                 </div>
 
-         <div > 
             <EmployeeModal show={show} close={handleClose}  defaultData={defaultData} type={modalType}  value='EmployeeList'   save={handleSaveMe}
               onUpdate={handleUpdateEmployee} onDelete={handleToggleModal} />
             <AssignModal defaultData={defaultData}/>
-        </div> 
         {Para.children}
     </Container>
     )

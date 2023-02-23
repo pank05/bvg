@@ -97,7 +97,6 @@ const AddressFound = (props) => {
         </Row>
         <Row>
           <Col>
-            <div key={`inline-radio`}>
               {verifiedByList
                 .map((v) => {
                   let temp = { ...v };
@@ -107,10 +106,12 @@ const AddressFound = (props) => {
                 })
                 .map((radios) => {
                   return (
+                  <div>
                     <Form.Check
                       inline
                       checked={props.updateAddressVerification?.verifyBy == radios.id}
                       label={radios.label}
+                      key={radios.id}
                       value={radios.id}
                       name={radios.name}
                       type={radios.type}
@@ -121,6 +122,7 @@ const AddressFound = (props) => {
                         });
                       }}
                     />
+                  </div>
                   );
                 })}
               <p style={{ float: "right", color: "#20c997" }}>
@@ -129,7 +131,6 @@ const AddressFound = (props) => {
                     ?.label
                 }
               </p>
-            </div>
           </Col>
         </Row>
         <Row>
@@ -137,7 +138,7 @@ const AddressFound = (props) => {
         </Row>
         <Row>
           <Col>
-            <div key={`inline-radio`}>
+            <div>
               {relationList
                 .map((v) => {
                   let temp = { ...v };
@@ -152,6 +153,7 @@ const AddressFound = (props) => {
                       checked={props.updateAddressVerification?.relationType == radios.id}
                       label={radios.label}
                       value={radios.id}
+                      key={radios.id}
                       name={radios.name}
                       type={radios.type}
                       onChange={(v) => {

@@ -14,7 +14,11 @@ import {
 import { updateRadioClickModal } from "../constant/afterVerification";
 import { FaMoneyBillAlt } from "react-icons/fa";
 import { FiEdit } from "react-icons/fi";
+import ReactToPrint from 'react-to-print';
+
 // import PDF from "./PDF";
+import { jsPDF } from "jspdf";
+
 import { PDFViewer, ReactPDF, PDFDownloadLink } from "@react-pdf/renderer";
 import Select from "react-select";
 import AddressFound from "./addressFoundAfterVerify";
@@ -22,6 +26,7 @@ import AddressNotFound from "./addressNotFoundAfterVerify";
 import { useSelector, useDispatch } from "react-redux";
 import { useRef } from "react";
 import { getStatusList } from "../actions/status";
+import {clearCurrentCase} from "../actions/verification"
 import {editRadioClickModal} from "../constant/afterVerification"
 import { checkUserHasRole } from "../utility/validation";
 import {updateSignatureURL} from "../actions/fieldexctive";
@@ -33,16 +38,6 @@ const ModalAfterVerify = (props) => {
   const caseAllDetails=useSelector((state) => state?.verification?.caseDetails);
   const statusOption = useSelector((state) => state?.status?.list);
   const caseHistoryDetails =useSelector((state)=> state?.verification?.caseHistory);
-
-  const statusList = useSelector((state) => state?.status?.list || []).map(
-    (states) => {
-      return {
-        value: states.status,
-        label: states.label,
-        // type:'case'
-      };
-    }
-  );
 
   const [additionalRemarkByFE, setAdditionalRemarkByFE] = useState([
     {
@@ -203,6 +198,9 @@ const ModalAfterVerify = (props) => {
   const [addressList, setAddressList] = useState([]);
   const [addressChange, setAddressChange] = useState();
 
+useEffect(()=>{
+  dispatch(clearCurrentCase())
+},[])
 
   useEffect(() => {
     setAddressList(
@@ -287,17 +285,7 @@ const ModalAfterVerify = (props) => {
 
   const [updateAddressVerification, setUpdateAddressVerification] = useState(updateRadioClickModal);
 
-  const handleDownlpoadPdf = () => {
-    console.log("download",  <PDFViewer>
-    <ModalAfterVerify />
-  </PDFViewer> );
-    
-       <PDFDownloadLink
-      document={< ModalAfterVerify/> || ''}
-      fileName="verification.pdf"
-    /> 
-    
-  };
+  const componentRef = useRef();
 
   return (
     <Container>
@@ -611,11 +599,20 @@ const ModalAfterVerify = (props) => {
 
           {/*update */}
           {props.type === "update" ? (
-            <>
+            <div id="target" ref={componentRef}>
               <Modal.Header>
                 <h1 className="div_center"> UPDATE VERIFICATION </h1>
                 <h6> Comp :{caseAllDetails?.company_name} checkId:&nbsp;{caseAllDetails?.check_id} </h6>
-                <Button onClick={()=>handleDownlpoadPdf()}> Download pdf </Button>
+                {/* <Button id="cmd" onClick={()=>handleDownlpoadPdf()}> Download pdf </Button> */}
+               
+                <ReactToPrint
+          trigger={() => {
+            return <Button>PDF Download</Button>;
+          }}
+          content={() => componentRef.current}
+          documentTitle='download'
+          pageStyle="print"
+        />
               </Modal.Header>
               <Modal.Body>
                 <Form>
@@ -633,13 +630,14 @@ const ModalAfterVerify = (props) => {
                                   type="text"
                                   placeholder="Candidate Name"
                                   value={caseAllDetails?.candidate_name}
+                                  readOnly
                                 />
                               </Col>
                               <Col>
                                 <Form.Control
                                   type="text"
                                   placeholder="Company Check Id"
-                                  value={caseAllDetails?.check_id}
+                                  value={caseAllDetails?.check_id} readOnly
                                 />
                               </Col>
                             </Row>
@@ -649,14 +647,14 @@ const ModalAfterVerify = (props) => {
                                 <Form.Control
                                   type="text"
                                   placeholder="Father's Name"
-                                  value={caseAllDetails?.father_name}
+                                  value={caseAllDetails?.father_name} readOnly
                                 />
                               </Col>
                               <Col>
                                 <Form.Control
                                   type="text"
                                   placeholder="Candidate Contact No"
-                                  value={caseAllDetails?.contact_no}
+                                  value={caseAllDetails?.contact_no} readOnly
                                 />
                               </Col>
                             </Row>
@@ -666,7 +664,7 @@ const ModalAfterVerify = (props) => {
                                 <Form.Control
                                   type="text"
                                   placeholder="Address Give By Candidate "
-                                  value={caseAllDetails?.address}
+                                  value={caseAllDetails?.address} readOnly
                                 />
                               </Col>
                             </Row>
@@ -676,28 +674,28 @@ const ModalAfterVerify = (props) => {
                                 <Form.Control
                                   type="text"
                                   placeholder="Candidate City"
-                                  value={caseAllDetails?.city_name}
+                                  value={caseAllDetails?.city_name} readOnly
                                 />
                               </Col>
                               <Col>
                                 <Form.Control
                                   type="text"
                                   placeholder="Candidate District"
-                                  value={caseAllDetails?.district_name}
+                                  value={caseAllDetails?.district_name} readOnly
                                 />
                               </Col>
                               <Col>
                                 <Form.Control
                                   type="text"
                                   placeholder="Candidate State"
-                                  value={caseAllDetails?.state_name}
+                                  value={caseAllDetails?.state_name} readOnly
                                 />
                               </Col>
                               <Col>
                                 <Form.Control
                                   type="text"
                                   placeholder="Candidate Pin Code"
-                                  value={caseAllDetails?.pincode}
+                                  value={caseAllDetails?.pincode} readOnly
                                 />
                               </Col>
                             </Row>
@@ -707,15 +705,14 @@ const ModalAfterVerify = (props) => {
                                 <Form.Control
                                   type="text"
                                   placeholder="Landmark"
-                                  value={caseAllDetails?.location}
+                                  value={caseAllDetails?.location} readOnly
                                 />
                               </Col>
                               <Col>
                                 <Form.Control
                                   type="text"
                                   placeholder="RESUME ID(comp-checkId)"
-                                  value={caseAllDetails?.resume_id}
-                                  required
+                                  value={caseAllDetails?.resume_id} readOnly
                                 />
                               </Col>
                             </Row>
@@ -1027,7 +1024,7 @@ const ModalAfterVerify = (props) => {
                   </Button>
                 </div>
               </Modal.Footer>
-            </>
+            </div>
           ) : null}
         </Modal>
         {props.children}

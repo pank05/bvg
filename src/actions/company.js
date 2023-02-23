@@ -76,7 +76,8 @@ export const companySlice = createSlice({
   initialState: {
     list: [],
     count:0,
-    currentCompany:{}
+    currentCompany:{},
+    getList:[]
   },
   reducers: {
     clearCurrentCompany:(state)=>{
@@ -85,6 +86,7 @@ export const companySlice = createSlice({
     clearCompanyList:(state)=>{
       state.list =[];
     },
+    
 
   },
   extraReducers:(builder) =>{
