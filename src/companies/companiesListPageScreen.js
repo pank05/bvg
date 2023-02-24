@@ -6,7 +6,6 @@ import CompaniesModal from "./companiesModal";
 import {FaUserPlus} from "react-icons/fa" ;
 import { useDispatch, useSelector } from "react-redux";
 import { getCompanyDataById,softDeleteCaseDataById,getAllCompaniesAPI,postAddCompaniesAPI,updateCompanyById} from "../actions/company";
-import { AiOutlineConsoleSql } from "react-icons/ai";
 
 const CompaniesListPage=(Para)=>{
   const companies = useSelector(state=> state?.company?.list || []);
@@ -44,6 +43,7 @@ const CompaniesListPage=(Para)=>{
     })
     setShow(false)
   }
+  
   const handleUpdateCompanies=(data)=>{
     dispatch(updateCompanyById(data)).then(()=>{
       dispatch(getAllCompaniesAPI({id:'all'}));
@@ -67,7 +67,7 @@ const CompaniesListPage=(Para)=>{
       <Container>
         <div>
             <h1> Companies List &nbsp;
-           <small><Button className="circle" data-bs-toggle="modal" data-bs-target="#myModal" onClick={handleAddCompanies}>
+           <small><Button className="circle" onClick={handleAddCompanies}>
               <FaUserPlus/></Button>   </small> </h1>
               </div>
        <div className="icon-aline">  
@@ -78,10 +78,8 @@ const CompaniesListPage=(Para)=>{
        toggle={handleDeleteCompanies}
        />
       </div>
-      <div>
       <CompaniesModal show={show} close={handleClose} defaultData={currentSelection} type={modalType}  value='EmployeeList' 
        onSave={handleAddCompaniesSave} onUpdate={handleUpdateCompanies} />
-      </div>
   {Para.children}
   </Container>
     )

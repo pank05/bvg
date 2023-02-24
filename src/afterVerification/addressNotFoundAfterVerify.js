@@ -54,7 +54,7 @@ const AddressNotFound =(props)=>{
             label={radios.label}
             value={radios.id}
             name={radios.name}
-            // key={radios.id}
+            key={radios.id}
             type={radios.type}
             onChange={(v)=>{
               props.setUpdateAddressVerification({...props.updateAddressVerification,...{reasonNotFound:v.target.value}})

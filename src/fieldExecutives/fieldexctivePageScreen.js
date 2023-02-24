@@ -9,7 +9,7 @@ import { getAllFieldAPI,getFieldById,deleteFieldById,postFieldAPI,updateFieldByI
 const FieldExecutivePage=(Para)=>{
 
  const field = useSelector(state=> state?.field?.list || []);
- const [fieldData, SetFieldData]=useState([])
+ const [fieldData, setFieldData]=useState([])
  const dispatch = useDispatch();
 
  useEffect(()=>{
@@ -17,7 +17,7 @@ const FieldExecutivePage=(Para)=>{
  },[])
 
  useEffect(()=>{
-  SetFieldData(field)
+  setFieldData(field)
  },[field])
 
    const [show , setShow] = useState(false);
@@ -60,7 +60,7 @@ function handleRemoveField(id){
       <Container>
         <div > 
             <h2> Field Executive
-            <small> <Button className="circle" data-bs-toggle="modal" data-bs-target="#myModal" onClick={handleAddField} >
+            <small> <Button className="circle" onClick={handleAddField} >
               <FaUserPlus/> </Button> </small></h2> </div>
         <div className="icon-aline">
         <OpalTable
@@ -69,10 +69,8 @@ function handleRemoveField(id){
         edit={hadleEditField}
         />
     </div>
-   <div>
        <FieldExectiveModal show={show} close={handleClose} type={modalType} onUpdate={handleAddSaveme} defaultData={defaultData}
         onSave={handleUpdateSave} onDelete={handleRemoveField} value={fieldData}  /> 
-    </div>
       {Para.children}
       </Container>
     )

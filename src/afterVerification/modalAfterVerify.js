@@ -15,11 +15,6 @@ import { updateRadioClickModal } from "../constant/afterVerification";
 import { FaMoneyBillAlt } from "react-icons/fa";
 import { FiEdit } from "react-icons/fi";
 import ReactToPrint from 'react-to-print';
-
-// import PDF from "./PDF";
-import { jsPDF } from "jspdf";
-
-import { PDFViewer, ReactPDF, PDFDownloadLink } from "@react-pdf/renderer";
 import Select from "react-select";
 import AddressFound from "./addressFoundAfterVerify";
 import AddressNotFound from "./addressNotFoundAfterVerify";
@@ -38,6 +33,11 @@ const ModalAfterVerify = (props) => {
   const caseAllDetails=useSelector((state) => state?.verification?.caseDetails);
   const statusOption = useSelector((state) => state?.status?.list);
   const caseHistoryDetails =useSelector((state)=> state?.verification?.caseHistory);
+
+  useEffect(()=>{
+    dispatch(clearCurrentCase())
+  },[])
+
 
   const [additionalRemarkByFE, setAdditionalRemarkByFE] = useState([
     {
@@ -281,7 +281,6 @@ useEffect(()=>{
       })
     );
   }, []);
-
 
   const [updateAddressVerification, setUpdateAddressVerification] = useState(updateRadioClickModal);
 

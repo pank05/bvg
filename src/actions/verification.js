@@ -135,10 +135,6 @@ export const verificationSlice = createSlice({
   },
   extraReducers: (builder) => {
       builder.addCase(postAddCaseAPI.fulfilled, (state, data) =>{
-        
-        // state.list =data.payload;
-        // state.list.push(data.payload);
-        //  state.list.push({id:state.list.length+1,...data.payload});
       })
 
       builder.addCase(bulkAddCases.fulfilled,(state,data)=>{
@@ -151,12 +147,10 @@ export const verificationSlice = createSlice({
       })
 
       builder.addCase(getCaseHistoryById.fulfilled,(state,action)=>{
-        console.log("action ",action.payload)
         state.caseHistory = action.payload;
       })
 
       builder.addCase(getCaseDataById.fulfilled, (state, action) =>{
-        console.log("action caseDetails",action.payload[0])
         state.caseDetails = action.payload[0];
       });
        
@@ -186,6 +180,8 @@ export const verificationSlice = createSlice({
             email:item.email,
             clientName:item.client_name ,
             status:item.label,
+            FE:item?.assigned_to,
+            EMP:item?.assigned_by
           };
           return tmpData;
         })    

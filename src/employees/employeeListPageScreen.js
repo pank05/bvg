@@ -36,10 +36,9 @@ const EmployeeListPage=(Para)=>{
   }
 
   const handleSaveMe=(data)=>{
-    console.log("emp data",data )
-    dispatch(postEmployeeAPI(data) )
-    dispatch(getAllEmployeeAPI(data))
-    setShow(false)
+    dispatch(postEmployeeAPI(data) ).then(()=>{
+      dispatch(getAllEmployeeAPI(data))
+    }) 
   }
   
   const hadleEditEmployee= (data)=>{ 
@@ -54,6 +53,7 @@ const EmployeeListPage=(Para)=>{
       dispatch(getAllEmployeeAPI())  })
     setShow(false)
   }
+   
 const  handleToggleModal= (id)=>{
   dispatch(deleteEmployeeById(id)).then(()=>{
   dispatch(getAllEmployeeAPI())  })
@@ -65,7 +65,7 @@ const  handleToggleModal= (id)=>{
            <div>
             <h1>Employees
               <small>
-                <Button className="circle" data-bs-toggle="modal" data-bs-target="#myModal" onClick={handleAddEmployee} >
+                <Button className="circle" onClick={handleAddEmployee} >
                   <FaUserPlus/>
                 </Button>   
               </small> 
@@ -79,7 +79,6 @@ const  handleToggleModal= (id)=>{
                     statictics={(state)=>{ navigate('/ViewStatistics',{state}); }}  
                   />
                 </div>
-
             <EmployeeModal show={show} close={handleClose}  defaultData={defaultData} type={modalType}  value='EmployeeList'   save={handleSaveMe}
               onUpdate={handleUpdateEmployee} onDelete={handleToggleModal} />
             <AssignModal defaultData={defaultData}/>

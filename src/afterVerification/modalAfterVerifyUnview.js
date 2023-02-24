@@ -10,11 +10,13 @@ import {
   Form,
   Card,
 } from "react-bootstrap";
+import ReactToPrint from 'react-to-print';
 import { updateRadioUnviewModal } from "../constant/afterVerification";
 import { useSelector, useDispatch } from "react-redux";
 import { useRef } from "react";
 import moment from "moment";
 import { getStatusList } from "../actions/status";
+import {clearCurrentCase} from "../actions/verification"
 
 const ModalAfterUnview = (props) => {
   const [unview, setUnview] = useState();
@@ -23,6 +25,10 @@ const ModalAfterUnview = (props) => {
   const statusOption = useSelector((state) => state?.status?.list);
   const caseHistoryDetails =useSelector((state)=> state?.verification?.caseHistory);
   const dispatch = useDispatch();
+
+  useEffect(()=>{
+    dispatch(clearCurrentCase())
+  },[])
 
   useEffect(() => {
     setUnview({ ...unview, ...props.defaultData });
@@ -176,13 +182,7 @@ const ModalAfterUnview = (props) => {
     );
   }, [statusOption]);
 
-  const [imagePreview, setImagePreview] = useState(null);
-  const [candidateSignature, setCandidateSignature] = useState(null);
-
-
-  const handleDownlpoadPdf =()=>{
-       console.log("downloadPDF")
-  }
+  const componentRef = useRef();
 
   return (
     <div style={{ width: "800px" }}>
@@ -347,12 +347,18 @@ const ModalAfterUnview = (props) => {
           </div>
         ) : null}
         {props.type === "updateUnview" ? (
-          <div>
+          <div ref={componentRef}>
             <Modal.Header>
                 <h1>UPDATE VERIFICATION</h1>
                 <h6> Comp :{caseAllDetails?.company_name} checkId:&nbsp;{caseAllDetails?.check_id} </h6>
-                <Button onClick={handleDownlpoadPdf}> Download pdf </Button>
-            </Modal.Header>
+                <ReactToPrint
+          trigger={() => {
+            return <Button>PDF Download</Button>;
+          }}
+          content={() => componentRef.current}
+          documentTitle='download'
+          pageStyle="print"
+        />            </Modal.Header>
             <Modal.Body>
               <Accordion defaultActiveKey="0">
                 <Accordion.Item eventKey="0">

@@ -2,52 +2,59 @@ import { Modal, Button, Form, Row, Col } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import { verificationModalVarData } from "../constant/verificationVar";
 import { useDispatch, useSelector } from "react-redux";
-import AsyncSelect from 'react-select/async';
+import AsyncSelect from "react-select/async";
 import { getAllCompaniesAPI } from "../actions/company";
 import {
   getAllStates,
   getDistrictById,
-  getCityBySearch
+  getCityBySearch,
 } from "../actions/verification";
 import Select from "react-select";
 
 const ModalVerification = (props) => {
   const [verifyData, setVerifyData] = useState(...verificationModalVarData);
-  const companies = useSelector((state) => (state?.company?.list || []).map((v)=>{
-   return {
-      value:v.id,
-      label:v.name
-   }
-  }));
+  const companies = useSelector((state) =>
+    (state?.company?.list || []).map((v) => {
+      return {
+        value: v.id,
+        label: v.name,
+      };
+    })
+  );
 
-  const allState = useSelector((state) => state?.verification?.stateList || []).map((stateRecord)=>{
-   return{
-      value:stateRecord.id,
-      label:stateRecord.name
-   }
+  const allState = useSelector(
+    (state) => state?.verification?.stateList || []
+  ).map((stateRecord) => {
+    return {
+      value: stateRecord.id,
+      label: stateRecord.name,
+    };
   });
 
-  const districtList = useSelector((state) => state?.verification?.districtList || []).map((disList)=>{
-   return{
-      value:disList.id,
-      label:disList.name
-   }
+  const districtList = useSelector(
+    (state) => state?.verification?.districtList || []
+  ).map((disList) => {
+    return {
+      value: disList.id,
+      label: disList.name,
+    };
   });
-  
-  const cities = useSelector((state) => state?.verification?.cityList || []).map((cityName)=>{
-   return {
-      value:cityName.id,
-      label:cityName.name
-   }
+
+  const cities = useSelector(
+    (state) => state?.verification?.cityList || []
+  ).map((cityName) => {
+    return {
+      value: cityName.id,
+      label: cityName.name,
+    };
   });
   const [selectedCityText, setSelectedCityText] = useState("");
 
   const dispatch = useDispatch();
-  
 
   useEffect(() => {
-    dispatch(getAllStates('all'));
-    dispatch(getAllCompaniesAPI({id:'all',is_active:1}));
+    dispatch(getAllStates("all"));
+    dispatch(getAllCompaniesAPI({ id: "all", is_active: 1 }));
     return () => {
       // unmount event
       resetForm();
@@ -107,10 +114,8 @@ const ModalVerification = (props) => {
       newErrors.contactNo = "please Enter Contact No.";
     else if (contactNo.length < 10 || contactNo.length > 10)
       newErrors.contactNo = "At least 10 digit ";
-    if (!address || address === "")
-     newErrors.address = "Please Enter Address ";
-    if (!city || city === "")
-    newErrors.city = "Please Enter city ";
+    if (!address || address === "") newErrors.address = "Please Enter Address ";
+    if (!city || city === "") newErrors.city = "Please Enter city ";
     if (!pincode || pincode === "")
       newErrors.pincode = "Please Enter Pin Code ";
     if (!clientName || clientName === "")
@@ -121,12 +126,12 @@ const ModalVerification = (props) => {
       newErrors.landmark = "Please Enter Landmark ";
     if (!district || district === "")
       newErrors.district = "Please Enter District ";
-    if (!state || state === "") 
-    newErrors.state = "Please Enter state ";
+    if (!state || state === "") newErrors.state = "Please Enter state ";
     if (!verificationType || verificationType === "")
       newErrors.verificationType = "Please Enter Type of Ckeck ";
     return newErrors;
   };
+
   const handleSubmit = () => {
     const formErrors = handleValidationForm();
     if (Object.keys(formErrors).length > 0) {
@@ -137,18 +142,15 @@ const ModalVerification = (props) => {
     }
     return true;
   };
+  
   const resetForm = () => {
     setErrors({});
   };
 
-  const loadOptions = (
-   inputValue,
-   callback
-    ) => {
-
-   dispatch(getCityBySearch({name:inputValue,id:"all"}));
-   callback(cities);
-   };
+  const loadOptions = (inputValue, callback) => {
+    dispatch(getCityBySearch({ name: inputValue, id: "all" }));
+    callback(cities);
+  };
 
   return (
     <div style={{ width: "800px" }}>
@@ -335,7 +337,7 @@ const ModalVerification = (props) => {
                   </Col>
                   <Col>
                     <Form.Group controlId="city">
-                    <Form.Control
+                      <Form.Control
                         type="text"
                         value={verifyData.city}
                         placeholder="please enter city"
@@ -348,13 +350,6 @@ const ModalVerification = (props) => {
                         }}
                         isInvalid={!!errors.city}
                       ></Form.Control>
-                     {/* <AsyncSelect cacheOptions  defaultOptions isInvalid={!!errors.city} onChange={(val)=>{
-                      setVerificationField();
-                      setVerifyData({
-                        ...verifyData,
-                        ...{ city: val.value },
-                      });
-                    }} /> */}
                       <Form.Control.Feedback type="invalid">
                         {errors.city}
                       </Form.Control.Feedback>
@@ -483,8 +478,9 @@ const ModalVerification = (props) => {
               </Button>
               <Button
                 className="btn btn-danger"
-                onClick={() => props.onDelete(verifyData.id)} >
-              Delete
+                onClick={() => props.onDelete(verifyData.id)}
+              >
+                Delete
               </Button>
             </Modal.Footer>
           </div>
@@ -541,15 +537,17 @@ const ModalVerification = (props) => {
                     </Form.Group>
                   </Col>
                   <Col>
-                  {/* add company options */}
                     <Form.Group controlId="companyId">
-                    <Select options={companies}  onChange={(val)=>{
-                      setVerificationField();
-                      setVerifyData({
-                        ...verifyData,
-                        ...{ companyId: val.value },
-                      });
-                    }}/>
+                      <Select
+                        options={companies}
+                        onChange={(val) => {
+                          setVerificationField();
+                          setVerifyData({
+                            ...verifyData,
+                            ...{ companyId: val.value },
+                          });
+                        }}
+                      />
                       <Form.Control.Feedback type="invalid">
                         {errors.companyId}
                       </Form.Control.Feedback>
@@ -638,18 +636,20 @@ const ModalVerification = (props) => {
                 <Row>
                   <Col>
                     <Form.Group controlId="state">
-                    <Select options={allState}  onChange={(e) => {
+                      <Select
+                        options={allState}
+                        onChange={(e) => {
                           setVerificationField();
                           if (e.value) {
                             dispatch(getDistrictById(e.value));
                           }
                           setVerifyData({
                             ...verifyData,
-                            ...{  state: e.value },
+                            ...{ state: e.value },
                           });
                         }}
                         isInvalid={!!errors.state}
-                    />
+                      />
                       <Form.Control.Feedback type="invalid">
                         {errors.state}
                       </Form.Control.Feedback>
@@ -657,14 +657,17 @@ const ModalVerification = (props) => {
                   </Col>
                   <Col>
                     <Form.Group controlId="district">
-                    <Select options={districtList}  onChange={(e) => {
-                      setVerificationField();
-                      setVerifyData({
-                        ...verifyData,
-                        ...{ district: e.value },
-                      }); 
-                     }} isInvalid={!!errors.district}
-                    />
+                      <Select
+                        options={districtList}
+                        onChange={(e) => {
+                          setVerificationField();
+                          setVerifyData({
+                            ...verifyData,
+                            ...{ district: e.value },
+                          });
+                        }}
+                        isInvalid={!!errors.district}
+                      />
                       <Form.Control.Feedback type="invalid">
                         {errors.district}
                       </Form.Control.Feedback>
@@ -672,14 +675,20 @@ const ModalVerification = (props) => {
                   </Col>
                   <Col>
                     <Form.Group controlId="city">
-                    <AsyncSelect cacheOptions loadOptions={loadOptions} defaultOptions isInvalid={!!errors.city} onChange={(val)=>{
-                      setVerificationField();
-                      setVerifyData({
-                        ...verifyData,
-                        ...{ city: val.value },
-                      });
-                    }} />
-                     <Form.Control.Feedback type="invalid">
+                      <AsyncSelect
+                        cacheOptions
+                        loadOptions={loadOptions}
+                        defaultOptions
+                        isInvalid={!!errors.city}
+                        onChange={(val) => {
+                          setVerificationField();
+                          setVerifyData({
+                            ...verifyData,
+                            ...{ city: val.value },
+                          });
+                        }}
+                      />
+                      <Form.Control.Feedback type="invalid">
                         {errors.city}
                       </Form.Control.Feedback>
                     </Form.Group>
@@ -802,7 +811,8 @@ const ModalVerification = (props) => {
                     props.onSave(verifyData);
                   }
                   event.preventDefault();
-                }} >
+                }}
+              >
                 Save Me!
               </Button>
             </Modal.Footer>

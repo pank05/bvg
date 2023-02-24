@@ -38,6 +38,7 @@ const OpalTable = (props)=>{
         }
         setTableHeader(data)
        }
+       
        const applyFilterfn = () =>{
         return (tableData || [])
         .filter((row) =>        

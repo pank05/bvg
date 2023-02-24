@@ -176,10 +176,8 @@ const VerificationList_Page=(para)=>{
                 edit={handleEditVerification} />
                 </div>
                 <br/>
-             <div > 
                 {show && <ModalVerification show={show} close={handleClose} type={modalType} onUpdate={handleUpdateVerification} 
                 onSave={handleAddSave}  onDelete={handleDeleteData} defaultData={defaultData} /> }
-              </div>  
               {para.children}
               </Container>
            )}

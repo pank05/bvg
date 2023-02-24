@@ -22,7 +22,7 @@ const AssignTAT=()=>{
     },[])
 
     useEffect(()=>{
-       setTatData(assigns.filter((val)=> val.status == "under_employee"))
+       setTatData(assigns.filter((val)=> (val.status == "under_employee") || (val.status == "rejected_by_admin")))
     },[assigns])
 
     const [item,setItem] = useState([]);
@@ -74,7 +74,7 @@ const AssignTAT=()=>{
         });
         updateRecords.forEach((record)=>{
             dispatch(updateCaseById(record)).then(()=>{
-            dispatch(getAllCaseAPI({id:'all',status: ['under_admin']}));
+            dispatch(getAllCaseAPI({id:'all',status: ['under_admin','rejected_by_employee']}));
                 });
         });
         setShow(false);
@@ -93,7 +93,7 @@ const AssignTAT=()=>{
         });
         withdrawRecord.forEach((record)=>{
             dispatch(updateCaseById(record)).then(()=>{
-                dispatch(getAllCaseAPI({id:'all',status: ['under_employee']}));
+                dispatch(getAllCaseAPI({id:'all',status: ['under_employee','rejected_by_admin']}));
                 });
         });
         setShow(false);
