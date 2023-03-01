@@ -9,6 +9,8 @@ import {
   getAllCaseAPI,
   getCaseHistoryById,
   getCaseDataById,
+  getCaseUserById,
+  getTATCases
 } from "../actions/verification";
 
 import {
@@ -22,6 +24,7 @@ const AfterVerification = (props) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    dispatch(getTATCases({id:"all"}))
     dispatch(
       getAllCaseAPI({ id: "all", status: ["verify_by_employee", "verify_by_admin","rejected_by_employee"] })
     );
@@ -66,6 +69,7 @@ const AfterVerification = (props) => {
 
   const handleUpdateAddressByemp = (data) => {
     dispatch(getCaseDataById(data.id));
+    dispatch(getCaseUserById(data.id));
     setModalType("update");
     setShowModal(true);
   };
@@ -165,6 +169,7 @@ const AfterVerification = (props) => {
     setModalUnview("updateUnview");
     setShowUnview(true);
     dispatch(getCaseDataById(data.id));
+    dispatch(getCaseUserById(data.id));
   };
 
   const handleUpdateAddressBy= (data) => {

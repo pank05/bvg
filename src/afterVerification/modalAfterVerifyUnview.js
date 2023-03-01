@@ -22,6 +22,7 @@ const ModalAfterUnview = (props) => {
   const [unview, setUnview] = useState();
   const userDetails = useSelector((state) => state?.user?.userProfile);
   const caseAllDetails = useSelector((state) => state?.verification?.caseDetails);
+  const caseUserDetails=useSelector((state) => state?.verification?.caseUserDetails);
   const statusOption = useSelector((state) => state?.status?.list);
   const caseHistoryDetails =useSelector((state)=> state?.verification?.caseHistory);
   const dispatch = useDispatch();
@@ -61,11 +62,21 @@ const ModalAfterUnview = (props) => {
           landmarkPhotoRemark:caseAllDetails?.landmark_photo_remark,
           id:caseAllDetails.id,
           signature_url:caseAllDetails?.signature_url,
-          user_signature:caseAllDetails?.user_signature
         },
       });
     }
   }, [caseAllDetails]);
+
+  useEffect(()=>{
+    if(caseUserDetails && caseUserDetails.id){
+      setUpdateCaseByAdmin({
+        ...updateCaseByAdmin,
+        ...{
+          user_signature:caseUserDetails?.user_signature,
+          id:caseUserDetails.id
+        }})
+    }
+  },[caseUserDetails])
 
   const [updateCaseByAdmin, setUpdateCaseByAdmin] = useState(
     updateRadioUnviewModal
@@ -347,7 +358,7 @@ const ModalAfterUnview = (props) => {
           </div>
         ) : null}
         {props.type === "updateUnview" ? (
-          <div ref={componentRef}>
+          <div >
             <Modal.Header>
                 <h1>UPDATE VERIFICATION</h1>
                 <h6> Comp :{caseAllDetails?.company_name} checkId:&nbsp;{caseAllDetails?.check_id} </h6>
@@ -910,10 +921,9 @@ const ModalAfterUnview = (props) => {
                 </div>
                 <br />
                 <div style={{ display:"flex"}}>
-  
                     <Card style={{ width: "18rem", border: "none" }}>
                             <img
-                              src={updateCaseByAdmin?.user_signature}
+                              src={caseUserDetails?.user_signature}
                               alt="..."
                               style={{
                                 width: "70%",
@@ -922,10 +932,8 @@ const ModalAfterUnview = (props) => {
                               }}
                             />
                             <b style={{paddingLeft: "20px"}}> FE Signature</b>
-
                           <br />
                         </Card>
-
                     <Card style={{ width: "30rem", border: "none" }}>
                             <img
                               src={updateCaseByAdmin?.signature_url}

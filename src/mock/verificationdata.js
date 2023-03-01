@@ -42,36 +42,18 @@ export const verificationDataColumn = [{
 },
 {
     id:8,
-    columnId:"assignedTo",
-    label:"EMP" ,
-    isShow:false
-},
-{
-    id:9,
-    columnId:"FE",
-    label:"FE" ,
-    isShow:false
-},
-// {
-//     id:10,
-//     columnId:"duration",
-//     label:"Duration",
-//     isShow:false
-// },
-{
-    id:10,
     columnId:"status",
     label:"APP STATUS",
     isShow:true
 },
 {
-    id:11,
+    id:9,
     actionRow:true,
     label:"Edit",
     type:'edit'
 },
 {
-    id:12,
+    id:10,
     actionRow:true,
     label:"View",
     type:"view"

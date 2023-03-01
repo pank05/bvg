@@ -75,7 +75,6 @@ function App() {
   useEffect(()=>{
     if(userProfile && isAuth){
       setUserDetails(userProfile);
-      console.log("has role",checkUserHasRole(userProfile,['employee']))
     }
   },[userProfile]);
 
@@ -86,7 +85,7 @@ function App() {
   },[])
 
   return (
-    <div className="App">
+    <div className="App" >
       <BrowserRouter>
        <Routes>
         <Route path="/" element={<LoginPage />}/>

@@ -3,7 +3,7 @@ import { afterVerifyDataColoum } from "../mock/afterVerifyData";
 import OpalTable from "../opalTable";
 import { useDispatch, useSelector } from "react-redux";
 import { useState ,useEffect} from "react";
-import {getAllCaseAPI,getCaseHistoryById,getCaseDataById} from "../actions/verification";
+import {getAllCaseAPI,getCaseHistoryById,getCaseDataById,getCaseUserById} from "../actions/verification";
 import ModalAfterVerify from "./modalAfterVerify";
 import ModalAfterUnview from "./modalAfterVerifyUnview";
 import {updateAddrescaseDetails,updateAddressAuditCaseDetails} from "../actions/review";
@@ -58,6 +58,7 @@ const VerificationByEmployee =(props)=>{
         setModal("update");
         setShow(true);
         dispatch(getCaseDataById(data.id));
+        dispatch(getCaseUserById(data.id));
       };
 
       const handleUpdateAddressSave = (data) => {
@@ -152,6 +153,7 @@ const VerificationByEmployee =(props)=>{
 
   const handleUpdateVerifyForm = (data) => {
     dispatch(getCaseDataById(data.id));
+    dispatch(getCaseUserById(data.id));
     setModalTypes("updateUnview");
     setShowModal(true);
   };

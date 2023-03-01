@@ -7,26 +7,28 @@ import {Container,Row,Col,Nav } from 'react-bootstrap' ;
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { getAllCompaniesAPI} from "./actions/company"
+import { getAllCompaniesAPI} from "./actions/company";
+import {getAllEmployeeAPI} from "./actions/employee";
+import {getAllFieldAPI} from "./actions/fieldexctive";
+import {getAllCaseAPI} from "./actions/verification";
 
  const Dashboard=(props)=>{
 
-  const company =useSelector((state)=>state?.companies?.list || [] )
+  const company =useSelector((state)=>state?.company?.list || [] )
   const employee =useSelector((state)=>state?.employee?.list || [])
   const FieldExecutive =useSelector((state)=>state?.field?.list || [])
   const casesList =useSelector((state)=>state?.verification?.list || [])
+  const dispatch=useDispatch()
 
-  const dispatch=useDispatch
-  let getCompany =  company.length;
-
-  // useEffect(()=>{
-  //   dispatch(getAllCompaniesAPI({id:'all',is_active:1}))
-  //  },[])
+  useEffect(()=>{
+    dispatch(getAllCompaniesAPI({id:'all'}))
+    dispatch(getAllEmployeeAPI())
+    dispatch(getAllFieldAPI())
+    dispatch(getAllCaseAPI({ id: "all"}))
+   },[])
 
  return(
-      <div>
       <Container>
-        
         <div  className="vip">
           VIP <small className="vip-small">(Verification Internal Portal ) </small>
           <hr/>
@@ -105,7 +107,6 @@ import { getAllCompaniesAPI} from "./actions/company"
   <hr/>
   </Container>
   
-  </div>
     )
 }
 export default Dashboard; 

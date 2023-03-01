@@ -74,8 +74,9 @@ const LoginPage=()=>{
     const resetForm = ()=>{
       setErrors({});
     }
+
     return(
-        <Container fluid style={{backgroundColor:"black",height:"100%"}}>
+        <Container fluid style={{backgroundColor:"black"}}>
         <Card  className="login-css" style={{ width: '20rem' }}>
         <Card.Body>
             <h1 style={{fontSize: "calc(7.375rem + 1.5vw)"}}>   <MdOutlineSupervisedUserCircle />  </h1><br/>
@@ -105,8 +106,7 @@ const LoginPage=()=>{
           </Card.Text>
         </Card.Body>
       </Card>
-      </Container>
-
+       </Container>
     )
 }
 export default LoginPage ;

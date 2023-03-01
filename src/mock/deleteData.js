@@ -43,36 +43,24 @@ export const deleteDataColoum =[
     },
     {
         id:8,
-        columnId:"EPM",
-        label:"EPM" ,
-        isShow:true
+        columnId:"durationStart",
+        label:"TAT Start Date" ,
+        isShow:false
     },
     {
         id:9,
-        columnId:"FE",
-        label:"FE" ,
-        isShow:true
+        columnId:"tatStatus",
+        label:"TAT Status" ,
+        isShow:false
     },
     {
         id:10,
-        columnId:"TATend_Date",
-        label:"TATend_Date" ,
+        columnId:"durationEnd",
+        label:"TAT End Date" ,
         isShow:false
     },
     {
         id:11,
-        columnId:"TAT_Status",
-        label:"TAT_Status" ,
-        isShow:false
-    },
-    {
-        id:12,
-        columnId:"Closer_Date",
-        label:"Closer_Date" ,
-        isShow:false
-    },
-    {
-        id:13,
         columnId:"status",
         label:"App Status" ,
         isShow:true,
@@ -81,7 +69,7 @@ export const deleteDataColoum =[
         }
     },
     {
-        id:14,
+        id:12,
         actionRow:true,
         label:"Status",
         type:"status"

@@ -31,6 +31,7 @@ const ModalAfterVerify = (props) => {
   const [verifyData, setVerifyData] = useState(editRadioClickModal);
   const userDetails = useSelector((state) => state?.user?.userProfile);
   const caseAllDetails=useSelector((state) => state?.verification?.caseDetails);
+  const caseUserDetails=useSelector((state) => state?.verification?.caseUserDetails);
   const statusOption = useSelector((state) => state?.status?.list);
   const caseHistoryDetails =useSelector((state)=> state?.verification?.caseHistory);
 
@@ -177,13 +178,11 @@ const ModalAfterVerify = (props) => {
         additionalRemark:caseAllDetails?.is_id_proof,
         additionalRemarkByFEForm:caseAllDetails?.additional_remark_json,
         verificationDoneDate:caseAllDetails?.verification_date,
-        FE:caseAllDetails?.user_name,
         verificationRemarkByFE:caseAllDetails?.type_id,
         birthCheckForm:caseAllDetails?.is_by_birth,
         tillCheckForm:caseAllDetails?.is_till_date,
         id:caseAllDetails.id,
         signature_url:caseAllDetails?.signature_url,
-        user_signature:caseAllDetails?.user_signature,
         addressRemark:caseAllDetails?.verification_reason_remark,
         reasonNotFound:caseAllDetails?.verification_reason_id,
         nearLandmark:caseAllDetails?.is_landmark
@@ -194,6 +193,18 @@ const ModalAfterVerify = (props) => {
       }
     }
   },[caseAllDetails])
+
+  useEffect(()=>{
+    if(caseUserDetails && caseUserDetails.id){
+      setUpdateAddressVerification({
+        ...updateAddressVerification,
+        ...{
+          user_signature:caseUserDetails?.user_signature,
+          FE:caseUserDetails?.username,
+          id:caseUserDetails.id
+        }})
+    }
+  },[caseUserDetails])
 
   const [addressList, setAddressList] = useState([]);
   const [addressChange, setAddressChange] = useState();
@@ -897,7 +908,7 @@ useEffect(()=>{
                           <Form.Control
                               type="text"
                               placeholder="FE Name"
-                              value={updateAddressVerification?.FE}
+                              value={caseUserDetails?.username}
                               onChange={(e) => {
                                 setUpdateAddressVerification({
                                   ...updateAddressVerification,
@@ -941,7 +952,7 @@ useEffect(()=>{
                         </Card>
                         <Card style={{ width: "18rem", border: "none" }}>
                             <img
-                              src={updateAddressVerification?.user_signature}
+                              src={caseUserDetails?.user_signature}
                               alt="..."
                               style={{
                                 width: "70%",

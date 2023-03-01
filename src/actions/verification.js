@@ -58,6 +58,17 @@ export const getAllCaseAPI = createAsyncThunk(
        return response.data;
   })
 
+  export const getCaseUserById = createAsyncThunk(
+    'getCaseUserById', 
+    async (id) => {
+    const response  =  await axios.get(`/cases/case-user-details/${id}`,{
+      headers:{
+      Authorization : `Bearer ${localStorage.getItem('_token') }`
+    }
+  });
+       return response.data;
+  })
+
   export const deleteCaseDataById = createAsyncThunk(
     'deleteCaseDataById',
     async (id) => {
@@ -104,7 +115,7 @@ export const getAllCaseAPI = createAsyncThunk(
          return  response.data;
     })
 
-export const getAllStates = createAsyncThunk(
+    export const getAllStates = createAsyncThunk(
       'getAllStates',
       async (id) => {
         const response  =  await axios.get(`/state/list/${id}`,{
@@ -113,6 +124,17 @@ export const getAllStates = createAsyncThunk(
           }
              });
              return response.data;
+      } )
+
+      export const getTATCases = createAsyncThunk(
+        'getTATCases',
+        async ({id}) => {
+          const response  =  await axios.get(`/cases/tat/${id}`,{
+                headers: {
+                  Authorization : `Bearer ${localStorage.getItem('_token') }`
+                }
+               });
+               return response.data;
       } )
 
 export const verificationSlice = createSlice({
@@ -126,7 +148,8 @@ export const verificationSlice = createSlice({
     currentCase:{},
     caseDetails:{},
     caseHistory:[],
-    currentCase:{}
+    caseUserDetails:[],
+    tatCase:[]
   },
   reducers: {
     clearCurrentCase:(state)=>{
@@ -134,6 +157,11 @@ export const verificationSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
+
+    builder.addCase(getTATCases.fulfilled,(state,action)=>{
+      state.tatCase = action.payload;
+    })
+
       builder.addCase(postAddCaseAPI.fulfilled, (state, data) =>{
       })
 
@@ -148,6 +176,10 @@ export const verificationSlice = createSlice({
 
       builder.addCase(getCaseHistoryById.fulfilled,(state,action)=>{
         state.caseHistory = action.payload;
+      })
+      
+      builder.addCase(getCaseUserById.fulfilled,(state,action)=>{
+        state.caseUserDetails= action.payload[0];
       })
 
       builder.addCase(getCaseDataById.fulfilled, (state, action) =>{
@@ -180,8 +212,7 @@ export const verificationSlice = createSlice({
             email:item.email,
             clientName:item.client_name ,
             status:item.label,
-            FE:item?.assigned_to,
-            EMP:item?.assigned_by
+            tatStatus:item?.inTAT ? <p style={{color:"green"}}> In TAT</p>  : <p style={{color:"red"}}> Out of TAT  </p>
           };
           return tmpData;
         })    

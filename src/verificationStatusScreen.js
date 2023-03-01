@@ -1,6 +1,17 @@
 import Table from 'react-bootstrap/Table'
 import Container from 'react-bootstrap/Container';
+import { useSelector,useDispatch } from 'react-redux';
+import {getAllCaseAPI} from "./actions/verification";
+import { useEffect } from 'react';
 const VerificationStatus=()=>{
+  const dispatch=useDispatch()
+
+  const casesList =useSelector((state)=>state?.verification?.list || [])
+
+  useEffect(()=>{
+    dispatch(getAllCaseAPI({ id: "all"}))
+   },[])
+
     return(
         <Container  >
             <div>
@@ -14,8 +25,8 @@ const VerificationStatus=()=>{
       <thead className="table_head">
         <tr> <th  >Priority Workload </th> </tr> </thead>
 <tbody>
-        <tr className="table_body1"> <td><a className="tr_href1" href="/#">Special Priority  <strong> 0</strong> </a></td> </tr>
-        <tr className="table_body2"> <td><a className="tr_href2" href="/#">Today's to TAT </a></td> </tr>
+        <tr className="table_body1"> <td><a className="tr_href1" href="/#">Special Priority  <strong>  {Object.keys(casesList).length}</strong> </a></td> </tr>
+        <tr className="table_body2"> <td><a className="tr_href2" href="/#">Today's to TAT <strong>  {Object.keys(casesList).length} </strong> </a></td> </tr>
         <tr className="table_body3"> <td><a className="tr_href3" href="/#">1 Day to TAT   <strong> 0</strong> </a></td> </tr>
         <tr className="table_body4"> <td><a className="tr_href4" href="/#">2 Day to TAT  <strong> 0</strong> </a></td> </tr>
         <tr className="table_body1"> <td><a className="tr_href1" href="/#">3 Day to TAT <strong> 0</strong> </a></td> </tr>
