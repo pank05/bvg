@@ -12,10 +12,23 @@ export const getStatusList = createAsyncThunk(
            return response.data;
     } )
 
+
+    export const getReportingTatStatus = createAsyncThunk(
+      'getReportingTatStatus',
+      async (emplyementType) => { 
+        const response  =  await axios.get(`/report/tat-report?emplyementType=${emplyementType}`,{
+              headers: {
+                Authorization : `Bearer ${localStorage.getItem('_token') }`
+              }
+             });
+             return response.data;
+      } )
+
     export const statusSlice = createSlice({
         name: 'status',
       initialState: {
         list: [],
+        tatList:{},
         count:0,
 
       },
@@ -27,7 +40,15 @@ export const getStatusList = createAsyncThunk(
             let list = [...state.list,...action.payload];
             state.list= uniqBy(list,'id');
         })
+
+
+        builder.addCase(getReportingTatStatus.fulfilled,(state,action)=>{
+          state.tatList=action.payload;   
+        })
+
     }
+
+
 })
 export const { } = statusSlice.actions
 
