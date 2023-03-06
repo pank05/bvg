@@ -76,7 +76,7 @@ const LoginPage=()=>{
     }
 
     return(
-        <Container fluid style={{backgroundColor:"black"}}>
+        <Container fluid style={{backgroundColor:"black",paddingTop: "35px"}}>
         <Card  className="login-css" style={{ width: '20rem' }}>
         <Card.Body>
             <h1 style={{fontSize: "calc(7.375rem + 1.5vw)"}}>   <MdOutlineSupervisedUserCircle />  </h1><br/>

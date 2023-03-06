@@ -7,6 +7,7 @@ import { getAllEmployeeAPI } from "../actions/employee";
 const AssignModal = (props) => {
   const employee = useSelector((state) => state?.employee?.list || []);
   const dispatch = useDispatch();
+  const caseDetails = useSelector((state) => state?.verification?.list || []);
 
   const [data, setData] = useState(assignModalVarData);
 
@@ -84,13 +85,12 @@ const AssignModal = (props) => {
               <div>
                 <Form>
                   <Row>
-                    {/* assignedBy */}
                     <Col>
                       <Form.Group controlId="durationStart">
                         <Form.Control
                           type="text"
                           placeholder="TAT Start Date"
-                          value={props?.assignData.map((v)=>v.durationStart )}
+                          value={caseDetails?.durationStart }
                          readOnly />
                       </Form.Group>
                     </Col>

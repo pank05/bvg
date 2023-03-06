@@ -1,5 +1,4 @@
-import Table from 'react-bootstrap/Table'
-import Container from 'react-bootstrap/Container';
+import {Container,Table} from 'react-bootstrap';
 import { useSelector,useDispatch } from 'react-redux';
 import {getAllCaseAPI} from "./actions/verification";
 import { useEffect, useState } from 'react';
@@ -33,7 +32,7 @@ const VerificationStatus=()=>{
         <tr className="table_body3"> <td>1 Day to TAT   <strong> {tatDetails?.one_day_tat}</strong> </td> </tr>
         <tr className="table_body4"> <td>2 Day to TAT  <strong> {tatDetails?.two_day_tat}</strong> </td> </tr>
         <tr className="table_body1"> <td>3 Day to TAT <strong> {tatDetails?.third_day_tat}</strong> </td> </tr>
-        <tr className="table_body2"> <td>4 to TAT <strong>  {tatDetails?.four_day_tat} </strong> </td> </tr>
+        <tr className="table_body2"> <td>4 Day to TAT <strong>  {tatDetails?.four_day_tat} </strong> </td> </tr>
         <tr className="table_body3"> <td>5 Day to TAT   <strong> {tatDetails?.five_day_tat}</strong> </td> </tr>
         <tr className="table_body2"> <td>Out of TAT <strong>{tatDetails?.out_of_tat} </strong> </td> </tr>
       </tbody>  

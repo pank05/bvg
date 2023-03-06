@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 import {uniqBy} from 'lodash'
+
 export const getStatusList = createAsyncThunk(
     'getStatusList',
     async ({reference,type,label=[]}) => { 
@@ -12,8 +13,7 @@ export const getStatusList = createAsyncThunk(
            return response.data;
     } )
 
-
-    export const getReportingTatStatus = createAsyncThunk(
+export const getReportingTatStatus = createAsyncThunk(
       'getReportingTatStatus',
       async (emplyementType) => { 
         const response  =  await axios.get(`/report/tat-report?emplyementType=${emplyementType}`,{
@@ -23,12 +23,24 @@ export const getStatusList = createAsyncThunk(
              });
              return response.data;
       } )
+      
+export const getReportingTatStatusForEmployee =createAsyncThunk(
+        'getReportingTatStatusForEmployee',
+        async () => { 
+          const response  =  await axios.get(`/report/tat-report-emp`,{
+                headers: {
+                  Authorization : `Bearer ${localStorage.getItem('_token') }`
+                }
+               });
+          return response.data;
+        } )
 
     export const statusSlice = createSlice({
         name: 'status',
       initialState: {
         list: [],
         tatList:{},
+        tatListEmp:{},
         count:0,
 
       },
@@ -44,6 +56,10 @@ export const getStatusList = createAsyncThunk(
 
         builder.addCase(getReportingTatStatus.fulfilled,(state,action)=>{
           state.tatList=action.payload;   
+        })
+
+        builder.addCase(getReportingTatStatusForEmployee.fulfilled,(state,action)=>{
+          state.tatListEmp=action.payload;   
         })
 
     }
