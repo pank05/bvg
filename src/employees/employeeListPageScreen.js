@@ -36,9 +36,10 @@ const EmployeeListPage=(Para)=>{
   }
 
   const handleSaveMe=(data)=>{
-    dispatch(postEmployeeAPI(data) ).then(()=>{
-      dispatch(getAllEmployeeAPI(data))
+    dispatch(postEmployeeAPI(data)).then(()=>{
+      dispatch(getAllEmployeeAPI())
     }) 
+    setShow(false)
   }
   
   const hadleEditEmployee= (data)=>{ 

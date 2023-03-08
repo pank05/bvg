@@ -54,19 +54,19 @@ export const getAllEmployeeAPI = createAsyncThunk(
             id:data.id,
             userType:'employee',
             username:data.name,
-            user_detail:
-            {
-              dob:data.date_of_birth,
-            },
             contact_no:data.contact_number,
-            alternate_no:data.Alternet_number,
             email:data.email,
             password:data.password,
             reset_password:data.reset_pass,
+            user_detail:
+            {
+              contact_no:data.contact_number,
+              dob:data.date_of_birth,
+              alternate_no:data.Alternet_number,
+            },
             companies:{
               id:data.select_company
             }
-            // company_id:data.select_company,
       };
         const response  =  await axios.put(`/user/${data.id}`,updateData,{
           headers:{
@@ -117,7 +117,7 @@ export const employeeSlice = createSlice({
           name:item.username,
           date_of_birth:item?.user_detail?.dob,
           contact_number:item.contact_no,
-          Alternet_number:item.alternate_no,
+          Alternet_number:item?.user_detail?.alternate_no,
           email:item.email,
           password:item.password,
           reset_pass:item.reset_password,

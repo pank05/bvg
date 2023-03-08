@@ -25,6 +25,8 @@ const ModalAfterUnview = (props) => {
   const caseUserDetails=useSelector((state) => state?.verification?.caseUserDetails);
   const statusOption = useSelector((state) => state?.status?.list);
   const caseHistoryDetails =useSelector((state)=> state?.verification?.caseHistory);
+  const caseDetailsTAT = useSelector((state)=> state?.verification?.list);
+
   const dispatch = useDispatch();
 
   useEffect(()=>{
@@ -280,11 +282,11 @@ const ModalAfterUnview = (props) => {
                         <Row>
                           <Col>
                             <b className="found_size_for_text"> Tat Status :</b>
-                            ---------
+                         {caseDetailsTAT?.inTAT ? <p style={{color:"red"}}> Out of TAT  </p>  :  <p style={{color:"green"}}> In TAT</p> }
                           </Col>
                           <Col>
                             <b className="found_size_for_text"> Remark :</b>
-                            {caseAllDetails.remark}
+                            {caseAllDetails?.audit_case_status_label}
                           </Col>
                         </Row>
                       </Container>

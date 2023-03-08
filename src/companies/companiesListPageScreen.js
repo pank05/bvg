@@ -37,6 +37,7 @@ const CompaniesListPage=(Para)=>{
     setShow(true)
     setDeafultData({})
   }
+  
   const handleAddCompaniesSave=(data)=>{
     dispatch(postAddCompaniesAPI(data)).then(()=>{
       dispatch(getAllCompaniesAPI({id:'all'}));

@@ -25,6 +25,10 @@ const AssignTAT=()=>{
        setTatData(assigns.filter((val)=> (val.status == "under_employee") || (val.status == "rejected_by_admin")))
     },[assigns])
 
+    useEffect(()=>{
+        setTatData(assigns.filter((val)=> (val.status == "under_admin") || (val.status == "rejected_by_employee")))
+     },[])
+ 
     const [item,setItem] = useState([]);
     const [show, setShow]=useState(false);
     const handleClose=()=> setShow(false);

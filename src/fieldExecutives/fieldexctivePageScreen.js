@@ -46,7 +46,7 @@ const hadleEditField= (data)=>{
 
 const handleUpdateSave=(data)=>{
     dispatch(updateFieldById(data)).then(()=>{
-    dispatch(getAllFieldAPI())  })
+    dispatch(getAllFieldAPI())})
     setShow()
 }
 

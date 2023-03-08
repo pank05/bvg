@@ -34,7 +34,7 @@ return(
      Employee ID : {para.key} <br/>
     Employee Gmail : {para.email}<br/>
     Contact No : {para.contact_number}<br/>
-    Alternate Contact No :{para.Alternet_number} <br/>    
+    Alternate Contact No :{para.Alternet_number} <br/>
     </div>
     <div className="grid-container"   > 
     <div className="Table_Priority"> 
@@ -72,7 +72,7 @@ return(
       <thead className="table_head">
         <tr> <th  >Workload Status </th> </tr> </thead>
       <tbody>
-      <tr className="table_body1"> <td>Work Recieved this month  <strong> {tatDetails?.monthly_status?.cases_received}</strong> </td> </tr>
+      <tr className="table_body1"> <td>Work Recieved this month  <strong> {tatDetailsEmp?.current_load}</strong> </td> </tr>
         <tr className="table_body3"> <td>Completed this month in TAT  <strong>{tatDetails?.monthly_status?.completed_currenet_month_in_tat} </strong> </td> </tr>
         <tr className="table_body4"> <td>Completed this month Out of TAT  <strong>{tatDetails?.monthly_status?.completed_currenet_month_out_of_tat} </strong> </td> </tr>
         <tr className="table_body1"> <td>Completed this month in TAT<strong> {Number(tatDetails?.monthly_status?.tat_percentage_in_tat|| 0).toFixed(2)}</strong> </td> </tr>

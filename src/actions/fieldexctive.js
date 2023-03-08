@@ -63,7 +63,7 @@ export const getAllFieldAPI = createAsyncThunk(
             id:data.company_name
           },
           image_url:data.image_url,
-          userDetail:
+          user_detail:
           {
             address:data.address,
             region:data.area,
