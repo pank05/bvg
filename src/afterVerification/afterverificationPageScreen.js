@@ -19,9 +19,22 @@ import {
 } from "../actions/review";
 
 const AfterVerification = (props) => {
-  const review = useSelector((state) => state?.verification?.list || []);
+  const review = useSelector((state) => state?.verification?.list || []).map((v=>{
+    let temp ={...v};
+    temp.tatStatus = temp.tatStatus ? <p style={{color:"green"}}> In TAT</p>  : <p style={{color:"red"}}> Out of TAT  </p>
+    return temp ;    }));
+    
   const [verifyAdmin, setVerifyAdmin] = useState([]);
   const dispatch = useDispatch();
+  const [actionButton, setActionButton] = useState(true);
+  const [modalType, setModalType] = useState("edit");
+  const [showModal, setShowModal] = useState(false);
+  const handleClose = () => setShowModal(false);
+  const [defaultData, setDeafultData] = useState({});
+  const [modalUnview, setModalUnview] = useState("editUnview");
+  const [showUnview, setShowUnview] = useState(false);
+  const handleCloseUn = () => setShowUnview(false);
+  const [buttonType, setButtonType] = useState("View Verified By Admin");
 
   useEffect(() => {
     dispatch(getTATCases({id:"all"}))
@@ -34,7 +47,6 @@ const AfterVerification = (props) => {
     setVerifyAdmin(review.filter((t) => (t.status == "verify_by_employee") || (t.status == "rejected_by_employee") ));
   }, [review]);
 
-  const [buttonType, setButtonType] = useState("View Verified By Admin");
 
   const handleViewVerify = () => {
     setButtonType("View Verified By Admin ");
@@ -53,12 +65,6 @@ const AfterVerification = (props) => {
     });
     setVerifyAdmin(unViewVerifyData);
   };
-
-  const [actionButton, setActionButton] = useState(true);
-  const [modalType, setModalType] = useState("edit");
-  const [showModal, setShowModal] = useState(false);
-  const handleClose = () => setShowModal(false);
-  const [defaultData, setDeafultData] = useState({});
 
   const handleEditVerifyByemp = (data) => {
     setModalType("edit");
@@ -96,9 +102,8 @@ const AfterVerification = (props) => {
       return temp;
     });
     updateRecord.forEach((record) => {
-      console.log("recird", record);
       dispatch(updateAddressAuditCaseDetails(record)).then(() => {
-        dispatch(getAllCaseAPI({ id: "all", status: ["verify_by_employee" ,"rejected_by_employee"] }));
+        dispatch(getAllCaseAPI({ id: "all", status: ["verify_by_employee" ,"rejected_by_employee","verify_by_admin"] }));
       });
     });
   }
@@ -145,7 +150,6 @@ const AfterVerification = (props) => {
       return temp;
       })
     updateRecords.forEach((record) => {
-      console.log("updateRecord",record)
       dispatch(updateAddrescaseDetails(record)).then(() => {
         dispatch(getAllCaseAPI({ id: "all", status: ["verify_by_employee","rejected_by_employee"] }));
       });
@@ -153,10 +157,6 @@ const AfterVerification = (props) => {
   }
     setShowModal();
   };
-
-  const [modalUnview, setModalUnview] = useState("editUnview");
-  const [showUnview, setShowUnview] = useState(false);
-  const handleCloseUn = () => setShowUnview(false);
 
   const  handleEditVerifyByAdmin = (data) => {
     setModalUnview("editUnview");
@@ -195,10 +195,7 @@ const AfterVerification = (props) => {
         return temp;
       });
       updateRecord.forEach((record) => {
-        console.log("record",record)
-        dispatch(updateAddrescaseDetails(record)).then(() => {
-        dispatch(getAllCaseAPI({ id: "all", status: ["verify_by_admin"] }));
-        });
+        dispatch(updateAddrescaseDetails(record))
       });
     }
     setShowUnview(false)
@@ -234,8 +231,6 @@ const AfterVerification = (props) => {
           viewButton={ actionButton ? handleUpdateAddressByemp : handleUpdateAddressByAdmin }
         />
       </div>
-      <div>
-        {/* status under_employee  */}
         <ModalAfterVerify
           show={showModal}
           close={handleClose}
@@ -244,9 +239,7 @@ const AfterVerification = (props) => {
           onUpdate={handleUpdateAddress}
           onSave={handleVerifyByAdmin}
         />
-      </div>
-      <div>
-        {/* verify admin  */}
+
         <ModalAfterUnview
           open={showUnview}
           onClose={handleCloseUn}
@@ -254,8 +247,6 @@ const AfterVerification = (props) => {
           defaultData={defaultData}
           onSubmit={handleUpdateAddressBy}
         />
-      </div>
-
       {props.children}
     </Container>
   );

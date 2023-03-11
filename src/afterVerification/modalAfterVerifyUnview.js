@@ -19,7 +19,6 @@ import { getStatusList } from "../actions/status";
 import {clearCurrentCase} from "../actions/verification"
 
 const ModalAfterUnview = (props) => {
-  const [unview, setUnview] = useState();
   const userDetails = useSelector((state) => state?.user?.userProfile);
   const caseAllDetails = useSelector((state) => state?.verification?.caseDetails);
   const caseUserDetails=useSelector((state) => state?.verification?.caseUserDetails);
@@ -33,9 +32,9 @@ const ModalAfterUnview = (props) => {
     dispatch(clearCurrentCase())
   },[])
 
-  useEffect(() => {
-    setUnview({ ...unview, ...props.defaultData });
-  }, [props.defaultData]);
+  // useEffect(() => {
+  //   setUnview({ ...unview, ...props.defaultData });
+  // }, [props.defaultData]);
 
   useEffect(() => {
     if (caseAllDetails && caseAllDetails.id) {

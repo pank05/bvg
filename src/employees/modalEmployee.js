@@ -15,7 +15,7 @@ import { getAllCompaniesAPI } from "../actions/company";
 import { employeeModalVarData } from "../constant/employeeVar";
 
 const EmployeeModal = (props) => {
-  const [data, setData] = useState(employeeModalVarData);
+  const [employeedata, setEmployeeData] = useState(employeeModalVarData);
   const companies = useSelector((state) => state?.company?.list || []);
   const dispatch = useDispatch();
 
@@ -31,17 +31,17 @@ const EmployeeModal = (props) => {
 
   useEffect(() => {
     if (props.type == "add") {
-      setData({});
+      setEmployeeData({});
     } else {
-      setData({ ...data, ...props.defaultData });
+      setEmployeeData({ ...employeedata, ...props.defaultData });
     }
   }, [props.defaultData]);
 
   const [errors, setErrors] = useState({});
 
   const setField = (field, value) => {
-    setData({
-      ...data,
+    setEmployeeData({
+      ...employeedata,
       [field]: value,
     });
     if (!!errors[field])
@@ -58,7 +58,7 @@ const EmployeeModal = (props) => {
       contact_number,
       email,
       select_company,
-    } = data;
+    } = employeedata;
     const newErrors = {};
     if (!name || name === "") newErrors.name = "Please Enter Employee Name";
     if (!date_of_birth || date_of_birth === "")
@@ -124,10 +124,10 @@ const EmployeeModal = (props) => {
                     <Form.Group controlId="name">
                       <Form.Control
                         type="text"
-                        value={data.name}
+                        value={employeedata.name}
                         onChange={(e) => {
                           setField();
-                          setData({ ...data, ...{ name: e.target.value } });
+                          setEmployeeData({ ...employeedata, ...{ name: e.target.value } });
                         }}
                         placeholder="Enter Employee Name"
                         isInvalid={!!errors.name}
@@ -144,11 +144,11 @@ const EmployeeModal = (props) => {
                     <Form.Group controlId="date_of_birth">
                       <Form.Control
                         type="date"
-                        value={data.date_of_birth}
+                        value={employeedata.date_of_birth}
                         onChange={(e) => {
                           setField();
-                          setData({
-                            ...data,
+                          setEmployeeData({
+                            ...employeedata,
                             ...{ date_of_birth: e.target.value },
                           });
                         }}
@@ -164,11 +164,11 @@ const EmployeeModal = (props) => {
                     <Form.Group controlId="contact_number">
                       <Form.Control
                         type="number"
-                        value={data.contact_number}
+                        value={employeedata.contact_number}
                         onChange={(e) => {
                           setField();
-                          setData({
-                            ...data,
+                          setEmployeeData({
+                            ...employeedata,
                             ...{ contact_number: e.target.value },
                           });
                         }}
@@ -186,10 +186,10 @@ const EmployeeModal = (props) => {
                   <Col>
                     <Form.Control
                       type="number"
-                      value={data.Alternet_number}
+                      value={employeedata.Alternet_number}
                       onChange={(e) => {
-                        setData({
-                          ...data,
+                        setEmployeeData({
+                          ...employeedata,
                           ...{ Alternet_number: e.target.value },
                         });
                       }}
@@ -200,10 +200,10 @@ const EmployeeModal = (props) => {
                     <Form.Group controlId="email">
                       <Form.Control
                         type="email"
-                        value={data.email}
+                        value={employeedata.email}
                         onChange={(e) => {
                           setField();
-                          setData({ ...data, ...{ email: e.target.value } });
+                          setEmployeeData({ ...employeedata, ...{ email: e.target.value } });
                         }}
                         placeholder="Enter Employee email"
                         isInvalid={!!errors.email}
@@ -220,10 +220,10 @@ const EmployeeModal = (props) => {
                     <InputGroup controlId="Password">
                       <Form.Control
                         type={passwordShow ? "text" : "password"}
-                        value={data.password}
+                        value={employeedata.password}
                         onChange={(e) => {
                           setField();
-                          setData({ ...data, ...{ password: e.target.value } });
+                          setEmployeeData({ ...employeedata, ...{ password: e.target.value } });
                         }}
                         isInvalid={!!errors.password}
                         placeholder="Enter Password"
@@ -243,11 +243,11 @@ const EmployeeModal = (props) => {
                     <InputGroup controlId="reset_pass">
                       <Form.Control
                         type="text"
-                        value={data.reset_pass}
+                        value={employeedata.reset_pass}
                         onChange={(e) => {
                           setField();
-                          setData({
-                            ...data,
+                          setEmployeeData({
+                            ...employeedata,
                             ...{ reset_pass: e.target.value },
                           });
                         }}
@@ -269,11 +269,11 @@ const EmployeeModal = (props) => {
                     <Form.Group controlId="select_company">
                       <Form.Control
                         type="text"
-                        value={data.select_company}
+                        value={employeedata.select_company}
                         onChange={(e) => {
                           setField();
-                          setData({
-                            ...data,
+                          setEmployeeData({
+                            ...employeedata,
                             ...{ select_company: e.target.value },
                           });
                         }}
@@ -289,7 +289,7 @@ const EmployeeModal = (props) => {
                     <Form.Group controlId="select_company">
                       <Form.Control
                         type="text"
-                        value={data.select_company}
+                        value={employeedata.select_company}
                         placeholder="Assigned Company"
                       />
                     </Form.Group>
@@ -304,7 +304,7 @@ const EmployeeModal = (props) => {
                 className="btn btn-info"
                 onClick={(e) => {
                   if (handleSubmit()) {
-                    props.onUpdate(data);
+                    props.onUpdate(employeedata);
                   }
                   e.preventDefault();
                 }}
@@ -314,7 +314,7 @@ const EmployeeModal = (props) => {
               <Button
                 className="btn btn-danger"
                 onClick={() => {
-                  props.onDelete(data.id);
+                  props.onDelete(employeedata.id);
                 }}
               >
                 Delete
@@ -338,7 +338,7 @@ const EmployeeModal = (props) => {
                         type="text"
                         onChange={(e) => {
                           setField();
-                          setData({ ...data, ...{ name: e.target.value } });
+                          setEmployeeData({ ...employeedata, ...{ name: e.target.value } });
                         }}
                         placeholder="Enter Employee Name"
                         isInvalid={!!errors.name}
@@ -358,8 +358,8 @@ const EmployeeModal = (props) => {
                         placeholder="Choose a date of Birth"
                         onChange={(e) => {
                           setField();
-                          setData({
-                            ...data,
+                          setEmployeeData({
+                            ...employeedata,
                             ...{ date_of_birth: e.target.value },
                           });
                         }}
@@ -377,8 +377,8 @@ const EmployeeModal = (props) => {
                         placeholder="Enter Contact no"
                         onChange={(e) => {
                           setField();
-                          setData({
-                            ...data,
+                          setEmployeeData({
+                            ...employeedata,
                             ...{ contact_number: e.target.value },
                           });
                         }}
@@ -394,8 +394,8 @@ const EmployeeModal = (props) => {
                       type="number"
                       placeholder="Alternet Contact no"
                       onChange={(e) => {
-                        setData({
-                          ...data,
+                        setEmployeeData({
+                          ...employeedata,
                           ...{ Alternet_number: e.target.value },
                         });
                       }}
@@ -411,7 +411,7 @@ const EmployeeModal = (props) => {
                         placeholder="Enter Employee email"
                         onChange={(e) => {
                           setField();
-                          setData({ ...data, ...{ email: e.target.value } });
+                          setEmployeeData({ ...employeedata, ...{ email: e.target.value } });
                         }}
                         isInvalid={!!errors.email}
                       />
@@ -427,7 +427,7 @@ const EmployeeModal = (props) => {
                         placeholder="Enter Password"
                         onChange={(e) => {
                           setField();
-                          setData({ ...data, ...{ password: e.target.value } });
+                          setEmployeeData({ ...employeedata, ...{ password: e.target.value } });
                         }}
                         isInvalid={!!errors.password}
                       />
@@ -450,8 +450,8 @@ const EmployeeModal = (props) => {
                       <Form.Select
                         onChange={(e) => {
                           setField();
-                          setData({
-                            ...data,
+                          setEmployeeData({
+                            ...employeedata,
                             ...{ select_company: e.target.value },
                           });
                         }}
@@ -474,7 +474,7 @@ const EmployeeModal = (props) => {
                       <Form.Control
                         type="text"
                         placeholder="Assigned Company"
-                        value={data.select_company}
+                        value={employeedata.select_company}
                       />
                     </Form.Group>
                   </Col>
@@ -486,7 +486,7 @@ const EmployeeModal = (props) => {
                   className="btn btn-info"
                   onClick={(e) => {
                     if (handleSubmit()) {
-                      props.save(data);
+                      props.save(employeedata);
                     }
                     e.preventDefault();
                   }}

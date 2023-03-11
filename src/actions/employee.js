@@ -100,7 +100,7 @@ export const employeeSlice = createSlice({
   extraReducers:(builder) =>{
 
       builder.addCase(postEmployeeAPI.fulfilled, (state, data) =>{
-    state.list.push({id:state.list,...data.payload});
+    // state.list.push({id:state.list,...data.payload});
     })
 
     builder.addCase(getEmployeeById.fulfilled, (state, data) =>{
@@ -122,16 +122,15 @@ export const employeeSlice = createSlice({
           password:item.password,
           reset_pass:item.reset_password,
           select_company:item?.companies[0]?.name,
-        };        
-
+        };
         return tmpData;
       })    
     })
 
     builder.addCase(deleteEmployeeById.fulfilled,(state,data,index)=>{
-      const users = state.list;
-        users.splice(index, 1);
-        data.payload(users);
+      // const users = state.list;
+      //   users.splice(index, 1);
+      //   data.payload(users);
     })
   }
 })

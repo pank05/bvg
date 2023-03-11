@@ -20,11 +20,11 @@ const AssignToFEScreen =()=>{
     const dispatch = useDispatch();
 
     useEffect(()=>{
-        dispatch(getAllCaseAPI({id:'all',status: ['under_employee','rejected_by_FE']}));
+        dispatch(getAllCaseAPI({id:'all',status: ["under_employee","rejected_by_FE"]}));
     },[])
 
     useEffect(()=>{
-       setTatData(assigns)
+       setTatData(assigns.filter((val)=> (val.status == "under_employee") || (val.status == "rejected_by_FE")))
     },[assigns])
 
     const handleAssign=(data)=>{
@@ -53,7 +53,7 @@ const AssignToFEScreen =()=>{
 
     const onClickCheck = (item) =>{
         setItem(item);
-        setAssignTAT(item);
+        setAssignTAT(item.filter((val)=> (val.status == 'under_employee' ) || (val.status == "rejected_by_FE") ));
      }
      
     return (

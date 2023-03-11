@@ -33,7 +33,7 @@ const FieldExecutivePage=(Para)=>{
 
 const handleAddSaveme=(data)=>{
   dispatch(postFieldAPI(data)).then(()=>{
-    dispatch(getAllFieldAPI())  })
+    dispatch(getAllFieldAPI({ id: "all"}))  })
   setShow()
 }
 
@@ -52,7 +52,7 @@ const handleUpdateSave=(data)=>{
 
 function handleRemoveField(id){
   dispatch(deleteFieldById(id)).then(()=>{
-  dispatch(getAllFieldAPI())  })
+  dispatch(getAllFieldAPI({ id: "all"}))  })
   setShow(false);
 }
 

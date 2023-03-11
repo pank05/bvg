@@ -5,10 +5,12 @@ import { useDispatch,useSelector } from 'react-redux';
 import {deleteDataColoum} from "./mock/deleteData";
 import OpalTable from './opalTable';
 import {useParams} from 'react-router-dom';
-import {getAllCaseAPI ,deleteCaseDataById,getCaseDataById} from './actions/verification'
+import {getAllCaseAPI ,deleteCaseDataById,getCaseDataById} from './actions/verification';
+
 const DeleteData=()=>{
 
-    const deletes = useSelector(state=> state?.verification?.list || []);
+    const deletes = useSelector((state) => state?.verification?.list || []);
+
     const { id  } = useParams();
 
     const [selectedCase,setSelectedCase] = useState({});
@@ -22,27 +24,20 @@ const DeleteData=()=>{
        },[])
      
        useEffect(()=>{
-        setTatData(deletes)
+        setTatData(deletes.map((v=>{
+            let temp ={...v};
+            temp.tatStatus = temp.tatStatus ? <p style={{color:"green"}}> In TAT</p>  : <p style={{color:"red"}}> Out of TAT  </p>
+            return temp ;   
+         })))
        },[deletes])
 
-
-       const [show,setShow]=useState(false);
-       const handleClose=()=> setShow(false);
     const handleDeleteData=(data)=>{
         dispatch(deleteCaseDataById(data.id)).then(()=>{
         dispatch(getAllCaseAPI({id:'all'}));
             });
-        console.log("data",data.id)
-    }
-
-    const handleDeleteCaseModal =(data)=>{
-        // dispatch(getCaseDataById(data.id))
-        console.log(data.id)
-        setShow(true)
     }
 
     const onClickCheck = (selectedCase) =>{
-        console.log("selectedCase.id",selectedCase)
         setSelectedCase(selectedCase)
         setDeleteTAT(selectedCase);
      }

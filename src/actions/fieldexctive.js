@@ -113,7 +113,7 @@ export const fieldExecutiveSlice = createSlice({
   extraReducers:(builder) =>{
 
     builder.addCase(postFieldAPI.fulfilled, (state, data) =>{
-     state.list.push({id:state.list,...data.payload});
+    //  state.list.push({id:state.list,...data.payload});
   })
 
   builder.addCase(getFieldById.fulfilled, (state, action) =>{
@@ -145,9 +145,9 @@ export const fieldExecutiveSlice = createSlice({
   })
 
   builder.addCase(deleteFieldById.fulfilled,(state,data,index)=>{
-    const users = state.list;
-      users.splice(index, 1);
-      data.payload(users);
+    // const users = state.list;
+    //   users.splice(index, 1);
+    //   data.payload(users);
   })
 
 }

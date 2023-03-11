@@ -10,9 +10,14 @@ import OpalTable from "../opalTable";
 import AssignModal from "../assign/modalAssign";
 
 const EmployeeListPage=(Para)=>{
+
   const navigate = useNavigate();
   const employee = useSelector(state=> state?.employee?.list || []);
   const [EmployeeList, setEmployeeList]=useState([])
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const [modalType, setModalType]=useState('add')
+  const [defaultData,setDeafultData] = useState([])
   const dispatch = useDispatch();
 
   useEffect(()=>{
@@ -23,12 +28,6 @@ const EmployeeListPage=(Para)=>{
     setEmployeeList(employee)
    },[employee]);
 
-  const [show, setShow] = useState(false);
-  const handleShow = () => setShow(true);
-  const handleClose = () => setShow(false);
-  const [modalType, setModalType]=useState('add')
-  const [defaultData,setDeafultData] = useState([])
-
   const handleAddEmployee=()=>{
     setModalType('add')
     setShow(true)
@@ -37,7 +36,7 @@ const EmployeeListPage=(Para)=>{
 
   const handleSaveMe=(data)=>{
     dispatch(postEmployeeAPI(data)).then(()=>{
-      dispatch(getAllEmployeeAPI())
+      dispatch(getAllEmployeeAPI({ id: "all"}))
     }) 
     setShow(false)
   }
@@ -55,9 +54,9 @@ const EmployeeListPage=(Para)=>{
     setShow(false)
   }
    
-const  handleToggleModal= (id)=>{
+const  handleToggleModal= (id,data)=>{
   dispatch(deleteEmployeeById(id)).then(()=>{
-  dispatch(getAllEmployeeAPI())  })
+  dispatch(getAllEmployeeAPI({ id: "all"}))  })
   setShow(false)
 }
 

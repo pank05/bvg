@@ -1,4 +1,4 @@
-import {Button,Container,Nav,Navbar,Offcanvas,NavDropdown} from 'react-bootstrap';
+import {Button,Container,Nav,Navbar,Offcanvas,NavDropdown,Card} from 'react-bootstrap';
 import './App.css';
 import './Opalfile.css';
 import { useEffect, useState } from 'react';
@@ -69,7 +69,24 @@ const Opal =(props)=> {
 
   const handleShow = () => setShow(true);
   // const style = { color:"white", fontSize: "1.0em" ,textalign:"center"}
-
+ 
+  const getImage = () =>{
+    if(checkUserHasRole(userProfile,['admin']) ){
+      return <BsFillPersonFill/> 
+    }
+    if(checkUserHasRole(userProfile,['employee']) ){
+      return <BsFillPersonFill/> 
+    }
+    if(checkUserHasRole(userProfile,['FieldExecutive']) ){
+      return <> <img src={userDetails?.image_url}
+      style={{
+        width: "30px",
+        height: "30px",
+        borderRadius:"60%"
+      }} /> 
+      </>
+    }
+  }
   return (
     <div className='nav-alignment'>
       <Navbar  key={show} bg="light" expand={show} className=" flex-grow-1 navbar navbar-dark bg-dark" >
@@ -77,14 +94,14 @@ const Opal =(props)=> {
             <Navbar.Brand ><h1>OPAL</h1></Navbar.Brand>
             <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${show}`}  onClick={handleShow}/>
             <Nav.Link className='logout'>
-            <BsFillPersonFill/>
+              {getImage()}
          <NavDropdown style={{width:'20%'}} title={userDetails.username}  id="navbarScrollingDropdown"> 
               <NavDropdown.Item >
+           &nbsp;
                 {userDetails?.roles?.map((v) => v.label ).join(",")}
-                {userDetails?.roles?.map((v) => v.image_url ).join(",")}
               </NavDropdown.Item>
               <NavDropdown.Divider />
-              <NavDropdown.Item href="#action4">
+              <NavDropdown.Item >
               <Button variant="dark" onClick={handleLogout}><FaPowerOff/>Log Out</Button>  
               </NavDropdown.Item>
           </NavDropdown>

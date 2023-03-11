@@ -14,7 +14,8 @@ const OpalTable = (props)=>{
     const [tableData,setTableData] = useState([]);
     const [searchedVal,setSearchedVal] = useState("");
     const [selectedRows,setSelectedRows] = useState([]);
-    
+    const [toggledClearRows, setToggleClearRows] = useState(false);
+
     useEffect(()=>{
         if(props.checkBoxColoum){
             props.checkBoxColoum(selectedRows);
@@ -27,7 +28,8 @@ const OpalTable = (props)=>{
         },[]);
 
         useEffect(()=>{
-            setTableData(props.rowData)
+        setTableData(props.rowData);
+        handleClearRows();
         },[props.rowData])
 
        const onClickCheckBox = (item) =>{
@@ -49,6 +51,10 @@ const OpalTable = (props)=>{
             );
         }
 
+        const handleClearRows = () => {
+            setToggleClearRows(!toggledClearRows);
+          }
+          
      const handleRowSelected = useCallback(state => {
 		setSelectedRows(state.selectedRows);
 	 }, []);
@@ -66,7 +72,7 @@ const OpalTable = (props)=>{
                 <Popover.Body>
                 {(tableHeader).filter(v=>!v.actionRow).map((v)=>{
             return <ListGroup.Item key={v.id}>
-            <Form.Check type="checkbox"  label={v.label} checked={v.isShow} onChange={()=>onClickCheckBox(v)} />
+            <Form.Check type="checkbox"  label={v.label} checked={v.isShow}  onChange={()=>onClickCheckBox(v)} />
                 </ListGroup.Item>
             })}
                 </Popover.Body>
@@ -83,7 +89,9 @@ const OpalTable = (props)=>{
                           }
                         if(item.actionRow){
                             tmp.button = true;
-                            tmp.cell = (row) => <Button className="btn btn-info" > {item.label}</Button>;
+                            tmp.cell = (row) => <Button className="btn btn-info" > 
+                            {item.label} 
+                            </Button>;
                             switch (item.type) {
                                 case 'edit':
                                     tmp.cell= (row) => <Button className="btn btn-info"  onClick={()=>props.edit(row)}  > <BiEdit style={{color:"white"}} /></Button>;
@@ -120,6 +128,7 @@ const OpalTable = (props)=>{
                      selectableRows={props.checkBoxColoum}
                      onSelectedRowsChange={handleRowSelected}
                      pagination
+                     clearSelectedRows={toggledClearRows}
                     />
                </Container>
   );

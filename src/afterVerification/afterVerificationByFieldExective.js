@@ -12,9 +12,23 @@ import {
 } from "../actions/review";
 
 const VerificationByFieldExective = (props) => {
-  const caseData = useSelector((state) => state?.verification?.list || []);
+
+  const caseData = useSelector((state) => state?.verification?.list || []).map((v=>{
+    let temp ={...v};
+    temp.tatStatus = temp.tatStatus ? <p style={{color:"green"}}> In TAT</p>  : <p style={{color:"red"}}> Out of TAT  </p>
+    return temp ;
+  }));
   const userDetails = useSelector((state) => state?.user?.userProfile); 
   const [verifyFEData, setVerifyFEData] = useState([]);
+  const [actionButton, setActionButton] = useState(true);
+  const [buttonType, setButtonType] = useState("View Verified By FE");
+  const [modalType, setModalType] = useState("edit");
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const [defaultData, setDeafultData] = useState({});
+  const [showModal, setShowModal] = useState(false);
+  const handleCloseModal = () => setShowModal(false);
+  const [modalTypes, setModalTypes] = useState("editUnview");
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -26,15 +40,6 @@ const VerificationByFieldExective = (props) => {
   useEffect(() => {
     setVerifyFEData(caseData.filter((t) => t.status == "under_FE"));
   }, [caseData]);
-
-  const [actionButton, setActionButton] = useState(true);
-  const [buttonType, setButtonType] = useState("View Verified By FE");
-  const [modalType, setModalType] = useState("edit");
-  const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
-  const [defaultData, setDeafultData] = useState({});
-  const [showModal, setShowModal] = useState(false);
-  const handleCloseModal = () => setShowModal(false);
 
   const handleViewVerifyCase = () => {
     setButtonType("View Verified By FE");
@@ -112,7 +117,7 @@ const VerificationByFieldExective = (props) => {
     updateRecords.forEach((record) => {
       console.log(record)
       dispatch(updateAddrescaseDetails(record)).then(() => {
-        dispatch(getAllCaseAPI({ id: "all", status: ["under_FE"] }));
+        dispatch(getAllCaseAPI({ id: "all", status: ["under_FE"] }))
       });
     });
   }
@@ -142,14 +147,13 @@ const VerificationByFieldExective = (props) => {
     });
     updateRecords.forEach((record) => {
       dispatch(updateAddressAuditCaseDetails(record)).then(() => {
-        dispatch(getAllCaseAPI({ id: "all", status: ["under_FE"] }));
+        dispatch(getAllCaseAPI({ id: "all", status: ["under_FE"] }))
       });
     });
   }
     setShow(false);
   };
 
-  const [modalTypes, setModalTypes] = useState("editUnview");
 
   const handleReviewEditForm = (data) => {
     dispatch(getCaseHistoryById(data.id))
@@ -192,10 +196,7 @@ const VerificationByFieldExective = (props) => {
       return temp;
     });
     updateRecords.forEach((record) => {
-      console.log("record",record)
-      dispatch(updateAddrescaseDetails(record)).then(() => {
-        dispatch(getAllCaseAPI({ id: "all", status: ["verify_by_FE"] }));
-      });
+      dispatch(updateAddrescaseDetails(record))
     });
   }
     setShowModal(false);

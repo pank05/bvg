@@ -391,7 +391,7 @@ useEffect(()=>{
                             </Col>
                             <Col>
                               <b className="found_size_for_text">Remark :</b>
-                              {caseAllDetails?.audit_case_status_label}
+                              {caseAllDetails?.additional_remark_json}
                             </Col>
                           </Row>
                         </Container>
@@ -407,8 +407,8 @@ useEffect(()=>{
                           <thead>
                             <tr>
                               <th> Label</th>
-                              <th>Assigned To</th>
-                              <th>Assigned By</th>
+                              <th>Sent To</th>
+                              <th>Recived By</th>
                               <th> Date</th>
                               <th>Remark</th>
                             </tr>

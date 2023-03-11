@@ -10,7 +10,7 @@ const VerificationStatus=()=>{
   const dispatch=useDispatch()
 
   useEffect(()=>{
-    dispatch(getAllCaseAPI({ id: "all"}));
+    // dispatch(getAllCaseAPI({ id: "all"}));
     dispatch(getReportingTatStatus(userProfile.roles[0].name))
    },[])
 

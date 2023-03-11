@@ -212,7 +212,7 @@ export const verificationSlice = createSlice({
             email:item.email,
             clientName:item.client_name ,
             status:item.label,
-            tatStatus:item?.inTAT ? <p style={{color:"green"}}> In TAT</p>  : <p style={{color:"red"}}> Out of TAT  </p>
+            tatStatus:item?.inTAT
           };
           return tmpData;
         })    

@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { getAllEmployeeAPI } from "../actions/employee";
 
 const AssignModal = (props) => {
+
   const employee = useSelector((state) => state?.employee?.list || []);
   const dispatch = useDispatch();
   const caseDetails = useSelector((state) => state?.verification?.list || []);
@@ -65,6 +66,7 @@ const AssignModal = (props) => {
   const resetForm = () => {
     setAssignErrors({});
     setIscheckOutBtn();
+    
   };
 
   return (

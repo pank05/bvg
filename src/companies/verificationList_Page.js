@@ -6,7 +6,6 @@ import OpalTable from '../opalTable';
 import {FaFileImport} from 'react-icons/fa';
 import {verificationDataColumn} from "../mock/verificationdata";
 import { useDispatch, useSelector } from "react-redux";
-import { read, utils } from 'xlsx';
 import {useParams} from 'react-router-dom';
 import { getCompanyDataById,clearCurrentCompany,getAllCompaniesAPI} from "../actions/company";
 import {postAddCaseAPI,getAllCaseAPI,getCaseDataById ,updateCaseById,deleteCaseDataById ,bulkAddCases} from "../actions/verification";
@@ -131,7 +130,7 @@ const VerificationList_Page=(para)=>{
                         const file = files[0];
                         const formData = new FormData();
                         formData.append('cases',file);
-                        dispatch(bulkAddCases(formData)) .then(()=>{
+                        dispatch(bulkAddCases(formData)).then(()=>{
                      dispatch(getAllCaseAPI({id:'all'}));
                      });
                     }

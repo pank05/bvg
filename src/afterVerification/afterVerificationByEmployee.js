@@ -9,12 +9,21 @@ import ModalAfterUnview from "./modalAfterVerifyUnview";
 import {updateAddrescaseDetails,updateAddressAuditCaseDetails} from "../actions/review";
 
 const VerificationByEmployee =(props)=>{
-    const caseList = useSelector((state) => state?.verification?.list || []);
+    const caseList = useSelector((state) => state?.verification?.list || []).map((v=>{
+      let temp ={...v};
+      temp.tatStatus = temp.tatStatus ? <p style={{color:"green"}}> In TAT</p>  : <p style={{color:"red"}}> Out of TAT  </p>
+      return temp ;    }));
     const [verifyByEMPData, setVerifyByEMPData] = useState([]);
     const dispatch=useDispatch();
     const [actionButton ,setActionButton]=useState(false)
     const [buttonType, setButtonType] = useState("View Verified By FE");
-    
+    const [modal,setModal]=useState("edit");
+    const [show,setShow]=useState(false);
+    const handleClose =()=> setShow(false);
+    const [modalTypes, setModalTypes] = useState("editUnview");
+    const [showModal, setShowModal] = useState(false);
+    const handleCloseModal = () => setShowModal(false);
+
     useEffect(() => {
         dispatch(
           getAllCaseAPI({ id: "all", status: ["verify_by_FE","verify_by_employee","rejected_by_FE"] })
@@ -42,10 +51,6 @@ const VerificationByEmployee =(props)=>{
         setVerifyByEMPData(viewVerifyData);
         setActionButton(!actionButton);
       }
-
-      const [modal,setModal]=useState("edit");
-      const [show,setShow]=useState(false);
-      const handleClose =()=> setShow(false);
 
       const handleCaseEditModal = (data) => {
         dispatch(getCaseHistoryById(data.id))
@@ -102,7 +107,7 @@ const VerificationByEmployee =(props)=>{
         });
         updateRecords.forEach((record) => {
           dispatch(updateAddrescaseDetails(record)).then(() => {
-            dispatch(getAllCaseAPI({ id: "all", status: ["verify_by_FE"] }));
+            dispatch( getAllCaseAPI({ id: "all", status: ["verify_by_FE","verify_by_employee","rejected_by_FE"] }) )
           });
         });
     }
@@ -133,16 +138,12 @@ const VerificationByEmployee =(props)=>{
         updateRecords.forEach((record) => {
             console.log("recird",record)
           dispatch(updateAddressAuditCaseDetails(record)).then(() => {
-            dispatch(getAllCaseAPI({ id: "all", status: ["verify_by_FE"] }));
-          });
+            dispatch(getAllCaseAPI({ id: "all", status: ["verify_by_FE","verify_by_employee","rejected_by_FE"] })
+         ) });
         });
     }
         setShow(false);
       };
-
-      const [modalTypes, setModalTypes] = useState("editUnview");
-      const [showModal, setShowModal] = useState(false);
-      const handleCloseModal = () => setShowModal(false);
 
   const handleReviewEditForm = (data) => {
     dispatch(getCaseHistoryById(data.id))
@@ -183,8 +184,8 @@ const VerificationByEmployee =(props)=>{
       updateRecords.forEach((record) => {
         console.log("record",record)
         dispatch(updateAddrescaseDetails(record)).then(() => {
-          dispatch(getAllCaseAPI({ id: "all", status: ["verify_by_employee"] }));
-        });
+          dispatch(getAllCaseAPI({ id: "all", status: ["verify_by_FE","verify_by_employee","rejected_by_FE"] })
+       ) });
       });
     }
     setShowModal(false)
@@ -221,12 +222,10 @@ const VerificationByEmployee =(props)=>{
       </div>
 
       <div>
-        {/* status veriby fe  */}
         <ModalAfterVerify
           show={show}
           close={handleClose}
           type={modal}
-        //   defaultData={defaultData}
           onUpdate={handleUpdateAddressSave}
           onSave={handleSaveVerifyByEMP}
         />
@@ -236,7 +235,6 @@ const VerificationByEmployee =(props)=>{
           open={showModal}
           onClose={handleCloseModal}
           type={modalTypes}
-        //   defaultData={defaultData}
           onSubmit={handleUpdateAddressDetailsByEmp}
         />
       </div>

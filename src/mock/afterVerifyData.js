@@ -37,7 +37,7 @@ export const afterVerifyDataColoum =[
     },
     {
         id:7,
-        columnId:"tatStatus",
+        columnId:"tatStatus" ,
         label:"TAT Status" ,
         isShow:true
     },
