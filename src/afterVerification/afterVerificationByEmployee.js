@@ -9,10 +9,7 @@ import ModalAfterUnview from "./modalAfterVerifyUnview";
 import {updateAddrescaseDetails,updateAddressAuditCaseDetails} from "../actions/review";
 
 const VerificationByEmployee =(props)=>{
-    const caseList = useSelector((state) => state?.verification?.list || []).map((v=>{
-      let temp ={...v};
-      temp.tatStatus = temp.tatStatus ? <p style={{color:"green"}}> In TAT</p>  : <p style={{color:"red"}}> Out of TAT  </p>
-      return temp ;    }));
+    const caseList = useSelector((state) => state?.verification?.list || [])
     const [verifyByEMPData, setVerifyByEMPData] = useState([]);
     const dispatch=useDispatch();
     const [actionButton ,setActionButton]=useState(false)
@@ -31,14 +28,22 @@ const VerificationByEmployee =(props)=>{
       }, []);
     
       useEffect(() => {
-        setVerifyByEMPData(caseList.filter((t) => (t.status == "verify_by_FE") || (t.status == "rejected_by_FE") ));
+        setVerifyByEMPData(caseList.filter((t) => (t.status == "verify_by_FE") || (t.status == "rejected_by_FE") ).map((v=>{
+          let temp ={...v};
+          temp.tatStatus = temp.tatStatus ? <p style={{color:"green"}}> In TAT</p>  : <p style={{color:"red"}}> Out of TAT  </p>
+          return temp ;    })));
       }, [caseList]);
 
       const handleViewVerifyByEmp =()=>{
         setButtonType("View Verified By FE");
         const viewVerifyData = caseList.filter((val) => {
           return val.status == "verify_by_employee";
-        });
+        }).map((v=>{
+          let temp ={...v};
+          temp.tatStatus = temp.tatStatus ? <p style={{color:"green"}}> In TAT</p>  : <p style={{color:"red"}}> Out of TAT  </p>
+          return temp ;   
+         }))
+
         setVerifyByEMPData(viewVerifyData);
         setActionButton(!actionButton);
       }
@@ -47,7 +52,10 @@ const VerificationByEmployee =(props)=>{
         setButtonType("View Verified By FE");
         const viewVerifyData = caseList.filter((val) => {
           return (val.status == "verify_by_FE") || (val.status == "rejected_by_FE")
-        });
+        }).map((v=>{
+          let temp ={...v};
+          temp.tatStatus = temp.tatStatus ? <p style={{color:"green"}}> In TAT</p>  : <p style={{color:"red"}}> Out of TAT  </p>
+          return temp ;    }))
         setVerifyByEMPData(viewVerifyData);
         setActionButton(!actionButton);
       }

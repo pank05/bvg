@@ -13,11 +13,7 @@ import {
 
 const VerificationByFieldExective = (props) => {
 
-  const caseData = useSelector((state) => state?.verification?.list || []).map((v=>{
-    let temp ={...v};
-    temp.tatStatus = temp.tatStatus ? <p style={{color:"green"}}> In TAT</p>  : <p style={{color:"red"}}> Out of TAT  </p>
-    return temp ;
-  }));
+  const caseData = useSelector((state) => state?.verification?.list || [])
   const userDetails = useSelector((state) => state?.user?.userProfile); 
   const [verifyFEData, setVerifyFEData] = useState([]);
   const [actionButton, setActionButton] = useState(true);
@@ -38,14 +34,22 @@ const VerificationByFieldExective = (props) => {
   }, []);
 
   useEffect(() => {
-    setVerifyFEData(caseData.filter((t) => t.status == "under_FE"));
+    setVerifyFEData(caseData.map((v=>{
+        let temp ={...v};
+        temp.tatStatus = temp.tatStatus ? <p style={{color:"green"}}> In TAT</p>  : <p style={{color:"red"}}> Out of TAT  </p>
+        return temp ;
+      })).filter((t) => t.status == "under_FE"))
   }, [caseData]);
 
   const handleViewVerifyCase = () => {
     setButtonType("View Verified By FE");
     const viewVerifyData = caseData.filter((val) => {
       return val.status == "verify_by_FE";
-    });
+    }).map((v=>{
+      let temp ={...v};
+      temp.tatStatus = temp.tatStatus ? <p style={{color:"green"}}> In TAT</p>  : <p style={{color:"red"}}> Out of TAT  </p>
+      return temp ;
+    }))
     setVerifyFEData(viewVerifyData);
     setActionButton(!actionButton);
   };
@@ -55,7 +59,11 @@ const VerificationByFieldExective = (props) => {
     setActionButton(!actionButton);
     const unViewVerifyData = caseData.filter((val) => {
       return val.status == "under_FE";
-    });
+    }).map((v=>{
+      let temp ={...v};
+      temp.tatStatus = temp.tatStatus ? <p style={{color:"green"}}> In TAT</p>  : <p style={{color:"red"}}> Out of TAT  </p>
+      return temp ;
+    }))
     setVerifyFEData(unViewVerifyData);
   };
 
@@ -233,7 +241,6 @@ const VerificationByFieldExective = (props) => {
         />
       </div>
       <div>
-        {/* status under_employee  */}
         <ModalAfterVerify
           show={show}
           close={handleClose}

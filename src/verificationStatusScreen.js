@@ -1,7 +1,6 @@
 import {Container,Table} from 'react-bootstrap';
 import { useSelector,useDispatch } from 'react-redux';
-import {getAllCaseAPI} from "./actions/verification";
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import {getReportingTatStatus} from "./actions/status";
 
 const VerificationStatus=()=>{
@@ -10,7 +9,6 @@ const VerificationStatus=()=>{
   const dispatch=useDispatch()
 
   useEffect(()=>{
-    // dispatch(getAllCaseAPI({ id: "all"}));
     dispatch(getReportingTatStatus(userProfile.roles[0].name))
    },[])
 
@@ -29,11 +27,10 @@ const VerificationStatus=()=>{
       <tbody>
         <tr className="table_body1"> <td>Special Priority  <strong>  {tatDetails?.special_priority}</strong></td> </tr>
         <tr className="table_body2"> <td>Today's to TAT <strong>  {tatDetails?.today_to_tat} </strong> </td> </tr>
-        <tr className="table_body3"> <td>1 Day to TAT   <strong> {tatDetails?.one_day_tat}</strong> </td> </tr>
-        <tr className="table_body4"> <td>2 Day to TAT  <strong> {tatDetails?.two_day_tat}</strong> </td> </tr>
-        <tr className="table_body1"> <td>3 Day to TAT <strong> {tatDetails?.third_day_tat}</strong> </td> </tr>
-        <tr className="table_body2"> <td>4 Day to TAT <strong>  {tatDetails?.four_day_tat} </strong> </td> </tr>
-        <tr className="table_body3"> <td>5 Day to TAT   <strong> {tatDetails?.five_day_tat}</strong> </td> </tr>
+        <tr className="table_body3"> <td>2 Day to TAT   <strong> {tatDetails?.one_day_tat}</strong> </td> </tr>
+        <tr className="table_body4"> <td>3 Day to TAT  <strong> {tatDetails?.two_day_tat}</strong> </td> </tr>
+        <tr className="table_body1"> <td>4 Day to TAT <strong> {tatDetails?.third_day_tat}</strong> </td> </tr>
+        <tr className="table_body2"> <td>5 Day to TAT <strong>  {tatDetails?.four_day_tat} </strong> </td> </tr>
         <tr className="table_body2"> <td>Out of TAT <strong>{tatDetails?.out_of_tat} </strong> </td> </tr>
       </tbody>  
     </Table>
@@ -43,7 +40,7 @@ const VerificationStatus=()=>{
       <thead className="table_head">
         <tr> <th  >Current Workload </th> </tr> </thead>
       <tbody>
-        <tr className="table_body2"> <td>Completed unrevieved <strong>{tatDetails?.completed_count}</strong> </td> </tr>
+        <tr className="table_body2"> <td>Completed cases <strong>{tatDetails?.completed_count}</strong> </td> </tr>
       </tbody>
     </Table>
     </div>

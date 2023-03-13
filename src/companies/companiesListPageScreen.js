@@ -39,14 +39,14 @@ const CompaniesListPage=(Para)=>{
   }
   
   const handleAddCompaniesSave=(data)=>{
-    dispatch(postAddCompaniesAPI(data)).then(()=>{
+      dispatch(postAddCompaniesAPI(data)).then(()=>{
       dispatch(getAllCompaniesAPI({id:'all'}));
     })
     setShow(false)
   }
   
   const handleUpdateCompanies=(data)=>{
-    dispatch(updateCompanyById(data)).then(()=>{
+      dispatch(updateCompanyById(data)).then(()=>{
       dispatch(getAllCompaniesAPI({id:'all'}));
     })
     setShow(false)

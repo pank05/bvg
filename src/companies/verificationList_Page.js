@@ -92,18 +92,18 @@ const VerificationList_Page=(para)=>{
                  const handleUpdateVerification=(data)=>{
                     dispatch(updateCaseById({
                         id:data.id,
-                        company_id:data.companyId,
+                        // company_id:data.companyId,
                         candidate_name:data.candidateName,
                         father_name:data.fatherName,
                         contact_no:data.contactNo,
                         alternate_no:data.alternateNo,
-                        city_id:data.city,
+                        // city_id:data.city,
                         client_name:data.clientName,
-                        state_id:data.state,
+                        // state_id:data.state,
                         verification_type:data.verificationType,
                         pincode:data.pincode,
                         address:data.address,
-                        district_id:data.district,
+                        // district_id:data.district,
                         location:data.landmark,
                         resume_id:data.resumeId,
                         duration_start:data.durationStart

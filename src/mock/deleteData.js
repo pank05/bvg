@@ -51,7 +51,7 @@ export const deleteDataColoum =[
         id:9,
         columnId:"tatStatus",
         label:"TAT Status" ,
-        isShow:false
+        isShow:true
     },
     {
         id:10,

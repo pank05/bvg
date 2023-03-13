@@ -61,7 +61,6 @@ const DeleteData=()=>{
                 />
              </div>
 
-
         </Container>
     )
 }

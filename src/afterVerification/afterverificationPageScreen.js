@@ -19,10 +19,7 @@ import {
 } from "../actions/review";
 
 const AfterVerification = (props) => {
-  const review = useSelector((state) => state?.verification?.list || []).map((v=>{
-    let temp ={...v};
-    temp.tatStatus = temp.tatStatus ? <p style={{color:"green"}}> In TAT</p>  : <p style={{color:"red"}}> Out of TAT  </p>
-    return temp ;    }));
+  const review = useSelector((state) => state?.verification?.list || [])
     
   const [verifyAdmin, setVerifyAdmin] = useState([]);
   const dispatch = useDispatch();
@@ -44,7 +41,10 @@ const AfterVerification = (props) => {
   }, []);
 
   useEffect(() => {
-    setVerifyAdmin(review.filter((t) => (t.status == "verify_by_employee") || (t.status == "rejected_by_employee") ));
+    setVerifyAdmin(review.map((v=>{
+      let temp ={...v};
+      temp.tatStatus = temp.tatStatus ? <p style={{color:"green"}}> In TAT</p>  : <p style={{color:"red"}}> Out of TAT  </p>
+      return temp ;    })).filter((t) => (t.status == "verify_by_employee") || (t.status == "rejected_by_employee") ))
   }, [review]);
 
 
@@ -52,7 +52,10 @@ const AfterVerification = (props) => {
     setButtonType("View Verified By Admin ");
     const viewVerifyData = review.filter((val) => {
       return val.status == "verify_by_admin";
-    });
+    }).map((v=>{
+      let temp ={...v};
+      temp.tatStatus = temp.tatStatus ? <p style={{color:"green"}}> In TAT</p>  : <p style={{color:"red"}}> Out of TAT  </p>
+      return temp ;    }))
     setVerifyAdmin(viewVerifyData);
     setActionButton(!actionButton);
   };
@@ -62,7 +65,10 @@ const AfterVerification = (props) => {
     setActionButton(!actionButton);
     const unViewVerifyData = review.filter((val) => {
       return (val.status == "verify_by_employee") || (val.status == "rejected_by_employee")
-    });
+    }).map((v=>{
+      let temp ={...v};
+      temp.tatStatus = temp.tatStatus ? <p style={{color:"green"}}> In TAT</p>  : <p style={{color:"red"}}> Out of TAT  </p>
+      return temp ;    }))
     setVerifyAdmin(unViewVerifyData);
   };
 
